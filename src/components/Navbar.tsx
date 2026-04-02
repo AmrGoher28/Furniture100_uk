@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Search, User } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 
 const CATEGORIES: Record<string, string[]> = {
@@ -36,6 +37,7 @@ interface NavbarProps {
 
 export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCategoryClick = (cat: string) => {
@@ -74,15 +76,30 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
       }`}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Top row */}
+      {/* Top row: Search | Logo | Account + Cart */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-20">
+        {/* Left: Search */}
+        <div className="flex items-center gap-2 flex-1">
+          <Search className="w-4 h-4 text-foreground/60" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search"
+            className="bg-transparent border-none outline-none text-sm font-light tracking-wide text-foreground placeholder:text-foreground/40 w-32 md:w-48"
+          />
+        </div>
+
+        {/* Center: Logo */}
         <Link to="/" className="text-2xl tracking-[0.3em] font-medium" style={{ fontFamily: "'Playfair Display', serif" }}>
           SWIFLIVING
         </Link>
-        <div className="flex items-center gap-8">
-          <a href="#about" className="hidden md:inline-block text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors">
-            About
-          </a>
+
+        {/* Right: Account + Cart */}
+        <div className="flex items-center gap-5 flex-1 justify-end">
+          <button className="text-foreground/70 hover:text-foreground transition-colors" aria-label="Account">
+            <User className="w-5 h-5" />
+          </button>
           <CartDrawer />
         </div>
       </div>
@@ -98,7 +115,7 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
               className={`text-xs tracking-[0.2em] uppercase pb-0.5 transition-colors whitespace-nowrap ${
                 activeCategory === cat
                   ? "text-foreground border-b border-[hsl(var(--bark))]"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-foreground/80 hover:text-foreground"
               }`}
             >
               {cat}
