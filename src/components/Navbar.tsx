@@ -69,7 +69,9 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm"
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        hoveredCategory ? "bg-[hsl(var(--cream))]" : "bg-background/90 backdrop-blur-sm"
+      }`}
       onMouseLeave={handleMouseLeave}
     >
       {/* Top row */}
