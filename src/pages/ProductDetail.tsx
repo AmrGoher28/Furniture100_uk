@@ -83,7 +83,7 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Navbar />
+      <Navbar activeCategory="All" onCategoryChange={() => {}} />
       <main className="flex-1 pt-28 pb-24 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <Link to="/#collection" className="inline-flex items-center gap-2 text-xs tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors mb-10">
