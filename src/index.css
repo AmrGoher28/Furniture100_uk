@@ -34,6 +34,11 @@
 
     --radius: 0.25rem;
 
+    --cream: 34 33% 97%;
+    --stone: 28 18% 70%;
+    --bark: 24 20% 29%;
+    --near-black: 0 0% 10%;
+
     --sidebar-background: 40 33% 97%;
     --sidebar-foreground: 0 0% 10%;
     --sidebar-primary: 24 20% 29%;
