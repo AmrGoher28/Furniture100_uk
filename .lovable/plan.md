@@ -1,15 +1,22 @@
 
 
-# Add White Background to Navbar on Hover
+# Fix Navbar Hover Background — Missing CSS Variable
 
-## Change
-In `src/components/Navbar.tsx`, make the navbar background switch to solid white/cream when a category is hovered (mega-menu is open). Currently it uses `bg-background/90 backdrop-blur-sm` always.
+## Problem
+The `--cream` CSS custom property is referenced in the Navbar but never defined in `src/index.css`. This means `bg-[hsl(var(--cream))]` resolves to transparent, making the navbar invisible on hover.
 
-## File: `src/components/Navbar.tsx`
-- Change the `<nav>` element's className to be conditional on `hoveredCategory`:
-  - **No hover**: keep current `bg-background/90 backdrop-blur-sm`
-  - **Hovering** (mega-menu open): switch to `bg-white` (or `bg-[hsl(var(--cream))]`) with a smooth transition
-- Add `transition-colors duration-300` to the nav for a smooth background change
+## Fix
 
-Single file change, ~2 lines modified.
+### `src/index.css`
+Add the missing custom properties to `:root`:
+```css
+--cream: 34 33% 97%;
+--stone: 28 18% 70%;
+--bark: 24 20% 29%;
+--near-black: 0 0% 10%;
+```
+
+These match the brand palette (cream #FAF8F5, stone #C4B5A3, bark #5C4A3A, near-black #1A1A1A) converted to HSL without the `hsl()` wrapper, consistent with how shadcn variables are defined.
+
+No other files need changes.
 
