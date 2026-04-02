@@ -7,11 +7,12 @@ import { Footer } from "@/components/Footer";
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
-      <Hero />
+      <Navbar activeCategory={activeCategory} onCategoryChange={setActiveCategory} onCategoryHover={setHoveredCategory} />
+      <Hero hoveredCategory={hoveredCategory} />
       <ProductGrid activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
 
       {/* Editorial lifestyle image break */}
