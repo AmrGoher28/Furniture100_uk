@@ -3,12 +3,19 @@ import { Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
 import { Loader2 } from "lucide-react";
 
-const CATEGORIES = ["All", "Seating", "Tables", "Storage", "Lighting"];
+const CATEGORIES: Record<string, string[]> = {
+  All: [],
+  Office: ["Desks", "Office Chairs", "Bookshelves"],
+  "Dining Room": ["Dining Tables", "Dining Chairs", "Sideboards"],
+  "Living Room": ["Sofas", "Coffee Tables", "TV Units", "Shelving"],
+  Seating: ["Armchairs", "Accent Chairs", "Benches", "Stools"],
+};
 
 export const ProductGrid = () => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,12 +31,23 @@ export const ProductGrid = () => {
     fetchProducts();
   }, []);
 
-  const filteredProducts = activeCategory === "All"
+  const handleCategoryChange = (cat: string) => {
+    setActiveCategory(cat);
+    setActiveSubCategory(null);
+  };
+
+  const filterTerm = activeSubCategory || (activeCategory !== "All" ? activeCategory : null);
+
+  const filteredProducts = !filterTerm
     ? products
-    : products.filter(p =>
-        p.node.title.toLowerCase().includes(activeCategory.toLowerCase()) ||
-        p.node.description.toLowerCase().includes(activeCategory.toLowerCase())
-      );
+    : products.filter((p) => {
+        const title = p.node.title.toLowerCase();
+        const desc = p.node.description.toLowerCase();
+        const term = filterTerm.toLowerCase();
+        return title.includes(term) || desc.includes(term);
+      });
+
+  const subCategories = CATEGORIES[activeCategory] || [];
 
   return (
     <section id="collection" className="py-24 md:py-32 px-6 md:px-12">
@@ -41,14 +59,15 @@ export const ProductGrid = () => {
           <h2 className="text-4xl md:text-5xl">Crafted for Living</h2>
         </div>
 
-        <div className="flex justify-center gap-6 md:gap-10 mb-16 flex-wrap">
-          {CATEGORIES.map((cat) => (
+        {/* Main categories */}
+        <div className="flex justify-center gap-8 md:gap-12 mb-6 flex-wrap overflow-x-auto">
+          {Object.keys(CATEGORIES).map((cat) => (
             <button
               key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`text-xs tracking-[0.2em] uppercase pb-1 transition-colors ${
+              onClick={() => handleCategoryChange(cat)}
+              className={`text-xs tracking-[0.2em] uppercase pb-2 transition-colors whitespace-nowrap ${
                 activeCategory === cat
-                  ? "text-foreground border-b border-foreground"
+                  ? "text-foreground border-b-2 border-[hsl(var(--bark))]"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -56,6 +75,37 @@ export const ProductGrid = () => {
             </button>
           ))}
         </div>
+
+        {/* Sub-categories */}
+        {subCategories.length > 0 && (
+          <div className="flex justify-center gap-3 md:gap-5 mb-16 flex-wrap overflow-x-auto">
+            <button
+              onClick={() => setActiveSubCategory(null)}
+              className={`text-[11px] tracking-[0.15em] uppercase px-4 py-1.5 rounded-full border transition-colors ${
+                !activeSubCategory
+                  ? "border-[hsl(var(--bark))] text-foreground bg-[hsl(var(--bark)/0.08)]"
+                  : "border-border text-muted-foreground hover:text-foreground hover:border-[hsl(var(--stone))]"
+              }`}
+            >
+              All {activeCategory}
+            </button>
+            {subCategories.map((sub) => (
+              <button
+                key={sub}
+                onClick={() => setActiveSubCategory(sub)}
+                className={`text-[11px] tracking-[0.15em] uppercase px-4 py-1.5 rounded-full border transition-colors whitespace-nowrap ${
+                  activeSubCategory === sub
+                    ? "border-[hsl(var(--bark))] text-foreground bg-[hsl(var(--bark)/0.08)]"
+                    : "border-border text-muted-foreground hover:text-foreground hover:border-[hsl(var(--stone))]"
+                }`}
+              >
+                {sub}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {subCategories.length === 0 && <div className="mb-16" />}
 
         {loading ? (
           <div className="flex justify-center py-24">
