@@ -52,7 +52,7 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
-        <Navbar />
+        <Navbar activeCategory="All" onCategoryChange={() => {}} />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-3xl mb-4">Product Not Found</h1>
