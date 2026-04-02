@@ -11,11 +11,19 @@ const CATEGORIES: Record<string, string[]> = {
   Seating: ["Armchairs", "Accent Chairs", "Benches", "Stools"],
 };
 
-export const ProductGrid = () => {
+interface ProductGridProps {
+  activeCategory: string;
+  onCategoryChange: (cat: string) => void;
+}
+
+export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridProps) => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("All");
   const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null);
+
+  useEffect(() => {
+    setActiveSubCategory(null);
+  }, [activeCategory]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,11 +38,6 @@ export const ProductGrid = () => {
     };
     fetchProducts();
   }, []);
-
-  const handleCategoryChange = (cat: string) => {
-    setActiveCategory(cat);
-    setActiveSubCategory(null);
-  };
 
   const filterTerm = activeSubCategory || (activeCategory !== "All" ? activeCategory : null);
 
@@ -57,23 +60,6 @@ export const ProductGrid = () => {
             The Collection
           </p>
           <h2 className="text-4xl md:text-5xl">Crafted for Living</h2>
-        </div>
-
-        {/* Main categories */}
-        <div className="flex justify-center gap-8 md:gap-12 mb-6 flex-wrap overflow-x-auto">
-          {Object.keys(CATEGORIES).map((cat) => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryChange(cat)}
-              className={`text-xs tracking-[0.2em] uppercase pb-2 transition-colors whitespace-nowrap ${
-                activeCategory === cat
-                  ? "text-foreground border-b-2 border-[hsl(var(--bark))]"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
         </div>
 
         {/* Sub-categories */}
