@@ -1,22 +1,29 @@
 
 
-# Fix Navbar Hover Background — Missing CSS Variable
+# Redesign Navbar Layout — Centered Logo, Search Bar, Account Tab, Dark Categories
 
-## Problem
-The `--cream` CSS custom property is referenced in the Navbar but never defined in `src/index.css`. This means `bg-[hsl(var(--cream))]` resolves to transparent, making the navbar invisible on hover.
+## Changes to `src/components/Navbar.tsx`
 
-## Fix
-
-### `src/index.css`
-Add the missing custom properties to `:root`:
-```css
---cream: 34 33% 97%;
---stone: 28 18% 70%;
---bark: 24 20% 29%;
---near-black: 0 0% 10%;
+### Top Row — 3-column layout
+```text
+[ 🔍 Search bar ]     [ SWIFLIVING ]     [ Account | Cart ]
 ```
 
-These match the brand palette (cream #FAF8F5, stone #C4B5A3, bark #5C4A3A, near-black #1A1A1A) converted to HSL without the `hsl()` wrapper, consistent with how shadcn variables are defined.
+- **Left**: Search input with a search icon (using lucide `Search` icon). Styled minimal — border-bottom only or subtle rounded input matching the luxury aesthetic. Searches products (for now just UI, can wire to Shopify search later).
+- **Center**: SWIFLIVING logo centered using flex justify-center
+- **Right**: Account icon (lucide `User`) + existing CartDrawer. Move "About" link to footer or remove from top row.
 
-No other files need changes.
+### Category Row
+- Change category text color from `text-muted-foreground` to `text-foreground` (black/near-black) so they're more visible
+- Active state keeps the bark underline
+
+### New state
+- `searchQuery` state for the search input
+- `searchOpen` state to toggle search on mobile (optional)
+
+### Account tab
+- For now, renders as a `User` icon button (no auth wired yet — placeholder that can link to a future login page)
+
+## Files Changed
+- `src/components/Navbar.tsx` — restructure top row, add search input, add account icon, darken category text
 
