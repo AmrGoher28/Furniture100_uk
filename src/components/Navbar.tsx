@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Search, User } from "lucide-react";
+import { Search, User, Menu, X, ChevronDown } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
 
 const CATEGORIES: Record<string, string[]> = {
   All: [],
