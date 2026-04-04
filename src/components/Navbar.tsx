@@ -81,16 +81,88 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
     >
       {/* Top row: Search | Logo | Account + Cart */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-20">
-        {/* Left: Search */}
+        {/* Left: Search (desktop) + Hamburger (mobile) */}
         <div className="flex items-center gap-2 flex-1">
-          <Search className="w-4 h-4 text-foreground/60" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search"
-            className="bg-transparent border-none outline-none text-sm font-light tracking-wide text-foreground placeholder:text-foreground/40 w-32 md:w-48"
-          />
+          {/* Mobile hamburger */}
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <button className="md:hidden text-foreground/70 hover:text-foreground transition-colors" aria-label="Menu">
+                <Menu className="w-5 h-5" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-80 bg-[hsl(var(--cream))] p-0 overflow-y-auto">
+              {/* Mobile search */}
+              <div className="flex items-center gap-2 px-6 py-4 border-b border-border/30">
+                <Search className="w-4 h-4 text-foreground/60" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search"
+                  className="bg-transparent border-none outline-none text-sm font-light tracking-wide text-foreground placeholder:text-foreground/40 flex-1"
+                />
+              </div>
+
+              {/* Mobile categories */}
+              <div className="px-6 py-4">
+                <button
+                  onClick={() => { onCategoryChange("All"); setMobileOpen(false); document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" }); }}
+                  className="text-xs tracking-[0.2em] uppercase text-foreground/80 hover:text-foreground py-3 w-full text-left"
+                >
+                  All
+                </button>
+
+                <Accordion type="single" collapsible className="w-full">
+                  {Object.entries(CATEGORIES).filter(([cat]) => cat !== "All").map(([cat, subs]) => (
+                    <AccordionItem key={cat} value={cat} className="border-border/30">
+                      <AccordionTrigger className="text-xs tracking-[0.2em] uppercase text-foreground/80 hover:text-foreground py-3 hover:no-underline">
+                        {cat}
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="flex flex-col gap-2 pl-4 pb-2">
+                          <button
+                            onClick={() => { onCategoryChange(cat); setMobileOpen(false); document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" }); }}
+                            className="text-sm text-foreground/60 hover:text-foreground text-left font-light"
+                          >
+                            All {cat}
+                          </button>
+                          {subs.map((sub) => (
+                            <button
+                              key={sub}
+                              onClick={() => { onCategoryChange(cat); setMobileOpen(false); document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" }); }}
+                              className="text-sm text-foreground/60 hover:text-foreground text-left font-light"
+                            >
+                              {sub}
+                            </button>
+                          ))}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+
+                {/* Mobile account link */}
+                <div className="border-t border-border/30 mt-4 pt-4">
+                  <button className="flex items-center gap-3 text-xs tracking-[0.2em] uppercase text-foreground/80 hover:text-foreground py-2 w-full">
+                    <User className="w-4 h-4" />
+                    Account
+                  </button>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {/* Desktop search */}
+          <div className="hidden md:flex items-center gap-2">
+            <Search className="w-4 h-4 text-foreground/60" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search"
+              className="bg-transparent border-none outline-none text-sm font-light tracking-wide text-foreground placeholder:text-foreground/40 w-48"
+            />
+          </div>
         </div>
 
         {/* Center: Logo */}
