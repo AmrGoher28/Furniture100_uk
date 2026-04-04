@@ -40,6 +40,7 @@ interface NavbarProps {
 export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [mobileOpen, setMobileOpen] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCategoryClick = (cat: string) => {
