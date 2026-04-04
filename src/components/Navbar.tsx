@@ -179,8 +179,8 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
         </div>
       </div>
 
-      {/* Category row */}
-      <div className="border-t border-border/40">
+      {/* Category row (desktop only) */}
+      <div className="hidden md:block border-t border-border/40">
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-center gap-6 md:gap-10 h-12 overflow-x-auto">
           {Object.keys(CATEGORIES).map((cat) => (
             <button
