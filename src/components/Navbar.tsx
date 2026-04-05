@@ -166,8 +166,9 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
         </div>
 
         {/* Center: Logo */}
-        <Link to="/" className="text-2xl tracking-[0.3em] font-medium" style={{ fontFamily: "'Playfair Display', serif" }}>
-          furniture100
+        <Link to="/" className="tracking-[0.2em]" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <span className="text-2xl font-medium italic">furniture</span>
+          <span className="text-sm font-normal text-[hsl(var(--stone))] ml-0.5 align-baseline">100</span>
         </Link>
 
         {/* Right: Account + Cart */}
