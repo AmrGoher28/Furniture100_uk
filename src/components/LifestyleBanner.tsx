@@ -9,7 +9,7 @@ export const LifestyleBanner = () => {
         className="absolute inset-0 w-full h-full object-cover"
         loading="lazy"
       />
-      <div className="absolute inset-0 bg-walnut-dark/45" />
+      
       <div className="relative z-10 text-center px-6 max-w-2xl">
         <h2 className="text-3xl md:text-5xl text-primary-foreground mb-4">
           Furniture That Transforms Your Space
