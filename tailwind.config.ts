@@ -49,6 +49,10 @@ export default {
         },
         gold: "hsl(var(--gold))",
         charcoal: "hsl(var(--charcoal))",
+        walnut: {
+          DEFAULT: "hsl(var(--walnut))",
+          dark: "hsl(var(--walnut-dark))",
+        },
         sale: "hsl(var(--sale))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

@@ -39,11 +39,11 @@ export const BestSellers = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 px-6 md:px-12 bg-background">
+    <section id="best-sellers" className="py-16 md:py-24 px-6 md:px-12 bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl mb-3">Our Best Sellers</h2>
-          <p className="text-muted-foreground">The pieces everyone is talking about</p>
+          <p className="text-muted-foreground font-light">The pieces everyone is talking about</p>
         </div>
 
         {loading ? (
@@ -52,7 +52,7 @@ export const BestSellers = () => {
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-lg text-muted-foreground">No products found</p>
+            <p className="text-lg text-muted-foreground font-light">No products found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
@@ -65,7 +65,7 @@ export const BestSellers = () => {
                   to={`/product/${product.node.handle}`}
                   className="group block"
                 >
-                  <div className="aspect-square bg-secondary overflow-hidden rounded-lg mb-4">
+                  <div className="aspect-square bg-card overflow-hidden rounded-xl mb-4 warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300">
                     {image ? (
                       <img
                         src={image.url}
@@ -79,15 +79,15 @@ export const BestSellers = () => {
                       </div>
                     )}
                   </div>
-                  <h3 className="text-sm font-medium mb-1 group-hover:text-gold transition-colors">
+                  <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {product.node.title}
                   </h3>
-                  <p className="text-base font-semibold mb-3">
+                  <p className="text-base font-medium mb-3">
                     £{parseFloat(price.amount).toFixed(2)}
                   </p>
                   <button
                     onClick={(e) => handleAddToCart(e, product)}
-                    className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
+                    className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
                   >
                     <ShoppingBag className="w-4 h-4" />
                     Add to Basket

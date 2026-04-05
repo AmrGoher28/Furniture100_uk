@@ -9,17 +9,17 @@ export const LifestyleBanner = () => {
         className="absolute inset-0 w-full h-full object-cover"
         loading="lazy"
       />
-      <div className="absolute inset-0 bg-foreground/50" />
+      <div className="absolute inset-0 bg-walnut-dark/45" />
       <div className="relative z-10 text-center px-6 max-w-2xl">
-        <h2 className="text-3xl md:text-5xl text-white mb-4">
+        <h2 className="text-3xl md:text-5xl text-primary-foreground mb-4">
           Furniture That Transforms Your Space
         </h2>
-        <p className="text-white/80 text-lg mb-8">
+        <p className="text-primary-foreground/75 text-lg mb-8 font-light">
           Handpicked pieces for modern living
         </p>
         <Link
           to="/shop"
-          className="inline-block bg-gold text-white px-8 py-3 rounded-md text-sm font-medium tracking-wide hover:opacity-90 transition-opacity"
+          className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-full text-sm font-medium tracking-wide hover:opacity-90 transition-opacity"
         >
           Explore The Collection
         </Link>

@@ -50,28 +50,28 @@ export const Hero = () => {
           }`}
         />
       ))}
-      <div className="absolute inset-0 bg-foreground/45" />
+      <div className="absolute inset-0 bg-walnut-dark/40" />
 
       <div className="relative z-10 text-center max-w-3xl mx-auto px-2">
-        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white mb-4 md:mb-6 leading-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-primary-foreground mb-4 md:mb-6 leading-tight">
           Premium Furniture.<br />Delivered Nationwide.
         </h1>
-        <p className="text-white/80 text-sm sm:text-lg md:text-xl font-light max-w-xl mx-auto mb-8 md:mb-10 leading-relaxed hidden sm:block">
+        <p className="text-primary-foreground/75 text-sm sm:text-lg md:text-xl font-light max-w-xl mx-auto mb-8 md:mb-10 leading-relaxed hidden sm:block">
           Transform your home with our curated collection of premium furniture. Free UK delivery on every order.
         </p>
-        <p className="text-white/80 text-sm font-light max-w-xs mx-auto mb-8 leading-relaxed sm:hidden">
+        <p className="text-primary-foreground/75 text-sm font-light max-w-xs mx-auto mb-8 leading-relaxed sm:hidden">
           Premium furniture with free UK delivery.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             to="/shop"
-            className="bg-primary text-primary-foreground px-8 py-3.5 rounded-md text-sm font-medium tracking-wide hover:opacity-90 transition-opacity"
+            className="bg-primary text-primary-foreground px-8 py-3.5 rounded-full text-sm font-medium tracking-wide hover:opacity-90 transition-opacity"
           >
             Shop Now
           </Link>
           <a
             href="#best-sellers"
-            className="border border-white text-white px-8 py-3.5 rounded-md text-sm font-medium tracking-wide hover:bg-white hover:text-foreground transition-colors"
+            className="border border-primary-foreground/60 text-primary-foreground px-8 py-3.5 rounded-full text-sm font-medium tracking-wide hover:bg-primary-foreground/10 transition-colors"
           >
             View Best Sellers
           </a>
@@ -87,8 +87,8 @@ export const Hero = () => {
             aria-label={`Go to slide ${i + 1}`}
             className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
               i === current
-                ? "bg-[#C9A84C] scale-110"
-                : "bg-white/50 hover:bg-white/80"
+                ? "bg-gold scale-110"
+                : "bg-primary-foreground/50 hover:bg-primary-foreground/80"
             }`}
           />
         ))}

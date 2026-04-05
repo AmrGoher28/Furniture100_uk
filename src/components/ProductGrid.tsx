@@ -56,7 +56,7 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
     <section id="collection" className="py-24 md:py-32 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4">
+          <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4 font-light">
             The Collection
           </p>
           <h2 className="text-4xl md:text-5xl">Crafted for Living</h2>
@@ -69,8 +69,8 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
               onClick={() => setActiveSubCategory(null)}
               className={`text-[11px] tracking-[0.15em] uppercase px-4 py-1.5 rounded-full border transition-colors ${
                 !activeSubCategory
-                  ? "border-[hsl(var(--bark))] text-foreground bg-[hsl(var(--bark)/0.08)]"
-                  : "border-border text-muted-foreground hover:text-foreground hover:border-[hsl(var(--stone))]"
+                  ? "border-primary text-foreground bg-primary/10"
+                  : "border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
               }`}
             >
               All {activeCategory}
@@ -81,8 +81,8 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
                 onClick={() => setActiveSubCategory(sub)}
                 className={`text-[11px] tracking-[0.15em] uppercase px-4 py-1.5 rounded-full border transition-colors whitespace-nowrap ${
                   activeSubCategory === sub
-                    ? "border-[hsl(var(--bark))] text-foreground bg-[hsl(var(--bark)/0.08)]"
-                    : "border-border text-muted-foreground hover:text-foreground hover:border-[hsl(var(--stone))]"
+                    ? "border-primary text-foreground bg-primary/10"
+                    : "border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
                 }`}
               >
                 {sub}
@@ -115,7 +115,7 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
                   to={`/product/${product.node.handle}`}
                   className="group block"
                 >
-                  <div className="aspect-[4/5] bg-muted/50 overflow-hidden mb-5">
+                  <div className="aspect-[4/5] bg-card overflow-hidden mb-5 rounded-xl warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300">
                     {image ? (
                       <img
                         src={image.url}
@@ -125,7 +125,7 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                        <span className="text-xs tracking-[0.2em] uppercase">No image</span>
+                        <span className="text-xs tracking-[0.2em] uppercase font-light">No image</span>
                       </div>
                     )}
                   </div>
