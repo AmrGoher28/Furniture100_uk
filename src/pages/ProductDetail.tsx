@@ -4,6 +4,7 @@ import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
 import { Loader2, ArrowLeft, Truck, RotateCcw, ShieldCheck, Phone, Heart } from "lucide-react";
+import MakeOfferModal from "@/components/MakeOfferModal";
 import { toast } from "sonner";
 
 interface ProductNode {
@@ -194,10 +195,20 @@ const ProductDetail = () => {
                 )}
               </button>
 
-              <button className="hidden md:flex w-full items-center justify-center gap-2 border border-border py-3 rounded-md text-sm text-muted-foreground hover:text-foreground hover:border-foreground transition-colors mb-8">
-                <Heart className="w-4 h-4" />
-                Add to Wishlist
-              </button>
+              <div className="hidden md:flex flex-col gap-2 mb-8">
+                <MakeOfferModal
+                  productTitle={product.title}
+                  productHandle={product.handle}
+                  productImage={images[0]?.node.url}
+                  variantId={variant?.id}
+                  variantTitle={variant?.title}
+                  originalPrice={price}
+                />
+                <button className="w-full flex items-center justify-center gap-2 border border-border py-3 rounded-md text-sm text-muted-foreground hover:text-foreground hover:border-foreground transition-colors">
+                  <Heart className="w-4 h-4" />
+                  Add to Wishlist
+                </button>
+              </div>
 
               {/* Trust icons */}
               <div className="grid grid-cols-2 gap-3 mb-8">
