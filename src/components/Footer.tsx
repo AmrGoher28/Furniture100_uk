@@ -23,7 +23,7 @@ export const Footer = () => {
           <div>
             <p className="text-xs tracking-[0.2em] uppercase mb-4">Contact</p>
             <div className="space-y-3">
-              <p className="text-sm text-muted-foreground font-light">hello@swifliving.com</p>
+              <p className="text-sm text-muted-foreground font-light">hello@furniture100.com</p>
               <p className="text-sm text-muted-foreground font-light">London, United Kingdom</p>
             </div>
           </div>
