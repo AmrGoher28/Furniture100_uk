@@ -112,7 +112,7 @@ export const Navbar = () => {
             <SheetContent side="left" className="w-80 bg-background p-0 overflow-y-auto">
               <div className="px-6 py-4 border-b border-border">
                 <Link to="/" onClick={() => setMobileOpen(false)} className="tracking-[0.15em]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  <span className="text-xl font-medium text-foreground">Furniture</span>
+                  <span className="text-xl font-medium text-foreground">FURNITURE</span>
                   <span className="text-xs font-normal text-gold ml-0.5">100</span>
                 </Link>
               </div>
