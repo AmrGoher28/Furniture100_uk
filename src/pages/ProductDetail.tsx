@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { Layout } from "@/components/Layout";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
@@ -51,9 +50,8 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col bg-background">
-        <Navbar activeCategory="All" onCategoryChange={() => {}} />
-        <div className="flex-1 flex items-center justify-center">
+      <Layout>
+        <div className="flex-1 flex items-center justify-center py-24">
           <div className="text-center">
             <h1 className="text-3xl mb-4">Product Not Found</h1>
             <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors underline">
@@ -61,7 +59,7 @@ const ProductDetail = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
@@ -82,9 +80,8 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Navbar activeCategory="All" onCategoryChange={() => {}} />
-      <main className="flex-1 pt-28 pb-24 px-6 md:px-12">
+    <Layout>
+      <main className="flex-1 py-12 md:py-16 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <Link to="/#collection" className="inline-flex items-center gap-2 text-xs tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors mb-10">
             <ArrowLeft className="h-3.5 w-3.5" />
@@ -176,8 +173,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </main>
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

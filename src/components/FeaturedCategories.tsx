@@ -1,0 +1,40 @@
+import { Link } from "react-router-dom";
+import { CATEGORIES } from "@/lib/categories";
+
+const FEATURED = CATEGORIES.slice(0, 5);
+
+export const FeaturedCategories = () => {
+  return (
+    <section className="py-16 md:py-24 px-6 md:px-12">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl mb-3">Shop By Category</h2>
+          <p className="text-muted-foreground">Find the perfect piece for every room</p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+          {FEATURED.map((cat) => (
+            <Link
+              key={cat.slug}
+              to={`/category/${cat.slug}`}
+              className="group relative aspect-[3/4] overflow-hidden rounded-lg"
+            >
+              <img
+                src={cat.image}
+                alt={cat.name}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-foreground/30 group-hover:bg-foreground/40 transition-colors duration-300" />
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <p className="text-white text-sm md:text-base font-medium tracking-wide">
+                  {cat.name}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
