@@ -50,9 +50,8 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col bg-background">
-        <Navbar activeCategory="All" onCategoryChange={() => {}} />
-        <div className="flex-1 flex items-center justify-center">
+      <Layout>
+        <div className="flex-1 flex items-center justify-center py-24">
           <div className="text-center">
             <h1 className="text-3xl mb-4">Product Not Found</h1>
             <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors underline">
@@ -60,7 +59,7 @@ const ProductDetail = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
