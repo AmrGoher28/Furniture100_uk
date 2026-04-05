@@ -13,7 +13,7 @@ export const Layout = ({ children, heroPage = false }: LayoutProps) => {
     <div className="min-h-screen flex flex-col bg-background">
       <AnnouncementBar />
       <Navbar />
-      <main className={`flex-1 ${heroPage ? "" : "pt-16 md:pt-[72px]"}`}>{children}</main>
+      <main className={`flex-1 ${heroPage ? "pt-10" : "pt-[104px] md:pt-[112px]"}`}>{children}</main>
       <Footer />
       <LiveChatWidget />
     </div>
