@@ -1,71 +1,33 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { Search, User, Menu, X, ChevronDown } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Search, User, Heart, Menu, ShoppingBag, Phone, ChevronDown, X } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
+import { CATEGORIES } from "@/lib/categories";
 
-const CATEGORIES: Record<string, string[]> = {
-  All: [],
-  Office: ["Desks", "Office Chairs", "Bookshelves"],
-  "Dining Room": ["Dining Tables", "Dining Chairs", "Sideboards"],
-  "Living Room": ["Sofas", "Coffee Tables", "TV Units", "Shelving"],
-  Seating: ["Armchairs", "Accent Chairs", "Benches", "Stools"],
-};
+const NAV_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Shop", href: "/shop" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
 
-const PROMO_IMAGES: Record<string, Array<{ src: string; label: string }>> = {
-  Office: [
-    { src: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800&q=80", label: "Desk Setups" },
-    { src: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80", label: "Bookshelves" },
-  ],
-  "Dining Room": [
-    { src: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&q=80", label: "Dining Sets" },
-    { src: "https://images.unsplash.com/photo-1615876234886-fd9a39fda97f?w=800&q=80", label: "Dining Chairs" },
-  ],
-  "Living Room": [
-    { src: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80", label: "Sofas" },
-    { src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80", label: "Coffee Tables" },
-  ],
-  Seating: [
-    { src: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80", label: "Armchairs" },
-    { src: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=800&q=80", label: "Accent Chairs" },
-  ],
-};
-
-interface NavbarProps {
-  activeCategory: string;
-  onCategoryChange: (cat: string) => void;
-}
-
-export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+export const Navbar = () => {
+  const [megaOpen, setMegaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigate = useNavigate();
 
-  const handleCategoryClick = (cat: string) => {
-    onCategoryChange(cat);
-    setHoveredCategory(null);
-    document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleSubClick = (mainCat: string, _sub: string) => {
-    onCategoryChange(mainCat);
-    setHoveredCategory(null);
-    document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleMouseEnter = (cat: string) => {
+  const handleMouseEnterCategories = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    if (CATEGORIES[cat]?.length) {
-      setHoveredCategory(cat);
-    }
+    setMegaOpen(true);
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setHoveredCategory(null);
-    }, 150);
+    timeoutRef.current = setTimeout(() => setMegaOpen(false), 150);
   };
 
   const handleDropdownEnter = () => {
@@ -73,16 +35,59 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        hoveredCategory ? "bg-[hsl(var(--cream))]" : "bg-background/90 backdrop-blur-sm"
-      }`}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* Top row: Search | Logo | Account + Cart */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-20">
-        {/* Left: Search (desktop) + Hamburger (mobile) */}
-        <div className="flex items-center gap-2 flex-1">
+    <nav className="sticky top-0 z-50 bg-background border-b border-border" onMouseLeave={handleMouseLeave}>
+      {/* Top bar with phone */}
+      <div className="hidden md:block border-b border-border/50">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-end py-1.5">
+          <a href="tel:+441234567890" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <Phone className="w-3 h-3" />
+            01onal 234 567 890
+          </a>
+        </div>
+      </div>
+
+      {/* Main nav row */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-[72px]">
+        {/* Left: Logo */}
+        <Link to="/" className="tracking-[0.15em] flex items-baseline shrink-0" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <span className="text-xl md:text-2xl font-medium text-foreground">Furniture</span>
+          <span className="text-xs md:text-sm font-normal text-gold ml-0.5">100</span>
+        </Link>
+
+        {/* Centre: Navigation (desktop) */}
+        <div className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.label}
+              to={link.href}
+              className="text-sm text-foreground/80 hover:text-foreground transition-colors font-medium"
+            >
+              {link.label}
+            </Link>
+          ))}
+          <button
+            onMouseEnter={handleMouseEnterCategories}
+            onClick={() => setMegaOpen(!megaOpen)}
+            className="flex items-center gap-1 text-sm text-foreground/80 hover:text-foreground transition-colors font-medium"
+          >
+            Categories
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
+          </button>
+        </div>
+
+        {/* Right: Icons */}
+        <div className="flex items-center gap-4">
+          <button onClick={() => setSearchOpen(!searchOpen)} className="text-foreground/70 hover:text-foreground transition-colors" aria-label="Search">
+            <Search className="w-5 h-5" />
+          </button>
+          <button className="hidden md:block text-foreground/70 hover:text-foreground transition-colors" aria-label="Wishlist">
+            <Heart className="w-5 h-5" />
+          </button>
+          <button className="hidden md:block text-foreground/70 hover:text-foreground transition-colors" aria-label="Account">
+            <User className="w-5 h-5" />
+          </button>
+          <CartDrawer />
+
           {/* Mobile hamburger */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
@@ -90,50 +95,50 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
                 <Menu className="w-5 h-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-80 bg-[hsl(var(--cream))] p-0 overflow-y-auto">
-              {/* Mobile search */}
-              <div className="flex items-center gap-2 px-6 py-4 border-b border-border/30">
-                <Search className="w-4 h-4 text-foreground/60" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search"
-                  className="bg-transparent border-none outline-none text-sm font-light tracking-wide text-foreground placeholder:text-foreground/40 flex-1"
-                />
+            <SheetContent side="left" className="w-80 bg-background p-0 overflow-y-auto">
+              <div className="px-6 py-4 border-b border-border">
+                <Link to="/" onClick={() => setMobileOpen(false)} className="tracking-[0.15em]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="text-xl font-medium text-foreground">Furniture</span>
+                  <span className="text-xs font-normal text-gold ml-0.5">100</span>
+                </Link>
               </div>
 
-              {/* Mobile categories */}
               <div className="px-6 py-4">
-                <button
-                  onClick={() => { onCategoryChange("All"); setMobileOpen(false); document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" }); }}
-                  className="text-xs tracking-[0.2em] uppercase text-foreground/80 hover:text-foreground py-3 w-full text-left"
-                >
-                  All
-                </button>
+                {NAV_LINKS.map((link) => (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block py-3 text-sm font-medium text-foreground/80 hover:text-foreground border-b border-border/30"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
 
-                <Accordion type="single" collapsible className="w-full">
-                  {Object.entries(CATEGORIES).filter(([cat]) => cat !== "All").map(([cat, subs]) => (
-                    <AccordionItem key={cat} value={cat} className="border-border/30">
-                      <AccordionTrigger className="text-xs tracking-[0.2em] uppercase text-foreground/80 hover:text-foreground py-3 hover:no-underline">
-                        {cat}
+                <Accordion type="single" collapsible className="w-full mt-2">
+                  {CATEGORIES.map((cat) => (
+                    <AccordionItem key={cat.slug} value={cat.slug} className="border-border/30">
+                      <AccordionTrigger className="text-sm font-medium text-foreground/80 hover:text-foreground py-3 hover:no-underline">
+                        {cat.name}
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="flex flex-col gap-2 pl-4 pb-2">
-                          <button
-                            onClick={() => { onCategoryChange(cat); setMobileOpen(false); document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" }); }}
-                            className="text-sm text-foreground/60 hover:text-foreground text-left font-light"
+                          <Link
+                            to={`/category/${cat.slug}`}
+                            onClick={() => setMobileOpen(false)}
+                            className="text-sm text-muted-foreground hover:text-foreground font-light"
                           >
-                            All {cat}
-                          </button>
-                          {subs.map((sub) => (
-                            <button
-                              key={sub}
-                              onClick={() => { onCategoryChange(cat); setMobileOpen(false); document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" }); }}
-                              className="text-sm text-foreground/60 hover:text-foreground text-left font-light"
+                            All {cat.name}
+                          </Link>
+                          {cat.subcategories.map((sub) => (
+                            <Link
+                              key={sub.slug}
+                              to={`/category/${cat.slug}`}
+                              onClick={() => setMobileOpen(false)}
+                              className="text-sm text-muted-foreground hover:text-foreground font-light"
                             >
-                              {sub}
-                            </button>
+                              {sub.name}
+                            </Link>
                           ))}
                         </div>
                       </AccordionContent>
@@ -141,122 +146,75 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
                   ))}
                 </Accordion>
 
-                {/* Mobile account link */}
-                <div className="border-t border-border/30 mt-4 pt-4">
-                  <button className="flex items-center gap-3 text-xs tracking-[0.2em] uppercase text-foreground/80 hover:text-foreground py-2 w-full">
-                    <User className="w-4 h-4" />
-                    Account
+                <div className="border-t border-border/30 mt-4 pt-4 flex flex-col gap-3">
+                  <button className="flex items-center gap-3 text-sm text-foreground/80 hover:text-foreground py-2">
+                    <User className="w-4 h-4" /> Account
                   </button>
+                  <button className="flex items-center gap-3 text-sm text-foreground/80 hover:text-foreground py-2">
+                    <Heart className="w-4 h-4" /> Wishlist
+                  </button>
+                  <a href="tel:+441234567890" className="flex items-center gap-3 text-sm text-foreground/80 hover:text-foreground py-2">
+                    <Phone className="w-4 h-4" /> 01234 567 890
+                  </a>
                 </div>
               </div>
             </SheetContent>
           </Sheet>
+        </div>
+      </div>
 
-          {/* Desktop search */}
-          <div className="hidden md:flex items-center gap-2">
-            <Search className="w-4 h-4 text-foreground/60" />
+      {/* Search bar dropdown */}
+      {searchOpen && (
+        <div className="border-t border-border px-6 md:px-12 py-3 bg-background animate-fade-in">
+          <div className="max-w-xl mx-auto flex items-center gap-3">
+            <Search className="w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search"
-              className="bg-transparent border-none outline-none text-sm font-light tracking-wide text-foreground placeholder:text-foreground/40 w-48"
+              placeholder="Search for furniture..."
+              autoFocus
+              className="flex-1 bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground"
             />
+            <button onClick={() => { setSearchOpen(false); setSearchQuery(""); }} className="text-muted-foreground hover:text-foreground">
+              <X className="w-4 h-4" />
+            </button>
           </div>
         </div>
+      )}
 
-        {/* Center: Logo */}
-        <Link to="/" className="tracking-[0.2em]" style={{ fontFamily: "'Playfair Display', serif" }}>
-          <span className="text-2xl font-medium">Furniture</span>
-          <span className="text-sm font-normal text-[hsl(32,60%,50%)] ml-0.5 align-baseline">100</span>
-        </Link>
-
-        {/* Right: Account + Cart */}
-        <div className="flex items-center gap-5 flex-1 justify-end">
-          <button className="text-foreground/70 hover:text-foreground transition-colors" aria-label="Account">
-            <User className="w-5 h-5" />
-          </button>
-          <CartDrawer />
-        </div>
-      </div>
-
-      {/* Category row (desktop only) */}
-      <div className="hidden md:block border-t border-border/40">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-center gap-6 md:gap-10 h-12 overflow-x-auto">
-          {Object.keys(CATEGORIES).map((cat) => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryClick(cat)}
-              onMouseEnter={() => handleMouseEnter(cat)}
-              className={`text-xs tracking-[0.2em] uppercase pb-0.5 transition-colors whitespace-nowrap ${
-                activeCategory === cat
-                  ? "text-foreground border-b border-[hsl(var(--bark))]"
-                  : "text-foreground/80 hover:text-foreground"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Mega-menu dropdown */}
-      {hoveredCategory && CATEGORIES[hoveredCategory]?.length > 0 && (
+      {/* Mega menu dropdown */}
+      {megaOpen && (
         <div
-          className="absolute left-0 right-0 bg-[hsl(var(--cream))] border-t border-border/30 shadow-lg animate-fade-in"
+          className="absolute left-0 right-0 bg-background border-t border-border shadow-lg animate-fade-in"
           onMouseEnter={handleDropdownEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
-            {/* Left: Sub-categories */}
-            <div className="md:col-span-1">
-              <p className="text-xs tracking-[0.2em] uppercase text-[hsl(var(--bark))] mb-4 font-medium">
-                {hoveredCategory}
-              </p>
-              <div className="w-8 h-px bg-[hsl(var(--stone))] mb-5" />
-              <ul className="space-y-3">
-                {CATEGORIES[hoveredCategory].map((sub) => (
-                  <li key={sub}>
-                    <button
-                      onClick={() => handleSubClick(hoveredCategory, sub)}
-                      className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-200 font-light"
-                    >
-                      {sub}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => handleCategoryClick(hoveredCategory)}
-                className="mt-6 text-xs tracking-[0.15em] uppercase text-[hsl(var(--bark))] hover:text-foreground transition-colors"
-              >
-                Shop {hoveredCategory} →
-              </button>
-            </div>
-
-            {/* Right: Promo images */}
-            {PROMO_IMAGES[hoveredCategory] && (
-              <div className="md:col-span-2 grid grid-cols-2 gap-4">
-                {PROMO_IMAGES[hoveredCategory].map((promo) => (
-                  <button
-                    key={promo.label}
-                    onClick={() => handleCategoryClick(hoveredCategory)}
-                    className="group relative aspect-[4/3] overflow-hidden"
-                  >
-                    <img
-                      src={promo.src}
-                      alt={promo.label}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-[hsl(var(--near-black)/0.25)] group-hover:bg-[hsl(var(--near-black)/0.35)] transition-colors duration-300" />
-                    <div className="absolute bottom-4 left-4">
-                      <p className="text-[10px] tracking-[0.3em] uppercase text-white/70 mb-1">Explore</p>
-                      <p className="text-sm tracking-[0.1em] text-white font-medium">{promo.label}</p>
-                    </div>
-                  </button>
-                ))}
+          <div className="max-w-7xl mx-auto px-6 md:px-12 py-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8">
+            {CATEGORIES.map((cat) => (
+              <div key={cat.slug}>
+                <Link
+                  to={`/category/${cat.slug}`}
+                  onClick={() => setMegaOpen(false)}
+                  className="text-sm font-semibold text-foreground hover:text-gold transition-colors mb-3 block"
+                >
+                  {cat.name}
+                </Link>
+                <ul className="space-y-1.5">
+                  {cat.subcategories.map((sub) => (
+                    <li key={sub.slug}>
+                      <Link
+                        to={`/category/${cat.slug}`}
+                        onClick={() => setMegaOpen(false)}
+                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {sub.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            )}
+            ))}
           </div>
         </div>
       )}
