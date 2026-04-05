@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
-import { Loader2, ArrowLeft, Truck, RotateCcw, ShieldCheck, Phone, Heart } from "lucide-react";
+import { Loader2, ArrowLeft, Truck, RotateCcw, ShieldCheck, Phone, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import MakeOfferModal from "@/components/MakeOfferModal";
 import { toast } from "sonner";
 
@@ -109,7 +109,7 @@ const ProductDetail = () => {
           <div className="grid md:grid-cols-2 gap-8 md:gap-16">
             {/* Images */}
             <div>
-              <div className="aspect-square bg-secondary overflow-hidden rounded-lg mb-3">
+              <div className="relative aspect-square bg-secondary overflow-hidden rounded-lg mb-3 group">
                 {images[selectedImage] ? (
                   <img
                     src={images[selectedImage].node.url}
@@ -119,14 +119,44 @@ const ProductDetail = () => {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
                 )}
+                {/* Mobile swipe arrows */}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 text-foreground shadow-sm transition-opacity md:opacity-0 md:group-hover:opacity-100"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 text-foreground shadow-sm transition-opacity md:opacity-0 md:group-hover:opacity-100"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                    {/* Dot indicators */}
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                      {images.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setSelectedImage(idx)}
+                          className={`w-2 h-2 rounded-full transition-colors ${
+                            idx === selectedImage ? "bg-foreground" : "bg-foreground/30"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
+              {/* Thumbnails — desktop only */}
               {images.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto">
+                <div className="hidden md:flex gap-2 overflow-x-auto">
                   {images.map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`w-16 h-16 md:w-20 md:h-20 bg-secondary overflow-hidden rounded-md border-2 transition-colors shrink-0 ${
+                      className={`w-20 h-20 bg-secondary overflow-hidden rounded-md border-2 transition-colors shrink-0 ${
                         idx === selectedImage ? "border-gold" : "border-transparent hover:border-border"
                       }`}
                     >
@@ -228,26 +258,30 @@ const ProductDetail = () => {
         </div>
       </main>
 
-      {/* Mobile sticky Add to Basket */}
+      {/* Mobile sticky: Buy Now + Make Offer */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border p-4 md:hidden">
         <div className="flex items-center gap-3">
-          <div className="flex-1">
-            <p className="text-sm font-medium truncate">{product.title}</p>
-            <p className="text-base font-semibold">£{price.toFixed(2)}</p>
-          </div>
           <button
             onClick={handleAddToCart}
             disabled={isLoading || !variant?.availableForSale}
-            className="bg-primary text-primary-foreground px-6 py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
+            className="flex-1 bg-primary text-primary-foreground py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader2 className="h-4 w-4 animate-spin mx-auto" />
             ) : !variant?.availableForSale ? (
               "Sold Out"
             ) : (
-              "Add to Basket"
+              "Buy it Now"
             )}
           </button>
+          <MakeOfferModal
+            productTitle={product.title}
+            productHandle={product.handle}
+            productImage={images[0]?.node.url}
+            variantId={variant?.id}
+            variantTitle={variant?.title}
+            originalPrice={price}
+          />
         </div>
       </div>
     </Layout>
