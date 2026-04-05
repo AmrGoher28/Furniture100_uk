@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="grid md:grid-cols-3 gap-12 md:gap-8">
           <div>
             <Link to="/" className="text-xl tracking-[0.3em]" style={{ fontFamily: "'Playfair Display', serif" }}>
-              SWIFLIVING
+              furniture100
             </Link>
             <p className="text-sm text-muted-foreground font-light mt-4 leading-relaxed max-w-xs">
               Artisan-crafted furniture for those who value beauty, quality, and quiet confidence.
