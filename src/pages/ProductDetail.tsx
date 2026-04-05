@@ -80,9 +80,8 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Navbar activeCategory="All" onCategoryChange={() => {}} />
-      <main className="flex-1 pt-28 pb-24 px-6 md:px-12">
+    <Layout>
+      <main className="flex-1 py-12 md:py-16 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <Link to="/#collection" className="inline-flex items-center gap-2 text-xs tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors mb-10">
             <ArrowLeft className="h-3.5 w-3.5" />
