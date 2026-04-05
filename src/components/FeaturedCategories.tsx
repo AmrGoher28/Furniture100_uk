@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { CATEGORIES } from "@/lib/categories";
 
-const FEATURED = CATEGORIES.slice(0, 5);
+const FEATURED = [
+  CATEGORIES[0], // Lounge Chairs
+  CATEGORIES[1], // Sofas
+  CATEGORIES[4], // Mirrors (middle)
+  CATEGORIES[2], // Office Chairs
+  CATEGORIES[3], // Dining
+];
 
 export const FeaturedCategories = () => {
   return (
