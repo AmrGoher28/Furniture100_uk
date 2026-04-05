@@ -258,13 +258,32 @@ const ProductDetail = () => {
         </div>
       </main>
 
-      {/* Mobile sticky Add to Basket */}
+      {/* Mobile sticky: Buy Now + Make Offer */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border p-4 md:hidden">
         <div className="flex items-center gap-3">
-          <div className="flex-1">
-            <p className="text-sm font-medium truncate">{product.title}</p>
-            <p className="text-base font-semibold">£{price.toFixed(2)}</p>
-          </div>
+          <button
+            onClick={handleAddToCart}
+            disabled={isLoading || !variant?.availableForSale}
+            className="flex-1 bg-primary text-primary-foreground py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin mx-auto" />
+            ) : !variant?.availableForSale ? (
+              "Sold Out"
+            ) : (
+              "Buy it Now"
+            )}
+          </button>
+          <MakeOfferModal
+            productTitle={product.title}
+            productHandle={product.handle}
+            productImage={images[0]?.node.url}
+            variantId={variant?.id}
+            variantTitle={variant?.title}
+            originalPrice={price}
+          />
+        </div>
+      </div>
           <button
             onClick={handleAddToCart}
             disabled={isLoading || !variant?.availableForSale}
