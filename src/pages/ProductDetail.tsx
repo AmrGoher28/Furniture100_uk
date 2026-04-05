@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
-import { Loader2, ArrowLeft, Truck, RotateCcw, ShieldCheck, Phone, Heart } from "lucide-react";
+import { Loader2, ArrowLeft, Truck, RotateCcw, ShieldCheck, Phone, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 
 interface ProductNode {
@@ -77,7 +77,6 @@ const ProductDetail = () => {
   const variant = product.variants.edges[selectedVariantIdx]?.node;
   const images = product.images.edges;
   const price = parseFloat(variant?.price.amount || "0");
-  const klarnaMonthly = (price / 3).toFixed(2);
 
   const handleAddToCart = async () => {
     if (!variant) return;
@@ -91,6 +90,9 @@ const ProductDetail = () => {
     });
     toast.success("Added to basket", { position: "top-center" });
   };
+
+  const prevImage = () => setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  const nextImage = () => setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
 
   return (
     <Layout>
@@ -108,7 +110,7 @@ const ProductDetail = () => {
           <div className="grid md:grid-cols-2 gap-8 md:gap-16">
             {/* Images */}
             <div>
-              <div className="aspect-square bg-secondary overflow-hidden rounded-lg mb-3">
+              <div className="relative aspect-square bg-secondary overflow-hidden rounded-lg mb-3 group">
                 {images[selectedImage] ? (
                   <img
                     src={images[selectedImage].node.url}
@@ -117,6 +119,34 @@ const ProductDetail = () => {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
+                )}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center text-foreground opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 hover:bg-background"
+                      aria-label="Previous image"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center text-foreground opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 hover:bg-background"
+                      aria-label="Next image"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                      {images.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setSelectedImage(idx)}
+                          className={`w-2 h-2 rounded-full transition-colors ${idx === selectedImage ? "bg-foreground" : "bg-foreground/30"}`}
+                          aria-label={`View image ${idx + 1}`}
+                        />
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
               {images.length > 1 && (
@@ -139,11 +169,8 @@ const ProductDetail = () => {
             {/* Details */}
             <div>
               <h1 className="text-2xl md:text-4xl mb-3">{product.title}</h1>
-              <p className="text-2xl font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <p className="text-2xl font-semibold mb-6" style={{ fontFamily: "'Inter', sans-serif" }}>
                 £{price.toFixed(2)}
-              </p>
-              <p className="text-xs text-muted-foreground mb-6">
-                From £{klarnaMonthly}/month with Klarna. <span className="text-gold cursor-pointer">Learn more</span>
               </p>
 
               <p className="text-muted-foreground leading-relaxed mb-8">
@@ -179,11 +206,11 @@ const ProductDetail = () => {
                 );
               })}
 
-              {/* Add to basket — hidden on mobile (sticky version below) */}
+              {/* Add to basket — visible on all screen sizes */}
               <button
                 onClick={handleAddToCart}
                 disabled={isLoading || !variant?.availableForSale}
-                className="hidden md:flex w-full items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 mb-3"
+                className="flex w-full items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 mb-3"
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -194,7 +221,7 @@ const ProductDetail = () => {
                 )}
               </button>
 
-              <button className="hidden md:flex w-full items-center justify-center gap-2 border border-border py-3 rounded-md text-sm text-muted-foreground hover:text-foreground hover:border-foreground transition-colors mb-8">
+              <button className="flex w-full items-center justify-center gap-2 border border-border py-3 rounded-md text-sm text-muted-foreground hover:text-foreground hover:border-foreground transition-colors mb-8">
                 <Heart className="w-4 h-4" />
                 Add to Wishlist
               </button>
