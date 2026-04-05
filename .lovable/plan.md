@@ -1,170 +1,103 @@
 
 
-# Premium Furniture100 Ecommerce Rebuild
+# Premium Visual Overhaul — Furniture100
 
-This is a major overhaul — transforming the current minimal furniture site into a full premium UK ecommerce experience. The existing Shopify integration, cart system, and core infrastructure stay intact. Everything else gets rebuilt or heavily expanded.
-
-Given the scale, this will be implemented in **3 phases** across multiple messages.
+This is a comprehensive visual refinement across the entire site covering typography, colors, spacing, hero, product cards, navigation, footer, and trust signals. All 8 points addressed in one pass.
 
 ---
 
-## Phase 1: Foundation — Brand, Layout, Homepage
+## 1. Typography & Spacing
 
-### Colour & Typography Overhaul
-**`src/index.css`** — Replace the warm cream/bark palette with the new brand system:
-- Background: `#FFFFFF` / `#F9F9F7`
-- Primary text: `#1A1A1A`
-- Accent/gold: `#C9A84C`
-- Sale red: `#C0392B`
-- Keep Playfair Display + Inter, adjust weights
+**`src/index.css`**
+- Keep Playfair Display for headings, Inter for body (already set)
+- Set body `line-height: 1.6` and `font-weight: 300`
+- Add a utility for generous section spacing
 
-### New Categories Data
-**`src/lib/categories.ts`** (new) — Central category/subcategory map used by navbar, category pages, and filters:
-- Lounge Chairs (7 subs), Sofas (4), Office Chairs (4), Dining (2), Mirrors (3), Lighting (2), Accessories (2)
+**All section components** — increase vertical padding from `py-16 md:py-24` to `py-20 md:py-28` across: FeaturedCategories, BestSellers, WhyChooseUs, CustomerReviews, SocialFeed, Newsletter, LifestyleBanner
 
-### Announcement Bar
-**`src/components/AnnouncementBar.tsx`** (new) — Dark charcoal bar above header:
-- "Free UK Delivery on All Orders | 30 Day Returns | Rated Excellent"
+## 2. Hero Section — Left-aligned, commanding
 
-### Navbar Redesign
-**`src/components/Navbar.tsx`** — Complete restructure:
-- Logo left (Furniture100 in Playfair Display with gold "100")
-- Centre nav: Home, Shop, Categories (dropdown), About, Contact
-- Right: Search icon, Wishlist (heart) icon, Basket icon, phone number
-- Mega-menu for Categories with all subcategories
-- Mobile hamburger with accordion categories
+**`src/components/Hero.tsx`**
+- Left-align all text (`text-left`, positioned left within a 2-column or max-w layout)
+- Larger heading: `text-5xl md:text-7xl lg:text-8xl`
+- Reduce subtitle text, keep it short and understated
+- Single CTA button — solid muted tone (charcoal/dark with subtle border), remove the secondary "View Best Sellers" button
+- Stronger dark gradient overlay (left-to-right gradient for left-aligned text readability)
 
-### Hero Section
-**`src/components/Hero.tsx`** — Redesign:
-- Full-width lifestyle image background
-- "Premium Furniture. Delivered Nationwide." heading
-- Subheading about curated collection + free UK delivery
-- Two CTAs: "Shop Now" (dark filled) + "View Best Sellers" (outlined)
+## 3. Colour Palette
 
-### Trust Bar
-**`src/components/TrustBar.tsx`** (new) — 5 icons row:
-- Free UK Delivery, 30 Day Returns, Rated Excellent, Secure Checkout, UK Based Support
+**`src/index.css`** — update CSS variables:
+- `--background`: warm off-white `40 33% 98%` (≈ #FAF8F5) instead of current value
+- `--foreground`: deep charcoal `0 0% 17%` (≈ #2C2C2C) instead of pure near-black
+- `--secondary`: warmer warm-grey `40 10% 95%`
+- Keep gold accent as-is (already warm/muted)
+- Remove any saturated/neon colors (none currently present, just confirm)
+- `--card`: warm white to match background feel
 
-### Featured Categories Section
-**`src/components/FeaturedCategories.tsx`** (new):
-- "Shop By Category" heading
-- Large image tiles grid with category name overlay + hover effect
-- Links to category pages
+## 4. Product Cards — Minimal, elegant
 
-### Best Sellers Section
-**`src/components/BestSellers.tsx`** (new):
-- "Our Best Sellers" with subtitle
-- 4 product cards from Shopify with image, name, price, star rating placeholder, Add to Basket
+**`src/components/BestSellers.tsx`** (and any product grid)
+- Change aspect ratio from `aspect-square` to `aspect-[4/5]`
+- Remove rounded-lg borders, use `rounded-sm` or none
+- Remove the "Add to Basket" button from card face — show only product name and price
+- Add subtle hover: image scales to 1.03, card gets light shadow elevation
+- Generous padding below image for text
+- Clean sans-serif font for product name (already Inter)
 
-### Lifestyle Banner
-**`src/components/LifestyleBanner.tsx`** (new):
-- Full-width image, dark overlay, "Furniture That Transforms Your Space", CTA
+## 5. Navigation — Clean & minimal
 
-### Why Choose Us
-**`src/components/WhyChooseUs.tsx`** (new):
-- 4 columns: Free Delivery, Hassle Free Returns, Buy Now Pay Later, UK Customer Support
+**`src/components/Navbar.tsx`**
+- Remove the phone number top bar entirely
+- Logo left, centered links (Shop, About, Contact — remove "Home", just use logo), cart/search/account right
+- Remove background color — transparent initially. Add a scroll listener: on scroll > 10px, add `bg-background/95 backdrop-blur-sm` and border
+- Cleaner logo with `tracking-[0.15em] uppercase` styling
+- Categories dropdown stays on hover, but not shown as a top-level nav item text — integrate under "Shop" or keep as separate hover
+- Keep hamburger menu on mobile only
 
-### Customer Reviews
-**`src/components/CustomerReviews.tsx`** (new):
-- 3 review card placeholders (empty structure, no fake content — per Shopify reviews policy)
-- "What Our Customers Say" heading
+## 6. Footer — Dark & professional
 
-### Social Feed
-**`src/components/SocialFeed.tsx`** (new):
-- "Follow Us @furniture100" with 6 lifestyle image placeholders
+**`src/components/Footer.tsx`**
+- Background: `bg-[#1A1A1A]` (near-black)
+- Text: light grey `text-neutral-400`
+- 4 columns: Shop, Company, Support, Newsletter signup
+- Social icons as simple monochrome lucide icons (Instagram, Facebook, Pinterest)
+- Thin `border-t border-neutral-800` separator
+- Small consistent font sizes throughout
+- Payment icons in muted grey at bottom
 
-### Newsletter Signup
-**`src/components/Newsletter.tsx`** (new):
-- Dark background, "Get 10% Off Your First Order", email input, gold subscribe button
+## 7. Consistency & Polish
 
-### Footer Redesign
-**`src/components/Footer.tsx`** — 4 columns:
-- Brand + social icons
-- Quick Links
-- Customer Care (Delivery, Returns, FAQs, Track Order)
-- Contact (phone, email, hours)
-- Bottom bar: copyright, policy links, payment icons
+- All buttons: consistent `rounded-md` (6px), same padding `px-6 py-3`
+- All hover states: `transition-all duration-300 ease-in-out`
+- Product images within sections use consistent aspect ratios
+- Remove placeholder review text, replace with believable sample reviews
+- Trust bar icons use consistent muted styling
 
-### Homepage Assembly
-**`src/pages/Index.tsx`** — Stack all sections in order:
-AnnouncementBar → Navbar → Hero → TrustBar → FeaturedCategories → BestSellers → LifestyleBanner → WhyChooseUs → CustomerReviews → SocialFeed → Newsletter → Footer
+## 8. Trust Bar — Slim & elegant
+
+**`src/components/TrustBar.tsx`**
+- Slim single row, light background (warm off-white or transparent)
+- Small uppercase text, muted color, letter-spacing
+- Minimal line icons in muted-foreground color (not gold)
+- 4 items only: Free Delivery, 30-Day Returns, Secure Checkout, UK Nationwide
+- Reduce vertical padding to `py-4 md:py-5`
 
 ---
 
-## Phase 2: Category & Product Pages, Routing
+## Files Changed
 
-### Routes
-**`src/App.tsx`** — Add routes:
-- `/shop` — Shop All
-- `/category/:slug` — Category pages
-- `/about` — About Us
-- `/delivery` — Delivery Information
-- `/returns` — Returns Policy
-- `/contact` — Contact Us
-- `/privacy` — Privacy Policy
-- `/terms` — Terms and Conditions
-
-### Category Page
-**`src/pages/CategoryPage.tsx`** (new):
-- Hero banner with category name + breadcrumb
-- Filter sidebar (price range, style toggles)
-- Sort dropdown (Featured, Price low/high, Newest)
-- 3-col product grid (responsive), pagination
-- Products loaded from Shopify filtered by category
-
-### Shop All Page
-**`src/pages/ShopAll.tsx`** (new):
-- Same layout as category page but showing all products
-
-### Product Detail Redesign
-**`src/pages/ProductDetail.tsx`** — Enhance:
-- Breadcrumb navigation
-- Image gallery with thumbnails
-- Star rating placeholder, Klarna "from £X/month" text
-- Full-width Add to Basket button (dark), wishlist button
-- Trust icons row (delivery, returns, secure, support)
-- Delivery timeframe text
-- Specifications table
-- "You May Also Like" product row
-
-### Static Pages
-New page components for About, Delivery, Returns, Contact, Privacy, Terms — clean informational layouts with Furniture100 branding
-
----
-
-## Phase 3: Polish & Performance
-
-### SEO
-**`index.html`** — Updated meta tags, OG tags, schema markup placeholder
-
-### Pixel Readiness
-- Google Analytics, Facebook Pixel, TikTok Pixel — placeholder `<script>` tags in `index.html` with comment markers for real IDs
-
-### Mobile Optimisation
-- Sticky "Add to Basket" on mobile product pages
-- Large tap targets throughout
-- Responsive grid adjustments (1-col mobile, 2-col tablet, 3-col desktop)
-
-### Live Chat Placeholder
-- Chat widget icon (bottom-right) linking to future integration
-
----
-
-## What Stays Unchanged
-- `src/lib/shopify.ts` — Shopify API setup, cart mutations, all working
-- `src/stores/cartStore.ts` — Zustand cart state
-- `src/hooks/useCartSync.ts` — Cart sync hook
-- `src/components/CartDrawer.tsx` — Cart drawer (minor style tweaks only)
-
-## Technical Notes
-- All products come from Shopify Storefront API — no mock data
-- Category filtering uses product title/description/tags matching against the category map
-- New pages use shared `Layout` wrapper with AnnouncementBar + Navbar + Footer
-- Gold accent `#C9A84C` used for CTAs, highlights, and the "100" in the logo
-- Payment icons rendered as SVG/text badges in the footer
-
----
-
-## Implementation Order
-Due to scale, I will implement Phase 1 first (homepage + brand overhaul), then Phase 2 (pages + routing), then Phase 3 (polish). Each phase will be a separate message after approval.
+| File | Change |
+|------|--------|
+| `src/index.css` | Background to warm off-white, foreground to charcoal, body line-height 1.6, font-weight 300 |
+| `src/components/Hero.tsx` | Left-aligned, single CTA, gradient overlay, larger type |
+| `src/components/Navbar.tsx` | Remove phone bar, transparent-on-top with scroll effect, cleaner links |
+| `src/components/Footer.tsx` | Dark bg #1A1A1A, 4 columns, monochrome social icons, newsletter column |
+| `src/components/TrustBar.tsx` | Slim, 4 items, muted uppercase, smaller padding |
+| `src/components/BestSellers.tsx` | 4:5 cards, no add-to-basket button, hover scale 1.03, name+price only |
+| `src/components/FeaturedCategories.tsx` | Increased section spacing |
+| `src/components/WhyChooseUs.tsx` | Increased spacing, consistent transitions |
+| `src/components/CustomerReviews.tsx` | Real-looking sample reviews, spacing bump |
+| `src/components/SocialFeed.tsx` | Spacing bump |
+| `src/components/Newsletter.tsx` | Spacing bump |
+| `src/components/LifestyleBanner.tsx` | Spacing bump |
 
