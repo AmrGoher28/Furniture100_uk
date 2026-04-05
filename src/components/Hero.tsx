@@ -71,7 +71,8 @@ export const Hero = () => {
           </Link>
           <a
             href="#best-sellers"
-            className="border border-primary-foreground/60 text-primary-foreground px-8 py-3.5 rounded-full text-sm font-medium tracking-wide hover:bg-primary-foreground/10 transition-colors"
+            className="border border-primary-foreground/80 text-primary-foreground px-8 py-3.5 rounded-full text-sm font-medium tracking-wide hover:bg-primary-foreground/10 transition-colors"
+            style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}
           >
             View Best Sellers
           </a>
