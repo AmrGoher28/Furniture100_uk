@@ -109,7 +109,7 @@ const ProductDetail = () => {
           <div className="grid md:grid-cols-2 gap-8 md:gap-16">
             {/* Images */}
             <div>
-              <div className="aspect-square bg-secondary overflow-hidden rounded-lg mb-3">
+              <div className="relative aspect-square bg-secondary overflow-hidden rounded-lg mb-3 group">
                 {images[selectedImage] ? (
                   <img
                     src={images[selectedImage].node.url}
@@ -119,14 +119,44 @@ const ProductDetail = () => {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
                 )}
+                {/* Mobile swipe arrows */}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 text-foreground shadow-sm transition-opacity md:opacity-0 md:group-hover:opacity-100"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 text-foreground shadow-sm transition-opacity md:opacity-0 md:group-hover:opacity-100"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                    {/* Dot indicators */}
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                      {images.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setSelectedImage(idx)}
+                          className={`w-2 h-2 rounded-full transition-colors ${
+                            idx === selectedImage ? "bg-foreground" : "bg-foreground/30"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
+              {/* Thumbnails — desktop only */}
               {images.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto">
+                <div className="hidden md:flex gap-2 overflow-x-auto">
                   {images.map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`w-16 h-16 md:w-20 md:h-20 bg-secondary overflow-hidden rounded-md border-2 transition-colors shrink-0 ${
+                      className={`w-20 h-20 bg-secondary overflow-hidden rounded-md border-2 transition-colors shrink-0 ${
                         idx === selectedImage ? "border-gold" : "border-transparent hover:border-border"
                       }`}
                     >
