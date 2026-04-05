@@ -10,12 +10,12 @@ const TRUST_ITEMS = [
 
 export const TrustBar = () => {
   return (
-    <section className="bg-secondary py-8 md:py-10">
+    <section className="bg-card py-8 md:py-10">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-4">
         {TRUST_ITEMS.map((item) => (
           <div key={item.label} className="flex flex-col items-center gap-2 text-center">
-            <item.icon className="w-6 h-6 text-gold" />
-            <span className="text-xs md:text-sm font-medium tracking-wide text-foreground">
+            <item.icon className="w-6 h-6 text-primary" />
+            <span className="text-xs md:text-sm font-light tracking-wide text-foreground">
               {item.label}
             </span>
           </div>

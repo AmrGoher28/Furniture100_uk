@@ -26,7 +26,7 @@ export const CartDrawer = () => {
         <button className="relative p-2">
           <ShoppingBag className="h-5 w-5" strokeWidth={1.5} />
           {totalItems > 0 && (
-            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-foreground text-background text-[10px] flex items-center justify-center">
+            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
               {totalItems}
             </span>
           )}
@@ -35,7 +35,7 @@ export const CartDrawer = () => {
       <SheetContent className="w-full sm:max-w-md flex flex-col h-full border-l border-border bg-background">
         <SheetHeader className="flex-shrink-0 pb-6 border-b border-border">
           <SheetTitle className="text-lg tracking-[0.1em]">Your Bag</SheetTitle>
-          <SheetDescription className="text-xs tracking-[0.15em] uppercase text-muted-foreground">
+          <SheetDescription className="text-xs tracking-[0.15em] uppercase text-muted-foreground font-light">
             {totalItems === 0 ? "Your bag is empty" : `${totalItems} item${totalItems !== 1 ? "s" : ""}`}
           </SheetDescription>
         </SheetHeader>
@@ -53,7 +53,7 @@ export const CartDrawer = () => {
               <div className="flex-1 overflow-y-auto py-6 space-y-6">
                 {items.map((item) => (
                   <div key={item.variantId} className="flex gap-4">
-                    <div className="w-20 h-24 bg-muted/50 overflow-hidden flex-shrink-0">
+                    <div className="w-20 h-24 bg-card overflow-hidden flex-shrink-0 rounded-lg">
                       {item.product.node.images?.edges?.[0]?.node && (
                         <img src={item.product.node.images.edges[0].node.url} alt={item.product.node.title} className="w-full h-full object-cover" />
                       )}
@@ -66,15 +66,15 @@ export const CartDrawer = () => {
                         </button>
                       </div>
                       {item.selectedOptions.length > 0 && item.selectedOptions[0].value !== "Default Title" && (
-                        <p className="text-xs text-muted-foreground mt-0.5">{item.selectedOptions.map(o => o.value).join(" / ")}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-light">{item.selectedOptions.map(o => o.value).join(" / ")}</p>
                       )}
                       <p className="text-sm mt-1">{item.price.currencyCode} {parseFloat(item.price.amount).toFixed(2)}</p>
                       <div className="flex items-center gap-3 mt-3">
-                        <button onClick={() => updateQuantity(item.variantId, item.quantity - 1)} className="w-7 h-7 border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                        <button onClick={() => updateQuantity(item.variantId, item.quantity - 1)} className="w-7 h-7 border border-border rounded-md flex items-center justify-center hover:bg-card transition-colors">
                           <Minus className="h-3 w-3" />
                         </button>
                         <span className="text-xs w-4 text-center">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.variantId, item.quantity + 1)} className="w-7 h-7 border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                        <button onClick={() => updateQuantity(item.variantId, item.quantity + 1)} className="w-7 h-7 border border-border rounded-md flex items-center justify-center hover:bg-card transition-colors">
                           <Plus className="h-3 w-3" />
                         </button>
                       </div>
@@ -84,12 +84,12 @@ export const CartDrawer = () => {
               </div>
               <div className="flex-shrink-0 pt-6 border-t border-border space-y-5 pb-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs tracking-[0.2em] uppercase">Total</span>
+                  <span className="text-xs tracking-[0.2em] uppercase font-light">Total</span>
                   <span className="text-lg">{items[0]?.price.currencyCode || "USD"} {totalPrice.toFixed(2)}</span>
                 </div>
                 <Button
                   onClick={handleCheckout}
-                  className="w-full h-12 rounded-none text-xs tracking-[0.2em] uppercase bg-foreground text-background hover:bg-foreground/90"
+                  className="w-full h-12 rounded-full text-xs tracking-[0.2em] uppercase bg-primary text-primary-foreground hover:bg-primary/90"
                   disabled={items.length === 0 || isLoading || isSyncing}
                 >
                   {isLoading || isSyncing ? (
