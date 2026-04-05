@@ -25,7 +25,7 @@ export const FeaturedCategories = () => {
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-walnut-dark/30 group-hover:bg-walnut-dark/40 transition-colors duration-300" />
+              
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <p className="text-primary-foreground text-sm md:text-base font-medium tracking-wide">
                   {cat.name}
