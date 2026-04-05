@@ -50,7 +50,9 @@ export const Hero = () => {
           }`}
         />
       ))}
-      
+
+      <div className="absolute inset-0 bg-black/30 z-[1]" />
+
 
       <div className="relative z-10 text-center max-w-3xl mx-auto px-2">
         <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-primary-foreground mb-4 md:mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)' }}>

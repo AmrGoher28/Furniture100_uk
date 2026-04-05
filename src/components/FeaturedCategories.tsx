@@ -34,7 +34,7 @@ export const FeaturedCategories = () => {
                 loading="lazy"
               />
               
-              <div className="absolute bottom-0 left-0 right-0 p-4">
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
                 <p className="text-primary-foreground text-sm md:text-base font-medium tracking-wide">
                   {cat.name}
                 </p>
