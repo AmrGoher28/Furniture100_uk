@@ -284,23 +284,10 @@ const ProductDetail = () => {
           />
         </div>
       </div>
-          <button
-            onClick={handleAddToCart}
-            disabled={isLoading || !variant?.availableForSale}
-            className="bg-primary text-primary-foreground px-6 py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
-          >
-            {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : !variant?.availableForSale ? (
-              "Sold Out"
-            ) : (
-              "Add to Basket"
-            )}
-          </button>
-        </div>
-      </div>
     </Layout>
   );
 };
+
+export default ProductDetail;
 
 export default ProductDetail;
