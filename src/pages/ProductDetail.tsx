@@ -4,6 +4,7 @@ import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
 import { Loader2, ArrowLeft, Truck, RotateCcw, ShieldCheck, Phone, Heart } from "lucide-react";
+import MakeOfferModal from "@/components/MakeOfferModal";
 import { toast } from "sonner";
 
 interface ProductNode {
