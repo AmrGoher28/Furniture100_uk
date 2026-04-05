@@ -6,7 +6,6 @@ import heroSlide2 from "@/assets/hero-slide-2.jpg";
 const slides = [
   { src: heroSlide1, alt: "Stylish lounge chairs in a modern living room" },
   { src: heroSlide2, alt: "Contemporary furniture in a beautifully styled space" },
-  { src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&q=80", alt: "Premium sofa in an elegant interior setting" },
 ];
 
 export const Hero = () => {
