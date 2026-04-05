@@ -52,12 +52,15 @@ export const Hero = () => {
       ))}
       <div className="absolute inset-0 bg-foreground/45" />
 
-      <div className="relative z-10 text-center max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl text-white mb-6 leading-tight">
+      <div className="relative z-10 text-center max-w-3xl mx-auto px-2">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white mb-4 md:mb-6 leading-tight">
           Premium Furniture.<br />Delivered Nationwide.
         </h1>
-        <p className="text-white/80 text-lg md:text-xl font-light max-w-xl mx-auto mb-10 leading-relaxed">
+        <p className="text-white/80 text-sm sm:text-lg md:text-xl font-light max-w-xl mx-auto mb-8 md:mb-10 leading-relaxed hidden sm:block">
           Transform your home with our curated collection of premium furniture. Free UK delivery on every order.
+        </p>
+        <p className="text-white/80 text-sm font-light max-w-xs mx-auto mb-8 leading-relaxed sm:hidden">
+          Premium furniture with free UK delivery.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
