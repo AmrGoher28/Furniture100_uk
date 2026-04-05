@@ -59,7 +59,7 @@ export const Hero = () => {
         <p className="text-primary-foreground/75 text-sm sm:text-lg md:text-xl font-light max-w-xl mx-auto mb-8 md:mb-10 leading-relaxed hidden sm:block" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
           Transform your home with our curated collection of premium furniture. Free UK delivery on every order.
         </p>
-        <p className="text-primary-foreground/75 text-sm font-light max-w-xs mx-auto mb-8 leading-relaxed sm:hidden">
+        <p className="text-primary-foreground/75 text-sm font-light max-w-xs mx-auto mb-8 leading-relaxed sm:hidden" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
           Premium furniture with free UK delivery.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
