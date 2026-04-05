@@ -64,8 +64,8 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-[72px]">
         {/* Left: Logo */}
         <Link to="/" className="tracking-[0.15em] flex items-baseline shrink-0" style={{ fontFamily: "'Playfair Display', serif" }}>
-          <span className="text-xl md:text-2xl font-medium text-foreground">Furniture</span>
-          <span className="text-xs md:text-sm font-normal text-gold ml-0.5">100</span>
+          <span className="text-xl md:text-2xl font-medium text-foreground">FURNITURE</span>
+          <span className="text-xs font-normal text-gold ml-0.5 md:text-lg">100</span>
         </Link>
 
         {/* Centre: Navigation (desktop) */}
@@ -112,7 +112,7 @@ export const Navbar = () => {
             <SheetContent side="left" className="w-80 bg-background p-0 overflow-y-auto">
               <div className="px-6 py-4 border-b border-border">
                 <Link to="/" onClick={() => setMobileOpen(false)} className="tracking-[0.15em]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  <span className="text-xl font-medium text-foreground">Furniture</span>
+                  <span className="text-xl font-medium text-foreground">FURNITURE</span>
                   <span className="text-xs font-normal text-gold ml-0.5">100</span>
                 </Link>
               </div>
