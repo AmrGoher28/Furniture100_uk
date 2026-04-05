@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, User, Heart, Menu, ShoppingBag, Phone, ChevronDown, X } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
@@ -18,8 +18,15 @@ export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleMouseEnterCategories = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -35,13 +42,20 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-background border-b border-border" onMouseLeave={handleMouseLeave}>
+    <nav
+      className={`sticky top-0 z-50 border-b border-border transition-all duration-300 ${
+        scrolled
+          ? "bg-background/85 backdrop-blur-md"
+          : "bg-background"
+      }`}
+      onMouseLeave={handleMouseLeave}
+    >
       {/* Top bar with phone */}
       <div className="hidden md:block border-b border-border/50">
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-end py-1.5">
           <a href="tel:+441234567890" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
             <Phone className="w-3 h-3" />
-            01onal 234 567 890
+            01234 567 890
           </a>
         </div>
       </div>
@@ -60,7 +74,7 @@ export const Navbar = () => {
             <Link
               key={link.label}
               to={link.href}
-              className="text-sm text-foreground/80 hover:text-foreground transition-colors font-medium"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
             >
               {link.label}
             </Link>
@@ -68,7 +82,7 @@ export const Navbar = () => {
           <button
             onMouseEnter={handleMouseEnterCategories}
             onClick={() => setMegaOpen(!megaOpen)}
-            className="flex items-center gap-1 text-sm text-foreground/80 hover:text-foreground transition-colors font-medium"
+            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
           >
             Categories
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
@@ -77,13 +91,13 @@ export const Navbar = () => {
 
         {/* Right: Icons */}
         <div className="flex items-center gap-4">
-          <button onClick={() => setSearchOpen(!searchOpen)} className="text-foreground/70 hover:text-foreground transition-colors" aria-label="Search">
+          <button onClick={() => setSearchOpen(!searchOpen)} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
             <Search className="w-5 h-5" />
           </button>
-          <button className="hidden md:block text-foreground/70 hover:text-foreground transition-colors" aria-label="Wishlist">
+          <button className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Wishlist">
             <Heart className="w-5 h-5" />
           </button>
-          <button className="hidden md:block text-foreground/70 hover:text-foreground transition-colors" aria-label="Account">
+          <button className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Account">
             <User className="w-5 h-5" />
           </button>
           <CartDrawer />
@@ -91,7 +105,7 @@ export const Navbar = () => {
           {/* Mobile hamburger */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <button className="md:hidden text-foreground/70 hover:text-foreground transition-colors" aria-label="Menu">
+              <button className="md:hidden text-muted-foreground hover:text-foreground transition-colors" aria-label="Menu">
                 <Menu className="w-5 h-5" />
               </button>
             </SheetTrigger>
@@ -109,7 +123,7 @@ export const Navbar = () => {
                     key={link.label}
                     to={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block py-3 text-sm font-medium text-foreground/80 hover:text-foreground border-b border-border/30"
+                    className="block py-3 text-sm font-light text-muted-foreground hover:text-foreground border-b border-border/30"
                   >
                     {link.label}
                   </Link>
@@ -118,7 +132,7 @@ export const Navbar = () => {
                 <Accordion type="single" collapsible className="w-full mt-2">
                   {CATEGORIES.map((cat) => (
                     <AccordionItem key={cat.slug} value={cat.slug} className="border-border/30">
-                      <AccordionTrigger className="text-sm font-medium text-foreground/80 hover:text-foreground py-3 hover:no-underline">
+                      <AccordionTrigger className="text-sm font-light text-muted-foreground hover:text-foreground py-3 hover:no-underline">
                         {cat.name}
                       </AccordionTrigger>
                       <AccordionContent>
@@ -147,13 +161,13 @@ export const Navbar = () => {
                 </Accordion>
 
                 <div className="border-t border-border/30 mt-4 pt-4 flex flex-col gap-3">
-                  <button className="flex items-center gap-3 text-sm text-foreground/80 hover:text-foreground py-2">
+                  <button className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <User className="w-4 h-4" /> Account
                   </button>
-                  <button className="flex items-center gap-3 text-sm text-foreground/80 hover:text-foreground py-2">
+                  <button className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Heart className="w-4 h-4" /> Wishlist
                   </button>
-                  <a href="tel:+441234567890" className="flex items-center gap-3 text-sm text-foreground/80 hover:text-foreground py-2">
+                  <a href="tel:+441234567890" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Phone className="w-4 h-4" /> 01234 567 890
                   </a>
                 </div>
@@ -174,7 +188,7 @@ export const Navbar = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search for furniture..."
               autoFocus
-              className="flex-1 bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground"
+              className="flex-1 bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground font-light"
             />
             <button onClick={() => { setSearchOpen(false); setSearchQuery(""); }} className="text-muted-foreground hover:text-foreground">
               <X className="w-4 h-4" />
@@ -186,7 +200,7 @@ export const Navbar = () => {
       {/* Mega menu dropdown */}
       {megaOpen && (
         <div
-          className="absolute left-0 right-0 bg-background border-t border-border shadow-lg animate-fade-in"
+          className="absolute left-0 right-0 bg-background border-t border-border warm-shadow-lg animate-fade-in"
           onMouseEnter={handleDropdownEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -196,7 +210,7 @@ export const Navbar = () => {
                 <Link
                   to={`/category/${cat.slug}`}
                   onClick={() => setMegaOpen(false)}
-                  className="text-sm font-semibold text-foreground hover:text-gold transition-colors mb-3 block"
+                  className="text-sm font-medium text-foreground hover:text-primary transition-colors mb-3 block"
                 >
                   {cat.name}
                 </Link>
@@ -206,7 +220,7 @@ export const Navbar = () => {
                       <Link
                         to={`/category/${cat.slug}`}
                         onClick={() => setMegaOpen(false)}
-                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-xs text-muted-foreground hover:text-foreground transition-colors font-light"
                       >
                         {sub.name}
                       </Link>
