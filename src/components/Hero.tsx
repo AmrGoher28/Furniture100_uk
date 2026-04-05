@@ -50,7 +50,7 @@ export const Hero = () => {
           }`}
         />
       ))}
-      <div className="absolute inset-0 bg-walnut-dark/40" />
+      <div className="absolute inset-0 bg-walnut-dark/20" />
 
       <div className="relative z-10 text-center max-w-3xl mx-auto px-2">
         <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-primary-foreground mb-4 md:mb-6 leading-tight">
