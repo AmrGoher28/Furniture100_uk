@@ -40,7 +40,8 @@ export const FeaturedCategories = () => {
                 </p>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
