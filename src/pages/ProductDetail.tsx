@@ -259,12 +259,12 @@ const ProductDetail = () => {
       </main>
 
       {/* Mobile sticky: Buy Now + Make Offer */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border p-4 md:hidden">
-        <div className="flex items-center gap-3">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border px-4 py-3 md:hidden">
+        <div className="grid grid-cols-2 gap-3">
           <button
             onClick={handleAddToCart}
             disabled={isLoading || !variant?.availableForSale}
-            className="flex-1 bg-primary text-primary-foreground py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="bg-primary text-primary-foreground py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin mx-auto" />
