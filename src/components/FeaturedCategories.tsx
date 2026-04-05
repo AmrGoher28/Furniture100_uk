@@ -19,11 +19,13 @@ export const FeaturedCategories = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-          {FEATURED.map((cat) => (
+          {FEATURED.map((cat, index) => {
+            const isLastOdd = FEATURED.length % 2 === 1 && index === FEATURED.length - 1;
+            return (
             <Link
               key={cat.slug}
               to={`/category/${cat.slug}`}
-              className="group relative aspect-[3/4] overflow-hidden rounded-xl warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300"
+              className={`group relative aspect-[3/4] overflow-hidden rounded-xl warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300 ${isLastOdd ? 'col-span-2 max-w-[calc(50%-0.5rem)] mx-auto lg:col-span-1 lg:max-w-none lg:mx-0' : ''}`}
             >
               <img
                 src={cat.image}
