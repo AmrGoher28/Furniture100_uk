@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="grid md:grid-cols-3 gap-12 md:gap-8">
           <div>
             <Link to="/" className="tracking-[0.2em]" style={{ fontFamily: "'Playfair Display', serif" }}>
-              <span className="text-xl font-medium italic">furniture</span>
+              <span className="text-xl font-medium">furniture</span>
               <span className="text-xs font-normal text-[hsl(var(--stone))] ml-0.5">100</span>
             </Link>
             <p className="text-sm text-muted-foreground font-light mt-4 leading-relaxed max-w-xs">
