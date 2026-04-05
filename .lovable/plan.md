@@ -1,17 +1,26 @@
 
 
-# Add Notification Email & Shopify Admin Token Secrets
+# Add Subtle Dark Overlays to Image Sections
 
-## What's Happening
-You've provided the two secrets needed to complete the offer system:
-1. **Notification email**: `offers@furniture100.co.uk` — stored as `ADMIN_NOTIFICATION_EMAIL`
-2. **Shopify Admin Token**: stored as `SHOPIFY_ADMIN_TOKEN` — enables Draft Order creation when you accept an offer
+## Problem
+Text over images (Hero, Lifestyle Banner, Category cards) can be hard to read depending on the image brightness. No overlays currently exist.
 
-## Steps
+## Changes
 
-1. **Add `ADMIN_NOTIFICATION_EMAIL` secret** with value `offers@furniture100.co.uk`
-2. **Add `SHOPIFY_ADMIN_TOKEN` secret** with the provided token
-3. **Redeploy the `handle-offer` Edge Function** so it picks up the new secrets
+### 1. Hero — full dark overlay
+**`src/components/Hero.tsx`**
+- Add a `<div className="absolute inset-0 bg-black/30 z-[1]" />` after the image slides
+- Bump the text content `z-10` stays above (already is)
 
-No code changes needed — the edge function already reads both `ADMIN_NOTIFICATION_EMAIL` and `SHOPIFY_ADMIN_TOKEN` from environment variables.
+### 2. Lifestyle Banner — full dark overlay
+**`src/components/LifestyleBanner.tsx`**
+- Add `<div className="absolute inset-0 bg-black/35" />` after the `<img>`
+- Text already has `z-10`
+
+### 3. Featured Categories — bottom gradient on each card
+**`src/components/FeaturedCategories.tsx`**
+- Replace the plain `<div className="absolute bottom-0 ...">` wrapper with a gradient overlay: `<div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">`
+- This ensures category names are always readable regardless of the image
+
+All overlays are subtle (30-35% black for full overlays, 60% gradient for card bottoms) to maintain the luxury aesthetic.
 
