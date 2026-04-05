@@ -96,9 +96,6 @@ export const Navbar = () => {
 
         {/* Right: Icons */}
         <div className="flex items-center gap-4">
-          <button onClick={() => setSearchOpen(!searchOpen)} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
-            <Search className="w-5 h-5" />
-          </button>
           <button className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Wishlist">
             <Heart className="w-5 h-5" />
           </button>
