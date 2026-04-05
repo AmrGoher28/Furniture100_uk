@@ -1,29 +1,27 @@
 
 
-# Redesign Navbar Layout — Centered Logo, Search Bar, Account Tab, Dark Categories
+# Rename Brand: SWIFLIVING → furniture100
 
-## Changes to `src/components/Navbar.tsx`
+## Files to Update
 
-### Top Row — 3-column layout
-```text
-[ 🔍 Search bar ]     [ SWIFLIVING ]     [ Account | Cart ]
-```
+### 1. `index.html`
+- Title: "furniture100 — Furniture Worth Living With"
+- Meta description, author, og:title references → furniture100
 
-- **Left**: Search input with a search icon (using lucide `Search` icon). Styled minimal — border-bottom only or subtle rounded input matching the luxury aesthetic. Searches products (for now just UI, can wire to Shopify search later).
-- **Center**: SWIFLIVING logo centered using flex justify-center
-- **Right**: Account icon (lucide `User`) + existing CartDrawer. Move "About" link to footer or remove from top row.
+### 2. `src/components/Navbar.tsx`
+- Logo text → "furniture100"
 
-### Category Row
-- Change category text color from `text-muted-foreground` to `text-foreground` (black/near-black) so they're more visible
-- Active state keeps the bark underline
+### 3. `src/components/Footer.tsx`
+- Logo text, email (hello@furniture100.com), copyright → furniture100
 
-### New state
-- `searchQuery` state for the search input
-- `searchOpen` state to toggle search on mobile (optional)
+### 4. `src/components/About.tsx`
+- Brand mention in paragraph → furniture100
 
-### Account tab
-- For now, renders as a `User` icon button (no auth wired yet — placeholder that can link to a future login page)
+### 5. `src/stores/cartStore.ts`
+- localStorage key: `swifliving-cart` → `furniture100-cart`
 
-## Files Changed
-- `src/components/Navbar.tsx` — restructure top row, add search input, add account icon, darken category text
+### 6. `.lovable/memory/index.md`
+- Update brand name in core memory
+
+All instances of "SWIFLIVING" / "swifliving" replaced with "furniture100" across 6 files.
 
