@@ -1,11 +1,8 @@
 # Project Memory
 
 ## Core
-Premium UK furniture ecommerce. White bg #F9F9F7, text #1A1A1A, gold accent #C9A84C, sale red #C0392B.
-Playfair Display headings, Inter 400 body. Never use other fonts.
+Warm mid-century modern aesthetic. Off-white #F5F0EB bg, sand #EDE8E0 cards, walnut #5C4033 primary, charcoal #1A1A1A secondary, dusty blue #8FBCC4 accent.
+Playfair Display headings, Inter 300 body. Never use other fonts.
 Shopify Storefront API (2025-07) for products/cart/checkout. Zustand for cart state.
-Brand name: Furniture100. Domain: furniture100.co.uk. Tagline: "Premium Furniture. Delivered Nationwide."
-Categories: Lounge Chairs, Sofas, Office Chairs, Dining, Mirrors, Lighting, Accessories.
-
-## Memories
-- [Categories](mem://features/categories) — Full category/subcategory structure in src/lib/categories.ts
+Brand name: Furniture100. Tagline: "Premium Furniture. Delivered Nationwide."
+Buttons pill-shaped (rounded-full). Warm box shadows, no harsh black. Footer dark walnut #3B2A1F.
