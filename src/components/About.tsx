@@ -18,7 +18,7 @@ export const About = () => {
               Made by Hand,<br />Built to Stay
             </h2>
             <p className="text-muted-foreground font-light leading-relaxed mb-6">
-              SWIFLIVING was born from a simple belief: the things we live with should be worth keeping. Every piece in our collection is shaped by artisan hands — carved, joined, and finished with the kind of attention that machines cannot replicate.
+              furniture100 was born from a simple belief: the things we live with should be worth keeping. Every piece in our collection is shaped by artisan hands — carved, joined, and finished with the kind of attention that machines cannot replicate.
             </p>
             <p className="text-muted-foreground font-light leading-relaxed">
               We work with small workshops across six countries, sourcing responsibly harvested timber, natural stone, and heritage textiles. The result is furniture that ages beautifully and tells a story.

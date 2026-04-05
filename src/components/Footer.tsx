@@ -30,7 +30,7 @@ export const Footer = () => {
         </div>
         <div className="mt-16 pt-8 border-t border-border">
           <p className="text-xs text-muted-foreground font-light">
-            © {new Date().getFullYear()} SWIFLIVING. All rights reserved.
+            © {new Date().getFullYear()} furniture100. All rights reserved.
           </p>
         </div>
       </div>

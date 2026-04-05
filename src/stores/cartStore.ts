@@ -133,7 +133,7 @@ export const useCartStore = create<CartStore>()(
       },
     }),
     {
-      name: 'swifliving-cart',
+      name: 'furniture100-cart',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ items: state.items, cartId: state.cartId, checkoutUrl: state.checkoutUrl }),
     }
