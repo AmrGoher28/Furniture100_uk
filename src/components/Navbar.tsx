@@ -65,7 +65,7 @@ export const Navbar = () => {
         {/* Left: Logo */}
         <Link to="/" className="tracking-[0.15em] flex items-baseline shrink-0" style={{ fontFamily: "'Playfair Display', serif" }}>
           <span className="text-xl md:text-2xl font-medium text-foreground">FURNITURE</span>
-          <span className="text-xs font-normal text-gold ml-0.5 md:text-lg">100</span>
+          <span className="text-gold ml-0.5 md:text-lg text-base font-medium">100</span>
         </Link>
 
         {/* Centre: Navigation (desktop) */}
