@@ -173,8 +173,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </main>
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 
