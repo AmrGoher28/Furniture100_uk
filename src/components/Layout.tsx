@@ -1,7 +1,7 @@
 import { AnnouncementBar } from "./AnnouncementBar";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
-import { LiveChatWidget } from "./LiveChatWidget";
+
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export const Layout = ({ children }: LayoutProps) => {
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
-      <LiveChatWidget />
+      
     </div>
   );
 };
