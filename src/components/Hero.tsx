@@ -36,7 +36,7 @@ export const Hero = () => {
 
   return (
     <section
-      className="relative min-h-[600px] md:min-h-[700px] flex items-center justify-center px-6 overflow-hidden"
+      className="relative min-h-[400px] md:min-h-[470px] flex items-center justify-center px-6 overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
