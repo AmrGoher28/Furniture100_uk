@@ -8,7 +8,7 @@ export const Footer = () => {
           <div>
             <Link to="/" className="tracking-[0.2em]" style={{ fontFamily: "'Playfair Display', serif" }}>
               <span className="text-xl font-medium">furniture</span>
-              <span className="text-xs font-normal text-[hsl(var(--stone))] ml-0.5">100</span>
+              <span className="text-xs font-normal text-[hsl(32,60%,50%)] ml-0.5">100</span>
             </Link>
             <p className="text-sm text-muted-foreground font-light mt-4 leading-relaxed max-w-xs">
               Artisan-crafted furniture for those who value beauty, quality, and quiet confidence.
