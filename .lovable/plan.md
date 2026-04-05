@@ -1,15 +1,17 @@
 
 
-# Center the Last Category Card on Mobile
+# Add Notification Email & Shopify Admin Token Secrets
 
-## Problem
-With 5 category cards in a 2-column mobile grid, the 5th card (Dining) sits alone on the bottom-left, looking unbalanced.
+## What's Happening
+You've provided the two secrets needed to complete the offer system:
+1. **Notification email**: `offers@furniture100.co.uk` — stored as `ADMIN_NOTIFICATION_EMAIL`
+2. **Shopify Admin Token**: stored as `SHOPIFY_ADMIN_TOKEN` — enables Draft Order creation when you accept an offer
 
-## Solution
-Make the last (odd) item span the full row and limit its width to match the other cards, centering it with `mx-auto`. This keeps the 2-column layout for the first 4 items and centers the 5th.
+## Steps
 
-## Changes
+1. **Add `ADMIN_NOTIFICATION_EMAIL` secret** with value `offers@furniture100.co.uk`
+2. **Add `SHOPIFY_ADMIN_TOKEN` secret** with the provided token
+3. **Redeploy the `handle-offer` Edge Function** so it picks up the new secrets
 
-**`src/components/FeaturedCategories.tsx`**
-- Wrap the map to conditionally add `col-span-2 max-w-[calc(50%-0.5rem)] mx-auto` on the last item when the total count is odd, but only on mobile (use responsive classes so it resets on `lg:` where it's a 5-column grid).
+No code changes needed — the edge function already reads both `ADMIN_NOTIFICATION_EMAIL` and `SHOPIFY_ADMIN_TOKEN` from environment variables.
 
