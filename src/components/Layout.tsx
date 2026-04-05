@@ -1,7 +1,7 @@
 import { AnnouncementBar } from "./AnnouncementBar";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
-import { LiveChatWidget } from "./LiveChatWidget";
+
 
 interface LayoutProps {
   children: React.ReactNode;
