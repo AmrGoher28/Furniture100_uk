@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
-import { useCartStore } from "@/stores/cartStore";
-import { Loader2, ShoppingBag } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export const BestSellers = () => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const addItem = useCartStore((s) => s.addItem);
 
   useEffect(() => {
     const fetch = async () => {
@@ -23,27 +21,12 @@ export const BestSellers = () => {
     fetch();
   }, []);
 
-  const handleAddToCart = (e: React.MouseEvent, product: ShopifyProduct) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const variant = product.node.variants.edges[0]?.node;
-    if (!variant) return;
-    addItem({
-      product,
-      variantId: variant.id,
-      variantTitle: variant.title,
-      price: variant.price,
-      quantity: 1,
-      selectedOptions: variant.selectedOptions,
-    });
-  };
-
   return (
-    <section className="py-16 md:py-24 px-6 md:px-12 bg-background">
+    <section className="py-20 md:py-28 px-6 md:px-12 bg-background">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl mb-3">Our Best Sellers</h2>
-          <p className="text-muted-foreground">The pieces everyone is talking about</p>
+          <p className="text-muted-foreground font-light">The pieces everyone is talking about</p>
         </div>
 
         {loading ? (
@@ -65,12 +48,12 @@ export const BestSellers = () => {
                   to={`/product/${product.node.handle}`}
                   className="group block"
                 >
-                  <div className="aspect-square bg-secondary overflow-hidden rounded-lg mb-4">
+                  <div className="aspect-[4/5] bg-secondary overflow-hidden rounded-sm mb-4 transition-shadow duration-300 group-hover:shadow-md">
                     {image ? (
                       <img
                         src={image.url}
                         alt={image.altText || product.node.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
                         loading="lazy"
                       />
                     ) : (
@@ -79,19 +62,12 @@ export const BestSellers = () => {
                       </div>
                     )}
                   </div>
-                  <h3 className="text-sm font-medium mb-1 group-hover:text-gold transition-colors">
+                  <h3 className="text-sm font-medium mb-1 group-hover:text-gold transition-colors duration-300" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {product.node.title}
                   </h3>
-                  <p className="text-base font-semibold mb-3">
+                  <p className="text-base font-semibold">
                     £{parseFloat(price.amount).toFixed(2)}
                   </p>
-                  <button
-                    onClick={(e) => handleAddToCart(e, product)}
-                    className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                    Add to Basket
-                  </button>
                 </Link>
               );
             })}

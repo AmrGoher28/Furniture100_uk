@@ -25,14 +25,14 @@ const REASONS = [
 
 export const WhyChooseUs = () => {
   return (
-    <section className="py-16 md:py-24 px-6 md:px-12">
+    <section className="py-20 md:py-28 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl text-center mb-12">Why Choose Us</h2>
+        <h2 className="text-3xl md:text-4xl text-center mb-14">Why Choose Us</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {REASONS.map((r) => (
             <div key={r.title} className="text-center">
               <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-secondary flex items-center justify-center">
-                <r.icon className="w-6 h-6 text-gold" />
+                <r.icon className="w-6 h-6 text-muted-foreground" />
               </div>
               <h3 className="text-base font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
                 {r.title}
