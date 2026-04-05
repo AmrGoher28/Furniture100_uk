@@ -1,3 +1,9 @@
+import categoryLoungeChairs from "@/assets/category-lounge-chairs.webp";
+import categorySofas from "@/assets/category-sofas.webp";
+import categoryOfficeChairs from "@/assets/category-office-chairs.webp";
+import categoryDining from "@/assets/category-dining.webp";
+import categoryMirrors from "@/assets/category-mirrors.webp";
+
 export interface SubCategory {
   name: string;
   slug: string;
@@ -14,7 +20,7 @@ export const CATEGORIES: Category[] = [
   {
     name: "Lounge Chairs",
     slug: "lounge-chairs",
-    image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80",
+    image: categoryLoungeChairs,
     subcategories: [
       { name: "Lounge Chair and Ottoman Sets", slug: "lounge-chair-ottoman-sets" },
       { name: "Swivel Lounge Chairs", slug: "swivel-lounge-chairs" },
@@ -28,7 +34,7 @@ export const CATEGORIES: Category[] = [
   {
     name: "Sofas",
     slug: "sofas",
-    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80",
+    image: categorySofas,
     subcategories: [
       { name: "2 Seater Sofas", slug: "2-seater-sofas" },
       { name: "3 Seater Sofas", slug: "3-seater-sofas" },
@@ -39,7 +45,7 @@ export const CATEGORIES: Category[] = [
   {
     name: "Office Chairs",
     slug: "office-chairs",
-    image: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800&q=80",
+    image: categoryOfficeChairs,
     subcategories: [
       { name: "Leather Office Chairs", slug: "leather-office-chairs" },
       { name: "Fabric Office Chairs", slug: "fabric-office-chairs" },
@@ -50,7 +56,7 @@ export const CATEGORIES: Category[] = [
   {
     name: "Dining",
     slug: "dining",
-    image: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&q=80",
+    image: categoryDining,
     subcategories: [
       { name: "Dining Chairs", slug: "dining-chairs" },
       { name: "Bar Stools", slug: "bar-stools" },
@@ -59,7 +65,7 @@ export const CATEGORIES: Category[] = [
   {
     name: "Mirrors",
     slug: "mirrors",
-    image: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=800&q=80",
+    image: categoryMirrors,
     subcategories: [
       { name: "Full Length Mirrors", slug: "full-length-mirrors" },
       { name: "Wall Mirrors", slug: "wall-mirrors" },
