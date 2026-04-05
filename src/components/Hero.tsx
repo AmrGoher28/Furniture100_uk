@@ -1,16 +1,28 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 import heroSlide1 from "@/assets/hero-slide-1.jpg";
 import heroSlide2 from "@/assets/hero-slide-2.jpg";
+import heroSlide1Mobile from "@/assets/hero-slide-1-mobile.jpg";
+import heroSlide2Mobile from "@/assets/hero-slide-2-mobile.jpg";
 
 const slides = [
-  { src: heroSlide1, alt: "Stylish lounge chairs in a modern living room" },
-  { src: heroSlide2, alt: "Contemporary furniture in a beautifully styled space" },
+  {
+    desktop: heroSlide1,
+    mobile: heroSlide1Mobile,
+    alt: "Stylish lounge chairs in a modern living room",
+  },
+  {
+    desktop: heroSlide2,
+    mobile: heroSlide2Mobile,
+    alt: "Contemporary furniture in a beautifully styled space",
+  },
 ];
 
 export const Hero = () => {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const isMobile = useIsMobile();
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % slides.length);
@@ -31,7 +43,7 @@ export const Hero = () => {
       {slides.map((slide, i) => (
         <img
           key={i}
-          src={slide.src}
+          src={isMobile ? slide.mobile : slide.desktop}
           alt={slide.alt}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
             i === current ? "opacity-100" : "opacity-0"
