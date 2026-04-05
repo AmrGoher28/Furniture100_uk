@@ -1,20 +1,21 @@
-import { Truck, RotateCcw, ShieldCheck, MapPin } from "lucide-react";
+import { Truck, RotateCcw, Star, ShieldCheck, Phone } from "lucide-react";
 
 const TRUST_ITEMS = [
-  { icon: Truck, label: "Free Delivery" },
-  { icon: RotateCcw, label: "30-Day Returns" },
+  { icon: Truck, label: "Free UK Delivery" },
+  { icon: RotateCcw, label: "30 Day Returns" },
+  { icon: Star, label: "Rated Excellent" },
   { icon: ShieldCheck, label: "Secure Checkout" },
-  { icon: MapPin, label: "UK Nationwide" },
+  { icon: Phone, label: "UK Based Support" },
 ];
 
 export const TrustBar = () => {
   return (
-    <section className="py-4 md:py-5 border-b border-border">
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-center gap-8 md:gap-12">
+    <section className="bg-secondary py-8 md:py-10">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-4">
         {TRUST_ITEMS.map((item) => (
-          <div key={item.label} className="flex items-center gap-2">
-            <item.icon className="w-4 h-4 text-muted-foreground" />
-            <span className="text-[10px] md:text-xs font-medium tracking-[0.1em] uppercase text-muted-foreground">
+          <div key={item.label} className="flex flex-col items-center gap-2 text-center">
+            <item.icon className="w-6 h-6 text-gold" />
+            <span className="text-xs md:text-sm font-medium tracking-wide text-foreground">
               {item.label}
             </span>
           </div>

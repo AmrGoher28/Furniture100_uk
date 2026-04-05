@@ -14,12 +14,12 @@ export const LifestyleBanner = () => {
         <h2 className="text-3xl md:text-5xl text-white mb-4">
           Furniture That Transforms Your Space
         </h2>
-        <p className="text-white/70 text-lg mb-8 font-light">
+        <p className="text-white/80 text-lg mb-8">
           Handpicked pieces for modern living
         </p>
         <Link
           to="/shop"
-          className="inline-block border border-white/60 text-white px-8 py-3 rounded-md text-sm font-medium tracking-wide hover:bg-white hover:text-foreground transition-all duration-300"
+          className="inline-block bg-gold text-white px-8 py-3 rounded-md text-sm font-medium tracking-wide hover:opacity-90 transition-opacity"
         >
           Explore The Collection
         </Link>

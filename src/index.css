@@ -4,22 +4,22 @@
 
 @layer base {
   :root {
-    --background: 40 33% 98%;
-    --foreground: 0 0% 17%;
+    --background: 60 10% 98%;
+    --foreground: 0 0% 10%;
 
-    --card: 40 25% 97%;
-    --card-foreground: 0 0% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 17%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 0 0% 17%;
+    --primary: 0 0% 10%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 10% 95%;
-    --secondary-foreground: 0 0% 17%;
+    --secondary: 60 10% 96%;
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 40 8% 93%;
+    --muted: 60 5% 94%;
     --muted-foreground: 0 0% 45%;
 
     --accent: 43 50% 54%;
@@ -30,8 +30,8 @@
 
     --sale: 4 72% 47%;
 
-    --border: 40 10% 90%;
-    --input: 40 10% 90%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
     --ring: 43 50% 54%;
 
     --radius: 0.375rem;
@@ -40,30 +40,30 @@
     --charcoal: 0 0% 18%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 17%;
-    --sidebar-primary: 0 0% 17%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 0 0% 10%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 40 8% 93%;
-    --sidebar-accent-foreground: 0 0% 17%;
-    --sidebar-border: 40 10% 90%;
+    --sidebar-accent: 60 5% 94%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 90%;
     --sidebar-ring: 43 50% 54%;
   }
 
   .dark {
     --background: 0 0% 7%;
-    --foreground: 40 10% 95%;
+    --foreground: 60 10% 98%;
 
     --card: 0 0% 10%;
-    --card-foreground: 40 10% 95%;
+    --card-foreground: 60 10% 98%;
 
     --popover: 0 0% 10%;
-    --popover-foreground: 40 10% 95%;
+    --popover-foreground: 60 10% 98%;
 
-    --primary: 40 10% 95%;
+    --primary: 60 10% 98%;
     --primary-foreground: 0 0% 10%;
 
     --secondary: 0 0% 15%;
-    --secondary-foreground: 40 10% 95%;
+    --secondary-foreground: 60 10% 98%;
 
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
@@ -84,11 +84,11 @@
     --charcoal: 0 0% 85%;
 
     --sidebar-background: 0 0% 7%;
-    --sidebar-foreground: 40 10% 95%;
-    --sidebar-primary: 40 10% 95%;
+    --sidebar-foreground: 60 10% 98%;
+    --sidebar-primary: 60 10% 98%;
     --sidebar-primary-foreground: 0 0% 10%;
     --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 40 10% 95%;
+    --sidebar-accent-foreground: 60 10% 98%;
     --sidebar-border: 0 0% 18%;
     --sidebar-ring: 43 50% 54%;
   }
@@ -102,13 +102,11 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
+    font-weight: 400;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
     font-weight: 500;
-    line-height: 1.2;
   }
 }

@@ -11,7 +11,7 @@ import { Newsletter } from "@/components/Newsletter";
 
 const Index = () => {
   return (
-    <Layout heroPage>
+    <Layout>
       <Hero />
       <TrustBar />
       <FeaturedCategories />

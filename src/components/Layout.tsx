@@ -5,15 +5,14 @@ import { LiveChatWidget } from "./LiveChatWidget";
 
 interface LayoutProps {
   children: React.ReactNode;
-  heroPage?: boolean;
 }
 
-export const Layout = ({ children, heroPage = false }: LayoutProps) => {
+export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <AnnouncementBar />
       <Navbar />
-      <main className={`flex-1 ${heroPage ? "pt-10" : "pt-[104px] md:pt-[112px]"}`}>{children}</main>
+      <main className="flex-1">{children}</main>
       <Footer />
       <LiveChatWidget />
     </div>

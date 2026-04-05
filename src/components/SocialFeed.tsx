@@ -9,18 +9,18 @@ const PLACEHOLDER_IMAGES = [
 
 export const SocialFeed = () => {
   return (
-    <section className="py-20 md:py-28 px-6 md:px-12">
+    <section className="py-16 md:py-24 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl md:text-4xl text-center mb-4">Follow Us @furniture100</h2>
-        <p className="text-center text-muted-foreground font-light mb-12">Join our community for daily inspiration</p>
+        <p className="text-center text-muted-foreground mb-10">Join our community for daily inspiration</p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {PLACEHOLDER_IMAGES.map((src, i) => (
-            <div key={i} className="aspect-square overflow-hidden rounded-sm">
+            <div key={i} className="aspect-square overflow-hidden rounded-lg">
               <img
                 src={src}
                 alt={`Lifestyle inspiration ${i + 1}`}
-                className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-500"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 loading="lazy"
               />
             </div>
