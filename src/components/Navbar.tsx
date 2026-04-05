@@ -167,7 +167,7 @@ export const Navbar = ({ activeCategory, onCategoryChange }: NavbarProps) => {
 
         {/* Center: Logo */}
         <Link to="/" className="text-2xl tracking-[0.3em] font-medium" style={{ fontFamily: "'Playfair Display', serif" }}>
-          SWIFLIVING
+          furniture100
         </Link>
 
         {/* Right: Account + Cart */}
