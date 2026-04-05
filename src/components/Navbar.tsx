@@ -62,38 +62,40 @@ export const Navbar = () => {
 
       {/* Main nav row */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-[72px]">
-        {/* Left: Logo */}
-        <Link to="/" className="tracking-[0.15em] flex items-baseline shrink-0" style={{ fontFamily: "'Playfair Display', serif" }}>
+        {/* Left: Search + nav links */}
+        <div className="flex items-center gap-6">
+          <button onClick={() => setSearchOpen(!searchOpen)} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
+            <Search className="w-5 h-5" />
+          </button>
+          <div className="hidden md:flex items-center gap-8">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <button
+              onMouseEnter={handleMouseEnterCategories}
+              onClick={() => setMegaOpen(!megaOpen)}
+              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+            >
+              Categories
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
+            </button>
+          </div>
+        </div>
+
+        {/* Centre: Logo */}
+        <Link to="/" className="absolute left-1/2 -translate-x-1/2 tracking-[0.15em] flex items-baseline shrink-0" style={{ fontFamily: "'Playfair Display', serif" }}>
           <span className="text-xl md:text-2xl font-medium text-foreground">FURNITURE</span>
           <span className="text-gold ml-0.5 md:text-lg text-base font-medium">100</span>
         </Link>
 
-        {/* Centre: Navigation (desktop) */}
-        <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.label}
-              to={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <button
-            onMouseEnter={handleMouseEnterCategories}
-            onClick={() => setMegaOpen(!megaOpen)}
-            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
-          >
-            Categories
-            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
-          </button>
-        </div>
-
         {/* Right: Icons */}
         <div className="flex items-center gap-4">
-          <button onClick={() => setSearchOpen(!searchOpen)} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
-            <Search className="w-5 h-5" />
-          </button>
           <button className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Wishlist">
             <Heart className="w-5 h-5" />
           </button>
