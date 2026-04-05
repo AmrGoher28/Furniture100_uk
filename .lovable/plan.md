@@ -1,27 +1,15 @@
 
 
-# Hero Slideshow with Uploaded Images
+# Center the Last Category Card on Mobile
 
-## What Changes
-Replace the static hero image in `src/components/Hero.tsx` with an auto-rotating slideshow using the 2 uploaded images + 1 Unsplash placeholder as a third slide.
+## Problem
+With 5 category cards in a 2-column mobile grid, the 5th card (Dining) sits alone on the bottom-left, looking unbalanced.
 
-## Steps
+## Solution
+Make the last (odd) item span the full row and limit its width to match the other cards, centering it with `mx-auto`. This keeps the 2-column layout for the first 4 items and centers the 5th.
 
-### 1. Copy uploaded images to project
-- `user-uploads://replicate-prediction-pr3dd3y7sxrmy0cxbs3b66eskg.jpg` → `src/assets/hero-slide-1.jpg`
-- `user-uploads://replicate-prediction-m8ax74v445rmr0cxbs09ct1sqc.jpg` → `src/assets/hero-slide-2.jpg`
+## Changes
 
-### 2. Rebuild `src/components/Hero.tsx`
-- Import both images from `@/assets/`
-- Define a 3-slide array: slide 1 (lounge chairs), slide 2 (office/lounge), slide 3 (Unsplash lifestyle placeholder)
-- Add `currentSlide` state with `useEffect` auto-advancing every 5 seconds
-- Render all 3 images stacked absolutely, using `opacity` + `transition-opacity duration-1000` for smooth crossfade
-- Navigation dots at the bottom (clickable, gold active dot)
-- Text overlay stays the same on all slides
-- Pause auto-rotation on hover (optional nice touch)
-
-### Technical Detail
-- Images imported as ES6 modules for Vite bundling
-- No external carousel library needed — simple state + CSS transitions
-- Accessible: dots have aria-labels, images have alt text
+**`src/components/FeaturedCategories.tsx`**
+- Wrap the map to conditionally add `col-span-2 max-w-[calc(50%-0.5rem)] mx-auto` on the last item when the total count is odd, but only on mobile (use responsive classes so it resets on `lg:` where it's a 5-column grid).
 
