@@ -232,6 +232,9 @@ const CategoryPage = () => {
                           )}
                         </div>
                         <h3 className="text-sm font-medium mb-1 group-hover:text-gold transition-colors">{product.node.title}</h3>
+                        {summaries[product.node.handle] && (
+                          <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
+                        )}
                         <p className="text-base font-semibold mb-3">£{parseFloat(price.amount).toFixed(2)}</p>
                         <button
                           onClick={(e) => handleAddToCart(e, product)}
