@@ -256,6 +256,9 @@ const ProductDetail = () => {
               </p>
             </div>
           </div>
+
+          {/* Reviews */}
+          <ProductReviews productTitle={product.title} />
         </div>
       </main>
 
