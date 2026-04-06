@@ -1,32 +1,14 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Newsletter = () => {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [discountCode, setDiscountCode] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { data, error } = await supabase.functions.invoke("create-discount", {
-        body: { email, source: "newsletter" },
-      });
-
-      if (error) throw error;
-
-      if (data?.code) {
-        setDiscountCode(data.code);
-        toast.success("Your discount code has been created!");
-      }
-    } catch {
-      toast.error("Something went wrong. Please try again.");
-    }
-
-    setLoading(false);
+    setSubmitted(true);
+    toast.success("Your discount code: WELCOME10");
   };
 
   return (
@@ -39,10 +21,10 @@ export const Newsletter = () => {
           Join thousands of happy customers and be first to hear about new arrivals and exclusive deals
         </p>
 
-        {discountCode ? (
+        {submitted ? (
           <div className="bg-primary-foreground/10 border border-primary-foreground/20 rounded-lg p-6 max-w-md mx-auto">
             <p className="text-primary-foreground/60 text-sm font-light mb-2">Your discount code:</p>
-            <p className="text-2xl font-medium text-gold tracking-widest mb-2">{discountCode}</p>
+            <p className="text-2xl font-medium text-gold tracking-widest mb-2">WELCOME10</p>
             <p className="text-primary-foreground/40 text-xs font-light">
               Use this at checkout for 10% off your order
             </p>
@@ -59,10 +41,9 @@ export const Newsletter = () => {
             />
             <button
               type="submit"
-              disabled={loading}
-              className="bg-gold text-primary-foreground px-6 py-3 rounded-full text-sm font-medium tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50"
+              className="bg-gold text-primary-foreground px-6 py-3 rounded-full text-sm font-medium tracking-wide hover:opacity-90 transition-opacity"
             >
-              {loading ? "Creating..." : "Get 10% Off"}
+              Get 10% Off
             </button>
           </form>
         )}

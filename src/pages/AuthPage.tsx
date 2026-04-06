@@ -35,17 +35,7 @@ const AuthPage = () => {
         toast.error(error.message);
       } else {
         toast.success("Check your email to verify your account");
-        // Generate discount code for new signups
-        try {
-          const { data } = await supabase.functions.invoke("create-discount", {
-            body: { email, source: "signup" },
-          });
-          if (data?.code) {
-            toast.success(`Your 10% discount code: ${data.code}`, { duration: 10000 });
-          }
-        } catch {
-          // Non-critical, don't block signup
-        }
+        toast.success("Your 10% discount code: WELCOME10", { duration: 10000 });
       }
     }
     setLoading(false);
