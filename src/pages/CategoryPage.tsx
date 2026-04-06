@@ -26,6 +26,7 @@ const CategoryPage = () => {
   const [sort, setSort] = useState<SortOption>("featured");
   const [showFilters, setShowFilters] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
+  const { summaries } = useProductReviews();
 
   useEffect(() => {
     window.scrollTo(0, 0);
