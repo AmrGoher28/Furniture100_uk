@@ -1,26 +1,26 @@
 
 
-# Add Subtle Dark Overlays to Image Sections
+# Add Cookie Consent Banner
 
-## Problem
-Text over images (Hero, Lifestyle Banner, Category cards) can be hard to read depending on the image brightness. No overlays currently exist.
+## Overview
+Add a GDPR-compliant cookie consent banner that appears on first visit, letting users accept or manage cookies — standard for any professional UK e-commerce site.
 
-## Changes
+## What the user will see
+A slim banner at the bottom of the screen on first visit with a brief message about cookies and two buttons: "Accept All" and "Manage Preferences". Once accepted, the choice is saved to localStorage and the banner won't appear again.
 
-### 1. Hero — full dark overlay
-**`src/components/Hero.tsx`**
-- Add a `<div className="absolute inset-0 bg-black/30 z-[1]" />` after the image slides
-- Bump the text content `z-10` stays above (already is)
+## Technical Details
 
-### 2. Lifestyle Banner — full dark overlay
-**`src/components/LifestyleBanner.tsx`**
-- Add `<div className="absolute inset-0 bg-black/35" />` after the `<img>`
-- Text already has `z-10`
+### 1. Create `src/components/CookieConsent.tsx`
+- Fixed bottom banner with `z-50`, styled to match the warm luxury aesthetic (cream/stone tones)
+- Two buttons: **Accept All** (gold primary) and **Manage Preferences** (outline)
+- "Manage Preferences" expands an inline section with toggles for: Essential (always on), Analytics, Marketing
+- On accept, store consent object in `localStorage` under `cookie_consent`
+- Banner slides up with a subtle animation on mount
+- Links to the existing `/privacy` page
 
-### 3. Featured Categories — bottom gradient on each card
-**`src/components/FeaturedCategories.tsx`**
-- Replace the plain `<div className="absolute bottom-0 ...">` wrapper with a gradient overlay: `<div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">`
-- This ensures category names are always readable regardless of the image
+### 2. Update `src/components/Layout.tsx`
+- Import and render `<CookieConsent />` alongside other layout elements
+- Only renders if no consent has been stored yet
 
-All overlays are subtle (30-35% black for full overlays, 60% gradient for card bottoms) to maintain the luxury aesthetic.
+No database changes needed — consent is stored client-side in localStorage.
 
