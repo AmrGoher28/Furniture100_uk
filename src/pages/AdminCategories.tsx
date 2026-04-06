@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import { fetchProductsPage, ShopifyProduct } from "@/lib/shopify";
 import { CATEGORIES } from "@/lib/categories";
 import { fetchAllMappings, upsertMapping, deleteMapping, ProductCategoryMapping } from "@/lib/productCategories";
+import { useAuth } from "@/hooks/useAuth";
 import { Loader2, Save, Trash2, Check } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
@@ -15,7 +16,10 @@ interface RowState {
   saving: boolean;
 }
 
+const AUTH_REQUIRED_MESSAGE = "Please sign in on this site before saving category changes";
+
 const AdminCategories = () => {
+  const { user, loading: authLoading } = useAuth();
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [mappings, setMappings] = useState<ProductCategoryMapping[]>([]);
   const [rows, setRows] = useState<Record<string, RowState>>({});
@@ -25,16 +29,17 @@ const AdminCategories = () => {
     const load = async () => {
       try {
         const mapsPromise = fetchAllMappings();
-        // Fetch all products with pagination
         let allProducts: ShopifyProduct[] = [];
         let cursor: string | null = null;
         let hasNext = true;
+
         while (hasNext) {
           const { products: page, pageInfo } = await fetchProductsPage(250, cursor);
           allProducts = [...allProducts, ...page];
           hasNext = pageInfo.hasNextPage;
           cursor = pageInfo.endCursor;
         }
+
         const maps = await mapsPromise;
         const prods = allProducts;
         setProducts(prods);
@@ -70,13 +75,20 @@ const AdminCategories = () => {
   };
 
   const handleSave = async (handle: string) => {
+    if (!user) {
+      toast.error(AUTH_REQUIRED_MESSAGE);
+      return;
+    }
+
     const row = rows[handle];
     if (!row || !row.category_slug) {
       toast.error("Please select a category first");
       return;
     }
+
     setRows((prev) => ({ ...prev, [handle]: { ...prev[handle], saving: true } }));
     const ok = await upsertMapping(handle, row.category_slug, row.subcategory_slug || null, row.is_best_seller);
+
     if (ok) {
       toast.success("Saved");
       setRows((prev) => ({ ...prev, [handle]: { ...prev[handle], saving: false, dirty: false } }));
@@ -87,6 +99,11 @@ const AdminCategories = () => {
   };
 
   const handleRemove = async (handle: string) => {
+    if (!user) {
+      toast.error(AUTH_REQUIRED_MESSAGE);
+      return;
+    }
+
     const ok = await deleteMapping(handle);
     if (ok) {
       toast.success("Mapping removed");
@@ -104,7 +121,7 @@ const AdminCategories = () => {
     return cat?.subcategories || [];
   };
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <Layout>
         <div className="flex justify-center items-center py-32">
@@ -122,11 +139,17 @@ const AdminCategories = () => {
       <section className="py-8 md:py-12 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-2xl md:text-3xl mb-2">Product Category Manager</h1>
-          <p className="text-muted-foreground mb-8">
+          <p className="text-muted-foreground mb-4">
             Assign products to categories. {unassigned.length > 0 && (
               <span className="text-destructive font-medium">{unassigned.length} unassigned</span>
             )}
           </p>
+
+          {!user && (
+            <div className="mb-6 rounded-lg border border-border bg-secondary/30 px-4 py-3 text-sm text-foreground">
+              You&apos;re currently not signed in on this site, so saves will be blocked. Sign in first, then come back here to manage categories.
+            </div>
+          )}
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -208,7 +231,7 @@ const AdminCategories = () => {
                             onClick={() => handleSave(handle)}
                             disabled={!row?.dirty || row?.saving}
                             className="p-1.5 rounded-md hover:bg-secondary disabled:opacity-30 transition-colors"
-                            title="Save"
+                            title={user ? "Save" : AUTH_REQUIRED_MESSAGE}
                           >
                             {row?.saving ? (
                               <Loader2 className="w-4 h-4 animate-spin" />
@@ -222,7 +245,7 @@ const AdminCategories = () => {
                             <button
                               onClick={() => handleRemove(handle)}
                               className="p-1.5 rounded-md hover:bg-destructive/10 transition-colors"
-                              title="Remove mapping"
+                              title={user ? "Remove mapping" : AUTH_REQUIRED_MESSAGE}
                             >
                               <Trash2 className="w-4 h-4 text-destructive" />
                             </button>
