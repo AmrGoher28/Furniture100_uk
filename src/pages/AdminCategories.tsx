@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
-import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
+import { fetchProductsPage, ShopifyProduct } from "@/lib/shopify";
 import { CATEGORIES } from "@/lib/categories";
 import { fetchAllMappings, upsertMapping, deleteMapping, ProductCategoryMapping } from "@/lib/productCategories";
 import { Loader2, Save, Trash2, Check } from "lucide-react";
@@ -24,11 +24,19 @@ const AdminCategories = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const [prodData, maps] = await Promise.all([
-          storefrontApiRequest(PRODUCTS_QUERY, { first: 100 }),
-          fetchAllMappings(),
-        ]);
-        const prods: ShopifyProduct[] = prodData?.data?.products?.edges || [];
+        const mapsPromise = fetchAllMappings();
+        // Fetch all products with pagination
+        let allProducts: ShopifyProduct[] = [];
+        let cursor: string | null = null;
+        let hasNext = true;
+        while (hasNext) {
+          const { products: page, pageInfo } = await fetchProductsPage(250, cursor);
+          allProducts = [...allProducts, ...page];
+          hasNext = pageInfo.hasNextPage;
+          cursor = pageInfo.endCursor;
+        }
+        const maps = await mapsPromise;
+        const prods = allProducts;
         setProducts(prods);
         setMappings(maps);
 
