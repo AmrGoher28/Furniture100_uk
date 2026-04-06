@@ -4,7 +4,7 @@ export const LifestyleBanner = () => {
   return (
     <section className="relative min-h-[400px] md:min-h-[500px] flex items-center justify-center">
       <img
-        src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80"
+        src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&q=75&fm=webp"
         alt="Beautifully styled living space"
         className="absolute inset-0 w-full h-full object-cover"
         loading="lazy"

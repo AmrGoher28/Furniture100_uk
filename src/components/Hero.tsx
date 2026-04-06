@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import heroSlide1 from "@/assets/hero-slide-1.jpg";
-import heroSlide2 from "@/assets/hero-slide-2.jpg";
-import heroSlide1Mobile from "@/assets/hero-slide-1-mobile.jpg";
-import heroSlide2Mobile from "@/assets/hero-slide-2-mobile.jpg";
+import heroSlide1 from "@/assets/hero-slide-1.webp";
+import heroSlide2 from "@/assets/hero-slide-2.webp";
+import heroSlide1Mobile from "@/assets/hero-slide-1-mobile.webp";
+import heroSlide2Mobile from "@/assets/hero-slide-2-mobile.webp";
 
 const slides = [
   {
@@ -45,6 +45,8 @@ export const Hero = () => {
           key={i}
           src={isMobile ? slide.mobile : slide.desktop}
           alt={slide.alt}
+          fetchPriority={i === 0 ? "high" : undefined}
+          loading={i === 0 ? undefined : "lazy"}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}

@@ -1,10 +1,10 @@
 const PLACEHOLDER_IMAGES = [
-  "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&q=80",
-  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=400&q=80",
-  "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",
-  "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&q=80",
-  "https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&q=80",
-  "https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=400&q=80",
+  "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=250&q=75&fm=webp",
+  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=250&q=75&fm=webp",
+  "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=250&q=75&fm=webp",
+  "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=250&q=75&fm=webp",
+  "https://images.unsplash.com/photo-1618220179428-22790b461013?w=250&q=75&fm=webp",
+  "https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=250&q=75&fm=webp",
 ];
 
 export const SocialFeed = () => {
