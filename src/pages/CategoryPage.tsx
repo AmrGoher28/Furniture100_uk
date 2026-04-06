@@ -4,6 +4,7 @@ import { Layout } from "@/components/Layout";
 import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
+import { fetchMappingsByCategory } from "@/lib/productCategories";
 import { Loader2, ShoppingBag, SlidersHorizontal, ChevronDown, X } from "lucide-react";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
