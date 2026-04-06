@@ -42,6 +42,21 @@ const AuthPage = () => {
     setLoading(false);
   };
 
+  const handleAppleSignIn = async () => {
+    setLoading(true);
+    const result = await lovable.auth.signInWithOAuth("apple", {
+      redirect_uri: window.location.origin,
+    });
+    if (result.error) {
+      toast.error("Apple sign-in failed. Please try again.");
+      setLoading(false);
+      return;
+    }
+    if (result.redirected) return;
+    toast.success("Welcome!");
+    navigate("/account");
+  };
+
   return (
     <Layout>
       <section className="py-16 md:py-24 px-6">
