@@ -34,7 +34,7 @@ const CategoryPage = () => {
       setLoading(true);
       try {
         const [prodData, dbHandles] = await Promise.all([
-          storefrontApiRequest(PRODUCTS_QUERY, { first: 50 }),
+          storefrontApiRequest(PRODUCTS_QUERY, { first: 250 }),
           category ? fetchMappingsByCategory(category.slug) : Promise.resolve([]),
         ]);
         const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];

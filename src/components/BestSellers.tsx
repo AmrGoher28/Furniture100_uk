@@ -14,7 +14,7 @@ export const BestSellers = () => {
     const loadBestSellers = async () => {
       try {
         const [prodData, bestHandles] = await Promise.all([
-          storefrontApiRequest(PRODUCTS_QUERY, { first: 50 }),
+          storefrontApiRequest(PRODUCTS_QUERY, { first: 250 }),
           fetchBestSellerHandles(),
         ]);
         const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];
