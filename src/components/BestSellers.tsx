@@ -27,9 +27,8 @@ export const BestSellers = () => {
           }
         }
 
-        const prodData = await storefrontApiRequest(PRODUCTS_QUERY, { first: 250 });
-        const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];
-        setProducts(allProducts.slice(0, 4));
+        const { products: firstPage } = await fetchProductsPage(4);
+        setProducts(firstPage);
       } catch (e) {
         console.error("Failed to load best sellers:", e);
       } finally {
