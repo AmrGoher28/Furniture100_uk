@@ -22,7 +22,7 @@ Deno.serve(async (req) => {
 
     const { email, source } = parsed.data
     const shopifyToken = Deno.env.get('SHOPIFY_ADMIN_TOKEN') || Deno.env.get('SHOPIFY_ACCESS_TOKEN')
-    const shopifyDomain = 'furniture100-store.myshopify.com'
+    const shopifyDomain = 'swifliving-showroom-build-xw1vp.myshopify.com'
 
     if (!shopifyToken) {
       return new Response(JSON.stringify({ error: 'Shopify not configured' }), {
