@@ -14,6 +14,7 @@ export const Layout = ({ children }: LayoutProps) => {
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <CookieConsent />
     </div>
   );
 };
