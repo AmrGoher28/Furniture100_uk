@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Star, ThumbsUp, User } from "lucide-react";
+import { Star, ThumbsUp } from "lucide-react";
 
 interface Review {
   id: string;
@@ -10,32 +10,30 @@ interface Review {
   item_title: string | null;
   price: string | null;
   period: string | null;
+  review_image: string | null;
   created_at: string;
 }
 
 interface ProductReviewsProps {
-  productTitle: string;
+  productHandle: string;
 }
 
 const STARS_MAP: Record<string, number> = {
   Positive: 5,
   Neutral: 3,
-  Negative: 1,
 };
 
-const getInitials = (name: string) => {
-  return name.slice(0, 2).toUpperCase();
-};
+const getInitials = (name: string) => name.slice(0, 2).toUpperCase();
 
 const timeAgo = (period: string | null) => {
   if (!period) return "";
-  if (period.toLowerCase().includes("month")) return "Last month";
+  if (period.toLowerCase().includes("past month")) return "Last month";
   if (period.toLowerCase().includes("6 months")) return "6 months ago";
   if (period.toLowerCase().includes("year")) return "Over a year ago";
   return period;
 };
 
-const ProductReviews = ({ productTitle }: ProductReviewsProps) => {
+const ProductReviews = ({ productHandle }: ProductReviewsProps) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
@@ -43,30 +41,14 @@ const ProductReviews = ({ productTitle }: ProductReviewsProps) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        // Get all positive reviews first, then try to match by keywords
         const { data, error } = await supabase
           .from("reviews")
           .select("*")
-          .eq("rating", "Positive")
+          .eq("product_handle", productHandle)
           .order("created_at", { ascending: false });
 
         if (error) throw error;
-        if (!data) return;
-
-        // Try to find reviews matching this product by keywords
-        const titleWords = productTitle
-          .toLowerCase()
-          .split(/[\s\-]+/)
-          .filter((w) => w.length > 3 && !["send", "offer", "save", "style", "with"].includes(w));
-
-        const matched = data.filter((r) => {
-          const itemLower = (r.item_title || "").toLowerCase();
-          return titleWords.some((word) => itemLower.includes(word));
-        });
-
-        // If we have matched reviews use those, otherwise pick general positive reviews
-        const finalReviews = matched.length >= 2 ? matched : data.slice(0, 8);
-        setReviews(finalReviews);
+        setReviews(data || []);
       } catch (e) {
         console.error("Error fetching reviews:", e);
       } finally {
@@ -74,7 +56,7 @@ const ProductReviews = ({ productTitle }: ProductReviewsProps) => {
       }
     };
     fetchReviews();
-  }, [productTitle]);
+  }, [productHandle]);
 
   if (loading || reviews.length === 0) return null;
 
@@ -102,13 +84,13 @@ const ProductReviews = ({ productTitle }: ProductReviewsProps) => {
               ))}
             </div>
             <span className="text-sm text-muted-foreground">
-              {avgStars.toFixed(1)} out of 5 · {reviews.length} reviews
+              {avgStars.toFixed(1)} out of 5 · {reviews.length} review{reviews.length !== 1 ? "s" : ""}
             </span>
           </div>
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <ThumbsUp className="w-3.5 h-3.5 text-gold" />
-          Verified purchases from eBay
+          Verified purchases
         </div>
       </div>
 
@@ -143,13 +125,21 @@ const ProductReviews = ({ productTitle }: ProductReviewsProps) => {
                       }`}
                     />
                   ))}
-                  <span className="text-xs text-green-600 ml-2">✓ Verified</span>
+                  <span className="text-xs ml-2 text-emerald-600">✓ Verified</span>
                 </div>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               {review.feedback}
             </p>
+            {review.review_image && (
+              <img
+                src={review.review_image}
+                alt="Customer review photo"
+                className="mt-3 rounded-md max-h-48 object-cover"
+                loading="lazy"
+              />
+            )}
           </div>
         ))}
       </div>
