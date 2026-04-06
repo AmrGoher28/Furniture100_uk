@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
+import { fetchBestSellerHandles } from "@/lib/productCategories";
 import { Loader2, ShoppingBag } from "lucide-react";
 
 export const BestSellers = () => {
@@ -10,17 +11,27 @@ export const BestSellers = () => {
   const addItem = useCartStore((s) => s.addItem);
 
   useEffect(() => {
-    const fetch = async () => {
+    const loadBestSellers = async () => {
       try {
-        const data = await storefrontApiRequest(PRODUCTS_QUERY, { first: 4 });
-        setProducts(data?.data?.products?.edges || []);
+        const [prodData, bestHandles] = await Promise.all([
+          storefrontApiRequest(PRODUCTS_QUERY, { first: 50 }),
+          fetchBestSellerHandles(),
+        ]);
+        const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];
+        if (bestHandles.length > 0) {
+          const handleSet = new Set(bestHandles);
+          setProducts(allProducts.filter((p) => handleSet.has(p.node.handle)));
+        } else {
+          // Fallback: show first 4
+          setProducts(allProducts.slice(0, 4));
+        }
       } catch (e) {
         console.error("Failed to load best sellers:", e);
       } finally {
         setLoading(false);
       }
     };
-    fetch();
+    loadBestSellers();
   }, []);
 
   const handleAddToCart = (e: React.MouseEvent, product: ShopifyProduct) => {

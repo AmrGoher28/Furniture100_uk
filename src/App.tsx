@@ -15,6 +15,7 @@ import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
 import AdminOffers from "./pages/AdminOffers";
+import AdminCategories from "./pages/AdminCategories";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const AppContent = () => {
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />
       <Route path="/admin/offers" element={<AdminOffers />} />
+      <Route path="/admin/categories" element={<AdminCategories />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
