@@ -177,10 +177,6 @@ const ProductDetail = () => {
                 From £{klarnaMonthly}/month with Klarna. <span className="text-gold cursor-pointer">Learn more</span>
               </p>
 
-              <p className="text-muted-foreground leading-relaxed mb-8">
-                {product.description}
-              </p>
-
               {/* Variant selectors */}
               {product.options.map((option) => {
                 if (option.name === "Title" && option.values.length === 1 && option.values[0] === "Default Title") return null;
@@ -239,6 +235,10 @@ const ProductDetail = () => {
                   Add to Wishlist
                 </button>
               </div>
+
+              <p className="text-muted-foreground leading-relaxed mb-8">
+                {product.description}
+              </p>
 
               {/* Trust icons */}
               <div className="grid grid-cols-2 gap-3 mb-8">
