@@ -173,6 +173,24 @@ export const PRODUCT_BY_HANDLE_QUERY = `
   }
 `;
 
+export async function fetchProductsByHandles(handles: string[]): Promise<ShopifyProduct[]> {
+  const uniqueHandles = Array.from(new Set(handles.filter(Boolean)));
+
+  if (uniqueHandles.length === 0) {
+    return [];
+  }
+
+  const products = await Promise.all(
+    uniqueHandles.map(async (handle) => {
+      const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle });
+      const product = data?.data?.productByHandle;
+      return product ? ({ node: product } as ShopifyProduct) : null;
+    })
+  );
+
+  return products.filter((product): product is ShopifyProduct => product !== null);
+}
+
 // Cart mutations
 const CART_QUERY = `
   query cart($id: ID!) {
