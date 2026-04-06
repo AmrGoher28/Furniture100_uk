@@ -18,6 +18,7 @@ import AdminOffers from "./pages/AdminOffers";
 import AdminCategories from "./pages/AdminCategories";
 import AuthPage from "./pages/AuthPage";
 import AccountPage from "./pages/AccountPage";
+import UnsubscribePage from "./pages/UnsubscribePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const AppContent = () => {
       <Route path="/account" element={<AccountPage />} />
       <Route path="/admin/offers" element={<AdminOffers />} />
       <Route path="/admin/categories" element={<AdminCategories />} />
+      <Route path="/unsubscribe" element={<UnsubscribePage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

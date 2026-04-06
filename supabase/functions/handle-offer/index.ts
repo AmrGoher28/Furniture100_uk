@@ -12,6 +12,26 @@ const shopifyAdminToken = Deno.env.get("SHOPIFY_ADMIN_TOKEN") || "";
 const shopifyStoreDomain = "swifliving-showroom-build-xw1vp.myshopify.com";
 const siteUrl = Deno.env.get("SITE_URL") || "https://luxe-calm-shop.lovable.app";
 
+async function sendOfferEmail(supabase: any, templateName: string, recipientEmail: string, templateData: Record<string, any>, idempotencyKey: string) {
+  try {
+    const { error } = await supabase.functions.invoke('send-transactional-email', {
+      body: {
+        templateName,
+        recipientEmail,
+        idempotencyKey,
+        templateData,
+      },
+    });
+    if (error) {
+      console.error(`[OFFER] Failed to send ${templateName} email:`, error);
+    } else {
+      console.log(`[OFFER] ${templateName} email queued for ${recipientEmail}`);
+    }
+  } catch (err) {
+    console.error(`[OFFER] Error sending ${templateName} email:`, err);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -23,28 +43,9 @@ Deno.serve(async (req) => {
     const { action } = body;
 
     if (action === "new_offer") {
-      // Send notification email to admin
       const { productTitle, originalPrice, offerAmount, buyerEmail, buyerName, variantTitle } = body;
       
       if (adminEmail) {
-        const emailHtml = `
-          <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #F5F0EB; padding: 30px;">
-            <h1 style="color: #2C2C2C; font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 20px;">New Offer Received</h1>
-            <div style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-              <p style="color: #2C2C2C; margin: 0 0 8px;"><strong>Product:</strong> ${productTitle}${variantTitle && variantTitle !== "Default Title" ? ` — ${variantTitle}` : ""}</p>
-              <p style="color: #2C2C2C; margin: 0 0 8px;"><strong>Listed Price:</strong> £${Number(originalPrice).toFixed(2)}</p>
-              <p style="color: #5C4033; margin: 0 0 8px; font-size: 18px;"><strong>Offer: £${Number(offerAmount).toFixed(2)}</strong></p>
-              <p style="color: #7A7168; margin: 0 0 4px;"><strong>Buyer:</strong> ${buyerName || "N/A"}</p>
-              <p style="color: #7A7168; margin: 0;"><strong>Email:</strong> ${buyerEmail}</p>
-            </div>
-            <p style="color: #7A7168; font-size: 14px;">
-              <a href="${siteUrl}/admin/offers" style="color: #5C4033; text-decoration: underline;">Manage this offer →</a>
-            </p>
-          </div>
-        `;
-
-        // Use Supabase's built-in email or a configured service
-        // For now, log the notification (email service will be configured separately)
         console.log(`[OFFER NOTIFICATION] New offer from ${buyerEmail} for ${productTitle}: £${offerAmount}`);
         console.log(`Admin email would be sent to: ${adminEmail}`);
       }
@@ -57,7 +58,6 @@ Deno.serve(async (req) => {
     if (action === "accept" || action === "decline" || action === "counter") {
       const { offerId, counterAmount } = body;
 
-      // Fetch offer
       const { data: offer, error: fetchErr } = await supabase
         .from("offers")
         .select("*")
@@ -73,8 +73,12 @@ Deno.serve(async (req) => {
       if (action === "decline") {
         await supabase.from("offers").update({ status: "declined" }).eq("id", offerId);
         
-        // TODO: Send decline email to buyer
-        console.log(`[OFFER] Declined offer ${offerId} from ${offer.buyer_email}`);
+        await sendOfferEmail(supabase, 'offer-declined', offer.buyer_email, {
+          productTitle: offer.product_title,
+          originalPrice: Number(offer.original_price).toFixed(2),
+          offerAmount: Number(offer.offer_amount).toFixed(2),
+          shopUrl: `${siteUrl}/shop`,
+        }, `offer-declined-${offerId}`);
 
         return new Response(JSON.stringify({ success: true }), {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -89,8 +93,13 @@ Deno.serve(async (req) => {
         }
         await supabase.from("offers").update({ status: "countered", counter_amount: counterAmount }).eq("id", offerId);
 
-        // TODO: Send counter email to buyer
-        console.log(`[OFFER] Counter offer ${offerId}: £${counterAmount}`);
+        await sendOfferEmail(supabase, 'offer-counter', offer.buyer_email, {
+          productTitle: offer.product_title,
+          originalPrice: Number(offer.original_price).toFixed(2),
+          offerAmount: Number(offer.offer_amount).toFixed(2),
+          counterAmount: Number(counterAmount).toFixed(2),
+          productUrl: `${siteUrl}/product/${offer.product_handle}`,
+        }, `offer-counter-${offerId}`);
 
         return new Response(JSON.stringify({ success: true }), {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -101,7 +110,6 @@ Deno.serve(async (req) => {
         const agreedPrice = offer.offer_amount;
         const discount = offer.original_price - agreedPrice;
 
-        // Try to create Shopify Draft Order
         if (shopifyAdminToken) {
           try {
             const draftOrderRes = await fetch(
@@ -143,7 +151,6 @@ Deno.serve(async (req) => {
             if (draftOrderData.draft_order) {
               const draftOrder = draftOrderData.draft_order;
               
-              // Send invoice
               await fetch(
                 `https://${shopifyStoreDomain}/admin/api/2025-07/draft_orders/${draftOrder.id}/send_invoice.json`,
                 {
@@ -178,7 +185,6 @@ Deno.serve(async (req) => {
             await supabase.from("offers").update({ status: "accepted" }).eq("id", offerId);
           }
         } else {
-          // No Shopify admin token — just mark as accepted
           await supabase.from("offers").update({ status: "accepted" }).eq("id", offerId);
           console.log(`[OFFER] Accepted offer ${offerId} (no Shopify token configured)`);
         }
