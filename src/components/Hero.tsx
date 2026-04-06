@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import heroSlide1 from "@/assets/hero-slide-1.jpg";
-import heroSlide2 from "@/assets/hero-slide-2.jpg";
-import heroSlide1Mobile from "@/assets/hero-slide-1-mobile.jpg";
-import heroSlide2Mobile from "@/assets/hero-slide-2-mobile.jpg";
+import heroSlide1 from "@/assets/hero-slide-1.webp";
+import heroSlide2 from "@/assets/hero-slide-2.webp";
+import heroSlide1Mobile from "@/assets/hero-slide-1-mobile.webp";
+import heroSlide2Mobile from "@/assets/hero-slide-2-mobile.webp";
 
 const slides = [
   {
