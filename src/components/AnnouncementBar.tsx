@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
 
 const MESSAGES = [
-  "Free UK Delivery on All Orders",
-  "2–5 Working Day Delivery",
-  "30 Day Hassle-Free Returns",
-  "Based in Lincoln, UK",
-  "Rated Excellent by Our Customers",
-  "Buy Now, Pay Later Available",
+  "Free UK Delivery",
+  "2–5 Day Dispatch",
+  "30 Day Returns",
+  "Lincoln, UK",
+  "Buy Now, Pay Later",
 ];
 
 export const AnnouncementBar = () => {
@@ -18,7 +17,7 @@ export const AnnouncementBar = () => {
 
     let animId: number;
     let pos = 0;
-    const speed = 0.5;
+    const speed = 0.4;
 
     const step = () => {
       pos -= speed;
@@ -35,14 +34,12 @@ export const AnnouncementBar = () => {
   const items = [...MESSAGES, ...MESSAGES];
 
   return (
-    <div className="bg-walnut-dark text-primary-foreground py-2 overflow-hidden">
-      <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
+    <div className="bg-walnut-dark text-primary-foreground py-1.5 overflow-hidden">
+      <div ref={trackRef} className="flex items-center whitespace-nowrap will-change-transform">
         {items.map((msg, i) => (
-          <span
-            key={i}
-            className="text-[10px] sm:text-xs md:text-sm tracking-wide font-light px-6 md:px-10"
-          >
-            {msg}
+          <span key={i} className="flex items-center text-[10px] sm:text-xs tracking-widest uppercase font-light">
+            <span className="px-4 sm:px-6">{msg}</span>
+            <span className="text-gold/60">·</span>
           </span>
         ))}
       </div>
