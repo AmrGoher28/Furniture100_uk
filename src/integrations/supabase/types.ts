@@ -74,6 +74,36 @@ export type Database = {
         }
         Relationships: []
       }
+      product_categories: {
+        Row: {
+          category_slug: string
+          created_at: string
+          id: string
+          is_best_seller: boolean
+          product_handle: string
+          subcategory_slug: string | null
+          updated_at: string
+        }
+        Insert: {
+          category_slug: string
+          created_at?: string
+          id?: string
+          is_best_seller?: boolean
+          product_handle: string
+          subcategory_slug?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category_slug?: string
+          created_at?: string
+          id?: string
+          is_best_seller?: boolean
+          product_handle?: string
+          subcategory_slug?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
