@@ -6,6 +6,8 @@ import { useCartStore } from "@/stores/cartStore";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
 import { Loader2, ShoppingBag, SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import { useProductReviews } from "@/hooks/useProductReviews";
+import ProductStars from "@/components/ProductStars";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
