@@ -4,11 +4,14 @@ import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct, fetchProductsByHa
 import { useCartStore } from "@/stores/cartStore";
 import { fetchBestSellerHandles } from "@/lib/productCategories";
 import { Loader2, ShoppingBag } from "lucide-react";
+import { useProductReviews } from "@/hooks/useProductReviews";
+import ProductStars from "@/components/ProductStars";
 
 export const BestSellers = () => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const addItem = useCartStore((s) => s.addItem);
+  const { summaries } = useProductReviews();
 
   useEffect(() => {
     const loadBestSellers = async () => {
@@ -95,6 +98,9 @@ export const BestSellers = () => {
                   <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {product.node.title}
                   </h3>
+                  {summaries[product.node.handle] && (
+                    <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
+                  )}
                   <p className="text-base font-medium mb-3">
                     £{parseFloat(price.amount).toFixed(2)}
                   </p>

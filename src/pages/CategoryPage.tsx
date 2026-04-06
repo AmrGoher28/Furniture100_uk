@@ -6,6 +6,8 @@ import { useCartStore } from "@/stores/cartStore";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
 import { Loader2, ShoppingBag, SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import { useProductReviews } from "@/hooks/useProductReviews";
+import ProductStars from "@/components/ProductStars";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
@@ -24,6 +26,7 @@ const CategoryPage = () => {
   const [sort, setSort] = useState<SortOption>("featured");
   const [showFilters, setShowFilters] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
+  const { summaries } = useProductReviews();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -229,6 +232,9 @@ const CategoryPage = () => {
                           )}
                         </div>
                         <h3 className="text-sm font-medium mb-1 group-hover:text-gold transition-colors">{product.node.title}</h3>
+                        {summaries[product.node.handle] && (
+                          <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
+                        )}
                         <p className="text-base font-semibold mb-3">£{parseFloat(price.amount).toFixed(2)}</p>
                         <button
                           onClick={(e) => handleAddToCart(e, product)}
