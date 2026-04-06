@@ -45,6 +45,8 @@ export const Hero = () => {
           key={i}
           src={isMobile ? slide.mobile : slide.desktop}
           alt={slide.alt}
+          fetchPriority={i === 0 ? "high" : undefined}
+          loading={i === 0 ? undefined : "lazy"}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}
