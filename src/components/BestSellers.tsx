@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct, fetchProductsByHandles } from "@/lib/shopify";
+import { fetchProductsPage, ShopifyProduct, fetchProductsByHandles } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { fetchBestSellerHandles } from "@/lib/productCategories";
 import { Loader2, ShoppingBag } from "lucide-react";
