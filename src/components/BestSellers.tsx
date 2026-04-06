@@ -11,6 +11,7 @@ export const BestSellers = () => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const addItem = useCartStore((s) => s.addItem);
+  const { summaries } = useProductReviews();
 
   useEffect(() => {
     const loadBestSellers = async () => {
