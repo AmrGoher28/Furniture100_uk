@@ -94,12 +94,12 @@ export const Navbar = () => {
           <button onClick={() => setSearchOpen(!searchOpen)} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
             <Search className="w-5 h-5" />
           </button>
-          <button className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Wishlist">
+          <Link to="/account" className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Wishlist">
             <Heart className="w-5 h-5" />
-          </button>
-          <button className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Account">
+          </Link>
+          <Link to="/account" className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Account">
             <User className="w-5 h-5" />
-          </button>
+          </Link>
           <CartDrawer />
 
           {/* Mobile hamburger */}
@@ -161,12 +161,12 @@ export const Navbar = () => {
                 </Accordion>
 
                 <div className="border-t border-border/30 mt-4 pt-4 flex flex-col gap-3">
-                  <button className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
+                  <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <User className="w-4 h-4" /> Account
-                  </button>
-                  <button className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
+                  </Link>
+                  <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Heart className="w-4 h-4" /> Wishlist
-                  </button>
+                  </Link>
                   <a href="tel:+441234567890" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Phone className="w-4 h-4" /> 01234 567 890
                   </a>
