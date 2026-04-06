@@ -64,7 +64,7 @@ export const Hero = () => {
           Transform your home with our curated collection of premium furniture. Free UK delivery on every order.
         </p>
         <p className="text-primary-foreground/75 text-sm font-light max-w-xs mx-auto mb-8 leading-relaxed sm:hidden" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
-          Premium furniture with free UK delivery.
+          Premium furniture with free UK delivery
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
