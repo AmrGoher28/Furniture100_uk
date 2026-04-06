@@ -4,29 +4,12 @@ import { toast } from "sonner";
 
 export const Newsletter = () => {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [discountCode, setDiscountCode] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { data, error } = await supabase.functions.invoke("create-discount", {
-        body: { email, source: "newsletter" },
-      });
-
-      if (error) throw error;
-
-      if (data?.code) {
-        setDiscountCode(data.code);
-        toast.success("Your discount code has been created!");
-      }
-    } catch {
-      toast.error("Something went wrong. Please try again.");
-    }
-
-    setLoading(false);
+    setSubmitted(true);
+    toast.success("Your discount code: WELCOME10");
   };
 
   return (
