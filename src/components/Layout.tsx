@@ -1,6 +1,7 @@
 import { AnnouncementBar } from "./AnnouncementBar";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { CookieConsent } from "./CookieConsent";
 
 interface LayoutProps {
   children: React.ReactNode;
