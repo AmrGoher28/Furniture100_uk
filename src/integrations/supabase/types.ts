@@ -112,7 +112,9 @@ export type Database = {
           item_title: string | null
           period: string | null
           price: string | null
+          product_handle: string | null
           rating: string
+          review_image: string | null
           reviewer_name: string
         }
         Insert: {
@@ -122,7 +124,9 @@ export type Database = {
           item_title?: string | null
           period?: string | null
           price?: string | null
+          product_handle?: string | null
           rating?: string
+          review_image?: string | null
           reviewer_name: string
         }
         Update: {
@@ -132,7 +136,9 @@ export type Database = {
           item_title?: string | null
           period?: string | null
           price?: string | null
+          product_handle?: string | null
           rating?: string
+          review_image?: string | null
           reviewer_name?: string
         }
         Relationships: []
