@@ -6,7 +6,6 @@ import { BestSellers } from "@/components/BestSellers";
 import { LifestyleBanner } from "@/components/LifestyleBanner";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { CustomerReviews } from "@/components/CustomerReviews";
-
 import { Newsletter } from "@/components/Newsletter";
 
 const Index = () => {
