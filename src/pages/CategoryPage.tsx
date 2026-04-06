@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
-import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct, fetchProductsByHandles } from "@/lib/shopify";
+import { ShopifyProduct, fetchProductsByHandles, fetchProductsPage, ProductsPageInfo } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
@@ -18,67 +18,110 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: "newest", label: "Newest" },
 ];
 
+const PAGE_SIZE = 24;
+
 const CategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const category = slug ? getCategoryBySlug(slug) : undefined;
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [pageInfo, setPageInfo] = useState<ProductsPageInfo>({ hasNextPage: false, endCursor: null });
   const [sort, setSort] = useState<SortOption>("featured");
   const [showFilters, setShowFilters] = useState(false);
+  const [usedDbMapping, setUsedDbMapping] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
   const { summaries } = useProductReviews();
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchInitial = async () => {
       setLoading(true);
+      setProducts([]);
+      setPageInfo({ hasNextPage: false, endCursor: null });
+      setUsedDbMapping(false);
+
       try {
         if (category) {
           const dbHandles = await fetchMappingsByCategory(category.slug);
-
           if (dbHandles.length > 0) {
             const mappedProducts = await fetchProductsByHandles(dbHandles);
-
             if (mappedProducts.length > 0) {
               setProducts(mappedProducts);
+              setUsedDbMapping(true);
               return;
             }
           }
         }
 
-        const prodData = await storefrontApiRequest(PRODUCTS_QUERY, { first: 250 });
-        const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];
-
-        if (category) {
-          const term = category.name.toLowerCase();
-          const filtered = allProducts.filter((p) => {
-            const t = p.node.title.toLowerCase();
-            const d = p.node.description.toLowerCase();
-            return (
-              t.includes(term) ||
-              d.includes(term) ||
-              category.subcategories.some(
-                (s) => t.includes(s.name.toLowerCase()) || d.includes(s.name.toLowerCase())
-              )
-            );
-          });
-          setProducts(filtered);
-        } else {
-          setProducts(allProducts);
-        }
+        const { products: firstPage, pageInfo: pi } = await fetchProductsPage(PAGE_SIZE);
+        setProducts(firstPage);
+        setPageInfo(pi);
       } catch (e) {
         console.error("Failed to load products:", e);
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
+    fetchInitial();
   }, [slug, category]);
 
-  const sortedProducts = [...products].sort((a, b) => {
+  const loadMore = useCallback(async () => {
+    if (loadingMore || !pageInfo.hasNextPage || usedDbMapping) return;
+    setLoadingMore(true);
+    try {
+      const { products: nextPage, pageInfo: pi } = await fetchProductsPage(PAGE_SIZE, pageInfo.endCursor);
+      setProducts((prev) => [...prev, ...nextPage]);
+      setPageInfo(pi);
+    } catch (e) {
+      console.error("Failed to load more products:", e);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [loadingMore, pageInfo, usedDbMapping]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { rootMargin: "400px" }
+    );
+
+    if (sentinelRef.current) {
+      observerRef.current.observe(sentinelRef.current);
+    }
+
+    return () => observerRef.current?.disconnect();
+  }, [loadMore]);
+
+  // Filter by category name for non-db-mapped categories
+  const displayProducts = category && !usedDbMapping
+    ? products.filter((p) => {
+        const t = p.node.title.toLowerCase();
+        const d = p.node.description.toLowerCase();
+        const term = category.name.toLowerCase();
+        return (
+          t.includes(term) ||
+          d.includes(term) ||
+          category.subcategories.some(
+            (s) => t.includes(s.name.toLowerCase()) || d.includes(s.name.toLowerCase())
+          )
+        );
+      })
+    : products;
+
+  const sortedProducts = [...displayProducts].sort((a, b) => {
     if (sort === "price-asc") return parseFloat(a.node.priceRange.minVariantPrice.amount) - parseFloat(b.node.priceRange.minVariantPrice.amount);
     if (sort === "price-desc") return parseFloat(b.node.priceRange.minVariantPrice.amount) - parseFloat(a.node.priceRange.minVariantPrice.amount);
     return 0;
@@ -126,7 +169,7 @@ const CategoryPage = () => {
           {/* Toolbar */}
           <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
             <p className="text-sm text-muted-foreground">
-              Showing {sortedProducts.length} product{sortedProducts.length !== 1 ? "s" : ""}
+              {loading ? "Loading..." : `Showing ${sortedProducts.length} product${sortedProducts.length !== 1 ? "s" : ""}`}
             </p>
             <div className="flex items-center gap-3">
               <button
@@ -208,45 +251,54 @@ const CategoryPage = () => {
 
             {/* Product grid */}
             <div className="flex-1">
-              {loading ? (
+              {loading && products.length === 0 ? (
                 <div className="flex justify-center py-24">
                   <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                 </div>
-              ) : sortedProducts.length === 0 ? (
+              ) : sortedProducts.length === 0 && !loading ? (
                 <div className="text-center py-24">
                   <p className="text-2xl mb-3">No products found</p>
                   <p className="text-muted-foreground">Check back soon for new arrivals.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                  {sortedProducts.map((product) => {
-                    const image = product.node.images.edges[0]?.node;
-                    const price = product.node.priceRange.minVariantPrice;
-                    return (
-                      <Link key={product.node.id} to={`/product/${product.node.handle}`} className="group block">
-                        <div className="aspect-square bg-secondary overflow-hidden rounded-lg mb-4">
-                          {image ? (
-                            <img src={image.url} alt={image.altText || product.node.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    {sortedProducts.map((product) => {
+                      const image = product.node.images.edges[0]?.node;
+                      const price = product.node.priceRange.minVariantPrice;
+                      return (
+                        <Link key={product.node.id} to={`/product/${product.node.handle}`} className="group block">
+                          <div className="aspect-square bg-secondary overflow-hidden rounded-lg mb-4">
+                            {image ? (
+                              <img src={image.url} alt={image.altText || product.node.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
+                            )}
+                          </div>
+                          <h3 className="text-sm font-medium mb-1 group-hover:text-gold transition-colors">{product.node.title}</h3>
+                          {summaries[product.node.handle] && (
+                            <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
                           )}
-                        </div>
-                        <h3 className="text-sm font-medium mb-1 group-hover:text-gold transition-colors">{product.node.title}</h3>
-                        {summaries[product.node.handle] && (
-                          <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
-                        )}
-                        <p className="text-base font-semibold mb-3">£{parseFloat(price.amount).toFixed(2)}</p>
-                        <button
-                          onClick={(e) => handleAddToCart(e, product)}
-                          className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
-                        >
-                          <ShoppingBag className="w-4 h-4" />
-                          Add to Basket
-                        </button>
-                      </Link>
-                    );
-                  })}
-                </div>
+                          <p className="text-base font-semibold mb-3">£{parseFloat(price.amount).toFixed(2)}</p>
+                          <button
+                            onClick={(e) => handleAddToCart(e, product)}
+                            className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
+                          >
+                            <ShoppingBag className="w-4 h-4" />
+                            Add to Basket
+                          </button>
+                        </Link>
+                      );
+                    })}
+                  </div>
+
+                  {/* Infinite scroll sentinel */}
+                  {pageInfo.hasNextPage && !usedDbMapping && (
+                    <div ref={sentinelRef} className="flex justify-center py-8">
+                      {loadingMore && <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

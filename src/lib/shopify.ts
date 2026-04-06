@@ -78,8 +78,12 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
 }
 
 export const PRODUCTS_QUERY = `
-  query GetProducts($first: Int!, $query: String) {
-    products(first: $first, query: $query) {
+  query GetProducts($first: Int!, $after: String, $query: String) {
+    products(first: $first, after: $after, query: $query) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
         node {
           id
@@ -126,6 +130,25 @@ export const PRODUCTS_QUERY = `
     }
   }
 `;
+
+export interface ProductsPageInfo {
+  hasNextPage: boolean;
+  endCursor: string | null;
+}
+
+export async function fetchProductsPage(
+  first: number = 24,
+  after: string | null = null,
+  query?: string
+): Promise<{ products: ShopifyProduct[]; pageInfo: ProductsPageInfo }> {
+  const variables: Record<string, unknown> = { first };
+  if (after) variables.after = after;
+  if (query) variables.query = query;
+  const data = await storefrontApiRequest(PRODUCTS_QUERY, variables);
+  const edges = data?.data?.products?.edges || [];
+  const pageInfo = data?.data?.products?.pageInfo || { hasNextPage: false, endCursor: null };
+  return { products: edges, pageInfo };
+}
 
 export const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!) {
