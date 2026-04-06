@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
-import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
+import { fetchProductsPage, ShopifyProduct } from "@/lib/shopify";
 import { CATEGORIES } from "@/lib/categories";
 import { fetchAllMappings, upsertMapping, deleteMapping, ProductCategoryMapping } from "@/lib/productCategories";
 import { Loader2, Save, Trash2, Check } from "lucide-react";
