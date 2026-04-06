@@ -4,6 +4,8 @@ import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct, fetchProductsByHa
 import { useCartStore } from "@/stores/cartStore";
 import { fetchBestSellerHandles } from "@/lib/productCategories";
 import { Loader2, ShoppingBag } from "lucide-react";
+import { useProductReviews } from "@/hooks/useProductReviews";
+import ProductStars from "@/components/ProductStars";
 
 export const BestSellers = () => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
