@@ -258,7 +258,7 @@ const ProductDetail = () => {
           </div>
 
           {/* Reviews */}
-          <ProductReviews productTitle={product.title} />
+          <ProductReviews productHandle={product.handle} />
         </div>
       </main>
 
