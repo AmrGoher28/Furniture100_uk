@@ -233,9 +233,29 @@ const ProductDetail = () => {
                   variantTitle={variant?.title}
                   originalPrice={price}
                 />
-                <button className="w-full flex items-center justify-center gap-2 border border-border py-3 rounded-md text-sm text-muted-foreground hover:text-foreground hover:border-foreground transition-colors">
-                  <Heart className="w-4 h-4" />
-                  Add to Wishlist
+                <button
+                  onClick={() => {
+                    if (!product) return;
+                    const inWishlist = isInWishlist(product.handle);
+                    if (inWishlist) {
+                      removeFromWishlist(product.handle);
+                    } else {
+                      addToWishlist({
+                        handle: product.handle,
+                        title: product.title,
+                        image: images[0]?.node.url,
+                        price: variant?.price.amount,
+                      });
+                    }
+                  }}
+                  className={`w-full flex items-center justify-center gap-2 border py-3 rounded-md text-sm transition-colors ${
+                    isInWishlist(product.handle)
+                      ? "border-gold text-gold"
+                      : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
+                  }`}
+                >
+                  <Heart className={`w-4 h-4 ${isInWishlist(product.handle) ? "fill-gold" : ""}`} />
+                  {isInWishlist(product.handle) ? "Saved to Wishlist" : "Add to Wishlist"}
                 </button>
               </div>
 
