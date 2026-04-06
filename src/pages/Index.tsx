@@ -21,7 +21,7 @@ const Index = () => {
       <LifestyleBanner />
       <WhyChooseUs />
       <CustomerReviews />
-      <SocialFeed />
+      
       <Newsletter />
     </Layout>
   );
