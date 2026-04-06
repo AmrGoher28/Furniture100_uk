@@ -22,7 +22,7 @@ interface EmailChangeEmailProps {
   confirmationUrl: string
 }
 
-const SITE_NAME = 'SWIFLIVING'
+const SITE_NAME = 'Furniture100'
 
 export const EmailChangeEmail = ({
   email,

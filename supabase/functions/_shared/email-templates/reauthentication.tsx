@@ -17,7 +17,7 @@ interface ReauthenticationEmailProps {
   token: string
 }
 
-const SITE_NAME = 'SWIFLIVING'
+const SITE_NAME = 'Furniture100'
 
 export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => (
   <Html lang="en" dir="ltr">
