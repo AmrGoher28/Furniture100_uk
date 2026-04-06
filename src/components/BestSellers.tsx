@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
+import { fetchBestSellerHandles } from "@/lib/productCategories";
 import { Loader2, ShoppingBag } from "lucide-react";
 
 export const BestSellers = () => {
