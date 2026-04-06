@@ -35,6 +35,7 @@ const AppContent = () => {
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />
       <Route path="/admin/offers" element={<AdminOffers />} />
+      <Route path="/admin/categories" element={<AdminCategories />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

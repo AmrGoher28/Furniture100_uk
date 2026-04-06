@@ -33,17 +33,29 @@ const CategoryPage = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const data = await storefrontApiRequest(PRODUCTS_QUERY, { first: 50 });
-        const allProducts: ShopifyProduct[] = data?.data?.products?.edges || [];
+        const [prodData, dbHandles] = await Promise.all([
+          storefrontApiRequest(PRODUCTS_QUERY, { first: 50 }),
+          category ? fetchMappingsByCategory(category.slug) : Promise.resolve([]),
+        ]);
+        const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];
         if (category) {
-          const term = category.name.toLowerCase();
-          const filtered = allProducts.filter((p) => {
-            const t = p.node.title.toLowerCase();
-            const d = p.node.description.toLowerCase();
-            return t.includes(term) || d.includes(term) ||
-              category.subcategories.some((s) => t.includes(s.name.toLowerCase()) || d.includes(s.name.toLowerCase()));
-          });
-          setProducts(filtered);
+          // Use DB mappings first; fall back to keyword matching for unmapped products
+          const dbSet = new Set(dbHandles);
+          const dbMatched = allProducts.filter((p) => dbSet.has(p.node.handle));
+          
+          if (dbMatched.length > 0) {
+            setProducts(dbMatched);
+          } else {
+            // Fallback: keyword matching
+            const term = category.name.toLowerCase();
+            const filtered = allProducts.filter((p) => {
+              const t = p.node.title.toLowerCase();
+              const d = p.node.description.toLowerCase();
+              return t.includes(term) || d.includes(term) ||
+                category.subcategories.some((s) => t.includes(s.name.toLowerCase()) || d.includes(s.name.toLowerCase()));
+            });
+            setProducts(filtered);
+          }
         } else {
           setProducts(allProducts);
         }
