@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import Layout from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 
 const UnsubscribePage = () => {
   const [searchParams] = useSearchParams();
