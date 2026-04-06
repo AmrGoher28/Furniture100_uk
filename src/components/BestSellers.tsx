@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
+import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct, fetchProductsByHandles } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { fetchBestSellerHandles } from "@/lib/productCategories";
 import { Loader2, ShoppingBag } from "lucide-react";
@@ -13,18 +13,20 @@ export const BestSellers = () => {
   useEffect(() => {
     const loadBestSellers = async () => {
       try {
-        const [prodData, bestHandles] = await Promise.all([
-          storefrontApiRequest(PRODUCTS_QUERY, { first: 250 }),
-          fetchBestSellerHandles(),
-        ]);
-        const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];
+        const bestHandles = await fetchBestSellerHandles();
+
         if (bestHandles.length > 0) {
-          const handleSet = new Set(bestHandles);
-          setProducts(allProducts.filter((p) => handleSet.has(p.node.handle)));
-        } else {
-          // Fallback: show first 4
-          setProducts(allProducts.slice(0, 4));
+          const mappedProducts = await fetchProductsByHandles(bestHandles);
+
+          if (mappedProducts.length > 0) {
+            setProducts(mappedProducts);
+            return;
+          }
         }
+
+        const prodData = await storefrontApiRequest(PRODUCTS_QUERY, { first: 250 });
+        const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];
+        setProducts(allProducts.slice(0, 4));
       } catch (e) {
         console.error("Failed to load best sellers:", e);
       } finally {

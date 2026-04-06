@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
-import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
+import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct, fetchProductsByHandles } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
@@ -33,29 +33,36 @@ const CategoryPage = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const [prodData, dbHandles] = await Promise.all([
-          storefrontApiRequest(PRODUCTS_QUERY, { first: 250 }),
-          category ? fetchMappingsByCategory(category.slug) : Promise.resolve([]),
-        ]);
-        const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];
         if (category) {
-          // Use DB mappings first; fall back to keyword matching for unmapped products
-          const dbSet = new Set(dbHandles);
-          const dbMatched = allProducts.filter((p) => dbSet.has(p.node.handle));
-          
-          if (dbMatched.length > 0) {
-            setProducts(dbMatched);
-          } else {
-            // Fallback: keyword matching
-            const term = category.name.toLowerCase();
-            const filtered = allProducts.filter((p) => {
-              const t = p.node.title.toLowerCase();
-              const d = p.node.description.toLowerCase();
-              return t.includes(term) || d.includes(term) ||
-                category.subcategories.some((s) => t.includes(s.name.toLowerCase()) || d.includes(s.name.toLowerCase()));
-            });
-            setProducts(filtered);
+          const dbHandles = await fetchMappingsByCategory(category.slug);
+
+          if (dbHandles.length > 0) {
+            const mappedProducts = await fetchProductsByHandles(dbHandles);
+
+            if (mappedProducts.length > 0) {
+              setProducts(mappedProducts);
+              return;
+            }
           }
+        }
+
+        const prodData = await storefrontApiRequest(PRODUCTS_QUERY, { first: 250 });
+        const allProducts: ShopifyProduct[] = prodData?.data?.products?.edges || [];
+
+        if (category) {
+          const term = category.name.toLowerCase();
+          const filtered = allProducts.filter((p) => {
+            const t = p.node.title.toLowerCase();
+            const d = p.node.description.toLowerCase();
+            return (
+              t.includes(term) ||
+              d.includes(term) ||
+              category.subcategories.some(
+                (s) => t.includes(s.name.toLowerCase()) || d.includes(s.name.toLowerCase())
+              )
+            );
+          });
+          setProducts(filtered);
         } else {
           setProducts(allProducts);
         }
