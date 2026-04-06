@@ -5,6 +5,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
 import { Loader2, ArrowLeft, Truck, RotateCcw, ShieldCheck, Phone, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import MakeOfferModal from "@/components/MakeOfferModal";
+import ProductReviews from "@/components/ProductReviews";
 import { toast } from "sonner";
 
 interface ProductNode {
@@ -255,6 +256,9 @@ const ProductDetail = () => {
               </p>
             </div>
           </div>
+
+          {/* Reviews */}
+          <ProductReviews productTitle={product.title} />
         </div>
       </main>
 
