@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { ShopifyProduct, fetchProductsByHandles, fetchProductsPage, ProductsPageInfo } from "@/lib/shopify";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
-import { Loader2, SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import { Loader2, SlidersHorizontal, ChevronDown, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
@@ -16,6 +16,7 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
 ];
 
 const PAGE_SIZE = 24;
+const ITEMS_PER_PAGE = 12;
 
 const CategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
