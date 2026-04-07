@@ -45,7 +45,7 @@ const AboutPage = () => {
               { title: "Customer First", desc: "Our UK-based team is here to help with every question. Your satisfaction is our priority." },
             ].map((v) => (
               <div key={v.title} className="bg-card rounded-lg p-8 text-center">
-                <h3 className="text-lg font-semibold mb-3" style={{ fontFamily: "'Inter', sans-serif" }}>{v.title}</h3>
+                <h3 className="text-lg font-semibold mb-3">{v.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
               </div>
             ))}
