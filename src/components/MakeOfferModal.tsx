@@ -250,7 +250,7 @@ const MakeOfferModal = (props: MakeOfferModalProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-md rounded-2xl bg-background border-border/50 shadow-xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[520px] rounded-2xl bg-background border-border/50 shadow-xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">Make an Offer</DialogTitle>
         </DialogHeader>
