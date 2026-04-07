@@ -53,7 +53,9 @@ export const Hero = () => {
         />
       ))}
 
-      <div className="absolute inset-0 bg-black/30 z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent md:bg-black/30 md:bg-none md:bg-black/30 z-[1]" />
+      <div className="absolute inset-0 hidden md:block bg-black/30 z-[1]" />
+      <div className="absolute inset-0 md:hidden bg-gradient-to-t from-black/60 via-black/20 to-transparent z-[1]" />
 
 
       <div className="relative z-10 text-center max-w-3xl mx-auto px-2">
