@@ -129,10 +129,8 @@ const ProductDetail = () => {
 
   return (
     <Layout>
-      {/* Admin login modal */}
-      <AdminLoginModal open={showLogin} onClose={() => setShowLogin(false)} onLogin={login} />
-      {/* Admin badge */}
-      {isAdmin && <AdminBadge onExit={logout} />}
+
+
 
       <main className="flex-1 py-10 md:py-14 px-6 md:px-12 pb-28 md:pb-14">
         <div className="max-w-7xl mx-auto">
