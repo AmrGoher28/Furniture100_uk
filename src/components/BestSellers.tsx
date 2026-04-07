@@ -4,6 +4,7 @@ import { fetchProductsPage, ShopifyProduct, fetchProductsByHandles } from "@/lib
 import { useCartStore } from "@/stores/cartStore";
 import { fetchBestSellerHandles } from "@/lib/productCategories";
 import { Loader2, ShoppingBag } from "lucide-react";
+import ProductImageCarousel from "@/components/ProductImageCarousel";
 import { useProductReviews } from "@/hooks/useProductReviews";
 import ProductStars from "@/components/ProductStars";
 
