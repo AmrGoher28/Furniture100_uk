@@ -40,7 +40,7 @@ const ProductDetail = () => {
   const isLoading = useCartStore((s) => s.isLoading);
   const [buyNowLoading, setBuyNowLoading] = useState(false);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const { isAdmin, showLogin, setShowLogin, login, logout } = useAdminMode();
+  const { isAdmin } = useAdminMode();
   const { overrides, saveOverride } = useProductOverrides(handle);
 
   useEffect(() => {
