@@ -86,7 +86,7 @@ export const BestSellers = () => {
                     title={product.node.title}
                     className="aspect-square bg-card rounded-xl mb-4 warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300"
                   />
-                  <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors">
                     {product.node.title}
                   </h3>
                   {summaries[product.node.handle] && (

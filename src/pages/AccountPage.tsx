@@ -31,10 +31,7 @@ const AccountPage = () => {
           {/* Header */}
           <div className="flex items-center justify-between mb-10">
             <div>
-              <h1
-                className="text-3xl md:text-4xl mb-1"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+              <h1 className="text-3xl md:text-4xl mb-1">
                 My Account
               </h1>
               <p className="text-sm text-muted-foreground font-light">{user.email}</p>

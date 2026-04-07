@@ -45,7 +45,7 @@ const AboutPage = () => {
               { title: "Customer First", desc: "Our UK-based team is here to help with every question. Your satisfaction is our priority." },
             ].map((v) => (
               <div key={v.title} className="bg-card rounded-lg p-8 text-center">
-                <h3 className="text-lg font-semibold mb-3" style={{ fontFamily: "'Inter', sans-serif" }}>{v.title}</h3>
+                <h3 className="text-lg font-semibold mb-3">{v.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
               </div>
             ))}
@@ -58,7 +58,7 @@ const AboutPage = () => {
         <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 text-center">
           {stats.map((s) => (
             <div key={s.label}>
-              <p className="text-3xl md:text-4xl font-semibold text-gold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{s.value}</p>
+              <p className="text-3xl md:text-4xl font-semibold text-gold mb-2 font-serif">{s.value}</p>
               <p className="text-xs md:text-sm text-muted-foreground tracking-wide">{s.label}</p>
             </div>
           ))}

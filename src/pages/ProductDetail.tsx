@@ -11,6 +11,7 @@ import ProductTrustBadges from "@/components/product/ProductTrustBadges";
 import DeliveryBanner from "@/components/product/DeliveryBanner";
 import ProductSpecs from "@/components/product/ProductSpecs";
 import ProductFAQ from "@/components/product/ProductFAQ";
+import KlarnaInfo from "@/components/KlarnaInfo";
 import { useWishlist } from "@/hooks/useWishlist";
 import { toast } from "sonner";
 
@@ -80,7 +81,6 @@ const ProductDetail = () => {
   const variant = product.variants.edges[selectedVariantIdx]?.node;
   const images = product.images.edges;
   const price = parseFloat(variant?.price.amount || "0");
-  const klarnaMonthly = (price / 3).toFixed(2);
 
   const handleAddToCart = async () => {
     if (!variant) return;
@@ -207,12 +207,10 @@ const ProductDetail = () => {
             {/* Details */}
             <div>
               <h1 className="text-2xl md:text-4xl mb-3">{product.title}</h1>
-              <p className="text-2xl font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <p className="text-2xl font-semibold mb-2">
                 £{price.toFixed(2)}
               </p>
-              <p className="text-xs text-muted-foreground mb-6">
-                From £{klarnaMonthly}/month with Klarna. <span className="text-gold cursor-pointer">Learn more</span>
-              </p>
+              <KlarnaInfo price={price} />
 
               {/* Variant selectors */}
               {product.options.map((option) => {
