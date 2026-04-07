@@ -1,25 +1,52 @@
 
 
-## Redesign Category/Shop Page + Mobile 2-Column Grid
+## 1. Klarna Payment Messaging on Product Page
 
-Two changes to `src/pages/CategoryPage.tsx`:
+**File: `src/pages/ProductDetail.tsx`**
 
-### 1. High-End Minimal Redesign
-- **Product cards**: Remove "Add to Basket" buttons, star ratings, and `handleAddToCart`/`ShoppingBag`/`useProductReviews` imports. Cards show only image → name → price. Name: `text-sm font-light`, price: `text-sm text-muted-foreground font-normal`.
-- **Image hover**: Replace `ProductImageCarousel` with a simple `<img>` that scales to 1.03 on hover and swaps to the second image if available (using `group-hover` + CSS opacity swap).
-- **Hero banner**: Reduce height ~40% (`h-28 md:h-40`), lighter overlay, serif title (`font-serif font-normal text-2xl md:text-4xl`).
-- **Sidebar**: Lighter font weights (`font-light`), more spacing (`space-y-3`), active state = underline instead of gold color. Remove "Subcategories" heading, nest them indented under parent.
-- **Sort/count bar**: Smaller (`text-xs`), lighter color, less visual weight.
-- **Spacing**: Increase grid gaps (`gap-8 md:gap-14`), more section padding (`py-12 md:py-20`), aspect ratio `aspect-[4/5]`.
+Replace the current minimal Klarna line (line 213-215) with an enhanced component:
+- Show "Or 3 interest-free payments of **£XX.XX** with [Klarna logo]"
+- Calculate dynamically: `(price / 3).toFixed(2)`
+- Style: `text-xs text-muted-foreground` — slightly smaller than price
+- "Klarna" text links to a small popover/dialog explaining how Klarna works (pay in 3, no interest, soft credit check)
+- Use a small inline Klarna pink logo (SVG or text badge)
+- Add a `useState` for the modal open state, use the existing `Dialog` component for the explainer
 
-### 2. Mobile 2-Column Grid
-- Change `grid-cols-1 sm:grid-cols-2` → `grid-cols-2 lg:grid-cols-3` so mobile always shows 2 products side-by-side.
-- Tighter gap on mobile (`gap-4 md:gap-14`).
+**New: `src/components/KlarnaInfo.tsx`**
+- Small reusable component containing:
+  - The Klarna messaging line with dynamic price
+  - A `Dialog` modal triggered by clicking "Klarna" / "Learn more"
+  - Modal content: brief explanation of Klarna Pay in 3 (3 equal payments, no interest, example breakdown)
+  - Styled minimal and on-brand
 
-### Also update the homepage ProductGrid
-- In `src/components/ProductGrid.tsx`, change `grid-cols-1 md:grid-cols-2` → `grid-cols-2 lg:grid-cols-3` for consistent 2-column mobile grid across the site.
+---
 
-### Files Modified
-- `src/pages/CategoryPage.tsx` — main redesign + mobile grid
-- `src/components/ProductGrid.tsx` — mobile grid only (line 119)
+## 2. Font Consistency Audit & Fixes
+
+**Root styles are correct** in `src/index.css`: Playfair Display for headings, Inter 300 for body. The issue is inline `style={{ fontFamily: ... }}` overrides scattered across components that sometimes conflict or are redundant.
+
+**Files to fix:**
+
+| File | Issue | Fix |
+|---|---|---|
+| `src/pages/ProductDetail.tsx` line 210 | Price has explicit `fontFamily: Inter` — redundant (body default) | Remove `style` attr |
+| `src/pages/AboutPage.tsx` line 48 | Value card headings forced to Inter — these are `<h3>` so should be Playfair per brand | Remove `style` attr, let CSS handle it |
+| `src/pages/AboutPage.tsx` line 61 | Stats forced to Playfair — redundant for `<p>` used as display text | Keep but ensure consistent |
+| `src/components/WhyChooseUs.tsx` line 37 | `<h3>` forced to Inter — should be Playfair | Remove `style` attr |
+| `src/components/BestSellers.tsx` line 89 | `<h3>` forced to Inter — should be Playfair | Remove `style` attr |
+| `src/components/Footer.tsx` line 10 | Brand name forced to Playfair — redundant but harmless | Keep (it's a `<span>` not heading) |
+| `src/components/Navbar.tsx` lines 64, 112 | Brand name forced to Playfair — redundant but harmless | Keep (it's a `<span>`) |
+| `src/pages/AuthPage.tsx` line 66 | `<h1>` forced to Playfair — redundant | Remove `style` attr |
+| `src/pages/AccountPage.tsx` line 36 | `<h1>` forced to Playfair — redundant | Remove `style` attr |
+
+**Key principle**: All `<h1>`–`<h6>` get Playfair automatically from CSS. Remove all redundant inline `fontFamily` on headings. For `<h3>` tags that were incorrectly forced to Inter (WhyChooseUs, BestSellers, AboutPage values), remove the override so they use the correct serif heading font.
+
+**Files modified:**
+- `src/pages/ProductDetail.tsx` — Klarna component + remove price font override
+- `src/components/KlarnaInfo.tsx` — new component
+- `src/pages/AboutPage.tsx` — remove redundant font overrides
+- `src/pages/AuthPage.tsx` — remove redundant font override
+- `src/pages/AccountPage.tsx` — remove redundant font override
+- `src/components/WhyChooseUs.tsx` — remove incorrect Inter override on h3
+- `src/components/BestSellers.tsx` — remove incorrect Inter override on h3
 
