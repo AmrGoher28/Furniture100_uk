@@ -206,11 +206,14 @@ const ProductDetail = () => {
 
             {/* Details */}
             <div>
-              <h1 className="text-2xl md:text-4xl mb-3">{product.title}</h1>
-              <p className="text-2xl font-semibold mb-2">
+              <h1 className="text-xl md:text-4xl mb-4">{product.title}</h1>
+              <p className="text-3xl md:text-4xl font-bold mb-2">
                 £{price.toFixed(2)}
               </p>
               <KlarnaInfo price={price} />
+
+              {/* Divider */}
+              <div className="border-t border-border/40 my-6" />
 
               {/* Variant selectors */}
               {product.options.map((option) => {
