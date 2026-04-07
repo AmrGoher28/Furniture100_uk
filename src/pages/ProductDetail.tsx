@@ -122,10 +122,10 @@ const ProductDetail = () => {
 
   return (
     <Layout>
-      <main className="flex-1 py-8 md:py-12 px-6 md:px-12 pb-24 md:pb-12">
+      <main className="flex-1 py-10 md:py-14 px-6 md:px-12 pb-28 md:pb-14">
         <div className="max-w-7xl mx-auto">
           {/* Breadcrumb */}
-          <nav className="text-xs text-muted-foreground mb-6">
+          <nav className="text-xs text-muted-foreground mb-8">
             <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
             <span className="mx-2">/</span>
             <Link to="/shop" className="hover:text-foreground transition-colors">Shop</Link>
@@ -133,7 +133,7 @@ const ProductDetail = () => {
             <span className="text-foreground">{product.title}</span>
           </nav>
 
-          <div className="grid md:grid-cols-2 gap-8 md:gap-16">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-20">
             {/* Images */}
             <div>
               <div className="relative aspect-square bg-secondary overflow-hidden rounded-xl shadow-sm mb-3 group">
