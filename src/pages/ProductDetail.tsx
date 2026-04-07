@@ -234,7 +234,7 @@ const ProductDetail = () => {
               })}
 
               {/* Desktop buttons */}
-              <div className="hidden md:flex flex-col gap-2 mb-3">
+              <div className="hidden md:flex flex-col gap-2 mb-2">
                 <button
                   onClick={handleAddToCart}
                   disabled={isLoading || !variant?.availableForSale}
@@ -248,6 +248,14 @@ const ProductDetail = () => {
                     "Add to Basket"
                   )}
                 </button>
+              </div>
+
+              {/* Trust badges row */}
+              <ProductTrustBadges />
+
+              {/* Delivery banner */}
+              <div className="mb-3">
+                <DeliveryBanner />
               </div>
 
               <div className="hidden md:flex flex-col gap-2 mb-8">
@@ -285,23 +293,19 @@ const ProductDetail = () => {
                 </button>
               </div>
 
-              <p className="text-muted-foreground leading-relaxed mb-8">
+              <p className="text-muted-foreground leading-relaxed mb-6">
                 {product.description}
               </p>
 
-              {/* Trust icons */}
-              <div className="grid grid-cols-2 gap-3 mb-8">
-                {TRUST_ICONS.map((t) => (
-                  <div key={t.label} className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <t.icon className="w-4 h-4 text-gold" />
-                    {t.label}
-                  </div>
-                ))}
+              {/* Product Specs Accordion */}
+              <div className="mb-2">
+                <ProductSpecs />
               </div>
 
-              <p className="text-sm text-muted-foreground">
-                🚚 Order today, delivered in <strong className="text-foreground">3–5 working days</strong>
-              </p>
+              {/* FAQ Accordion */}
+              <div className="mb-8">
+                <ProductFAQ />
+              </div>
             </div>
           </div>
 
