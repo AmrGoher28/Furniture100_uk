@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY, createShopifyCart } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
-import { Loader2, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Heart, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import MakeOfferModal from "@/components/MakeOfferModal";
 import ProductReviews from "@/components/ProductReviews";
 import SimilarProducts from "@/components/SimilarProducts";
@@ -32,6 +32,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const addItem = useCartStore((s) => s.addItem);
   const isLoading = useCartStore((s) => s.isLoading);
   const [buyNowLoading, setBuyNowLoading] = useState(false);
@@ -89,10 +90,10 @@ const ProductDetail = () => {
       variantId: variant.id,
       variantTitle: variant.title,
       price: variant.price,
-      quantity: 1,
+      quantity,
       selectedOptions: variant.selectedOptions || [],
     });
-    toast.success("Added to basket", { position: "top-center" });
+    toast.success(`Added ${quantity} to basket`, { position: "top-center" });
   };
 
   const handleBuyNow = async () => {
@@ -210,7 +211,7 @@ const ProductDetail = () => {
               <p className="text-3xl md:text-4xl font-bold mb-2">
                 £{price.toFixed(2)}
               </p>
-              <KlarnaInfo price={price} />
+              <KlarnaInfo price={price * quantity} />
 
               {/* Divider */}
               <div className="border-t border-border/40 my-6" />
@@ -243,6 +244,30 @@ const ProductDetail = () => {
                   </div>
                 );
               })}
+
+              {/* Quantity selector */}
+              <div className="flex items-center gap-4 mb-5">
+                <p className="text-xs uppercase tracking-[0.1em] text-muted-foreground font-medium">Quantity</p>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    disabled={quantity <= 1}
+                    className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="w-8 text-center text-sm font-medium tabular-nums">{quantity}</span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                    disabled={quantity >= 10}
+                    className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
 
               {/* Desktop buttons */}
               <div className="hidden md:flex flex-col gap-3 mb-3">
