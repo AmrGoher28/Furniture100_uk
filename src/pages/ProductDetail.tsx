@@ -81,7 +81,6 @@ const ProductDetail = () => {
   const variant = product.variants.edges[selectedVariantIdx]?.node;
   const images = product.images.edges;
   const price = parseFloat(variant?.price.amount || "0");
-  const klarnaMonthly = (price / 3).toFixed(2);
 
   const handleAddToCart = async () => {
     if (!variant) return;
