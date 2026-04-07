@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, User, Heart, Menu, ShoppingBag, ChevronDown, X } from "lucide-react";
+import { SearchResults } from "./SearchResults";
 import { CartDrawer } from "./CartDrawer";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
@@ -179,6 +180,7 @@ export const Navbar = () => {
               <X className="w-4 h-4" />
             </button>
           </div>
+          <SearchResults query={searchQuery} onClose={() => { setSearchOpen(false); setSearchQuery(""); }} />
         </div>
       )}
 

@@ -6,6 +6,7 @@ import { Layout } from "@/components/Layout";
 import { Loader2, ArrowLeft, Truck, RotateCcw, ShieldCheck, Phone, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import MakeOfferModal from "@/components/MakeOfferModal";
 import ProductReviews from "@/components/ProductReviews";
+import SimilarProducts from "@/components/SimilarProducts";
 import { useWishlist } from "@/hooks/useWishlist";
 import { toast } from "sonner";
 
@@ -278,6 +279,9 @@ const ProductDetail = () => {
               </p>
             </div>
           </div>
+
+          {/* Similar Products */}
+          <SimilarProducts currentHandle={product.handle} productTitle={product.title} />
 
           {/* Reviews */}
           <ProductReviews productHandle={product.handle} />
