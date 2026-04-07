@@ -214,7 +214,7 @@ const ProductDetail = () => {
               <KlarnaInfo price={price * quantity} />
 
               {/* Divider */}
-              <div className="border-t border-border/40 my-6" />
+              <div className="border-t border-border/40 my-4" />
 
               {/* Variant selectors */}
               {product.options.map((option) => {
@@ -245,45 +245,70 @@ const ProductDetail = () => {
                 );
               })}
 
-              {/* Quantity selector */}
-              <div className="flex items-center gap-4 mb-5">
-                <p className="text-xs uppercase tracking-[0.1em] text-muted-foreground font-medium">Quantity</p>
-                <div className="flex items-center gap-3">
+              {/* Quantity + Add to Basket — desktop: same row, mobile: stacked compact */}
+              <div className="flex flex-col gap-2 mb-3 md:mb-3">
+                {/* Mobile quantity row */}
+                <div className="flex items-center gap-3 md:hidden">
+                  <p className="text-[11px] text-muted-foreground/70 font-normal">Quantity</p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      disabled={quantity <= 1}
+                      className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    >
+                      <Minus className="w-3 h-3" />
+                    </button>
+                    <span className="w-6 text-center text-xs font-medium tabular-nums">{quantity}</span>
+                    <button
+                      type="button"
+                      onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                      disabled={quantity >= 10}
+                      className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    >
+                      <Plus className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Desktop: quantity + button on same row */}
+                <div className="hidden md:flex items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <p className="text-[11px] text-muted-foreground/70 font-normal">Quantity</p>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                        disabled={quantity <= 1}
+                        className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="w-6 text-center text-xs font-medium tabular-nums">{quantity}</span>
+                      <button
+                        type="button"
+                        onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                        disabled={quantity >= 10}
+                        className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
                   <button
-                    type="button"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    disabled={quantity <= 1}
-                    className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    onClick={handleAddToCart}
+                    disabled={isLoading || !variant?.availableForSale}
+                    className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                   >
-                    <Minus className="w-3.5 h-3.5" />
-                  </button>
-                  <span className="w-8 text-center text-sm font-medium tabular-nums">{quantity}</span>
-                  <button
-                    type="button"
-                    onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-                    disabled={quantity >= 10}
-                    className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
+                    {isLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : !variant?.availableForSale ? (
+                      "Sold Out"
+                    ) : (
+                      "Add to Basket"
+                    )}
                   </button>
                 </div>
-              </div>
-
-              {/* Desktop buttons */}
-              <div className="hidden md:flex flex-col gap-3 mb-3">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isLoading || !variant?.availableForSale}
-                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-4 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-                >
-                  {isLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : !variant?.availableForSale ? (
-                    "Sold Out"
-                  ) : (
-                    "Add to Basket"
-                  )}
-                </button>
               </div>
 
               {/* Trust badges row */}
