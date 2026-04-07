@@ -4,6 +4,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useCartSync } from "@/hooks/useCartSync";
+import { AdminProvider, useAdminMode } from "@/hooks/useAdminMode";
+import AdminLoginModal from "@/components/admin/AdminLoginModal";
+import AdminBadge from "@/components/admin/AdminBadge";
 import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
 import CategoryPage from "./pages/CategoryPage";
@@ -24,27 +27,39 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const AdminOverlay = () => {
+  const { isAdmin, showLogin, setShowLogin, login, logout } = useAdminMode();
+  return (
+    <>
+      <AdminLoginModal open={showLogin} onClose={() => setShowLogin(false)} onLogin={login} />
+      {isAdmin && <AdminBadge onExit={logout} />}
+    </>
+  );
+};
+
 const AppContent = () => {
   useCartSync();
   return (
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/shop" element={<ShopAll />} />
-      <Route path="/category/:slug" element={<CategoryPage />} />
-      <Route path="/product/:handle" element={<ProductDetail />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/delivery" element={<DeliveryPage />} />
-      <Route path="/returns" element={<ReturnsPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/privacy" element={<PrivacyPage />} />
-      <Route path="/terms" element={<TermsPage />} />
-      <Route path="/auth" element={<AuthPage />} />
-      <Route path="/account" element={<AccountPage />} />
-      <Route path="/admin/offers" element={<AdminOffers />} />
-      <Route path="/admin/products" element={<AdminProducts />} />
-      <Route path="/admin/categories" element={<AdminCategories />} />
-      <Route path="/unsubscribe" element={<UnsubscribePage />} />
-      <Route path="*" element={<NotFound />} />
+    <>
+      <AdminOverlay />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/shop" element={<ShopAll />} />
+        <Route path="/category/:slug" element={<CategoryPage />} />
+        <Route path="/product/:handle" element={<ProductDetail />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/delivery" element={<DeliveryPage />} />
+        <Route path="/returns" element={<ReturnsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/account" element={<AccountPage />} />
+        <Route path="/admin/offers" element={<AdminOffers />} />
+        <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/unsubscribe" element={<UnsubscribePage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
@@ -56,7 +71,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AppContent />
+        <AdminProvider>
+          <AppContent />
+        </AdminProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
