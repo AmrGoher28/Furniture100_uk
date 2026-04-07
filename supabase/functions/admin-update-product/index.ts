@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const shopifyAdminToken = Deno.env.get("SHOPIFY_ADMIN_TOKEN") || "";
+const shopifyAdminToken = Deno.env.get("SHOPIFY_ACCESS_TOKEN") || Deno.env.get("SHOPIFY_ADMIN_TOKEN") || "";
 const shopifyStoreDomain = "swifliving-showroom-build-xw1vp.myshopify.com";
 
 Deno.serve(async (req) => {
@@ -41,6 +41,8 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    console.log("[admin-update-product] Using token from:", Deno.env.get("SHOPIFY_ACCESS_TOKEN") ? "SHOPIFY_ACCESS_TOKEN" : "SHOPIFY_ADMIN_TOKEN");
 
     const body = await req.json();
     const { productId, updates } = body;
