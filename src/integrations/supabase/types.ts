@@ -114,6 +114,7 @@ export type Database = {
           product_handle: string
           product_image: string | null
           product_title: string
+          quantity: number
           shopify_draft_order_id: string | null
           shopify_invoice_url: string | null
           status: string
@@ -133,6 +134,7 @@ export type Database = {
           product_handle: string
           product_image?: string | null
           product_title: string
+          quantity?: number
           shopify_draft_order_id?: string | null
           shopify_invoice_url?: string | null
           status?: string
@@ -152,6 +154,7 @@ export type Database = {
           product_handle?: string
           product_image?: string | null
           product_title?: string
+          quantity?: number
           shopify_draft_order_id?: string | null
           shopify_invoice_url?: string | null
           status?: string

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Tag, Lock } from "lucide-react";
+import { Loader2, Tag, Lock, Minus, Plus } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface MakeOfferModalProps {
@@ -32,6 +32,7 @@ const OfferForm = ({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [offerAmount, setOfferAmount] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const [submitting, setSubmitting] = useState(false);
 
   const amount = parseFloat(offerAmount) || 0;
@@ -65,6 +66,7 @@ const OfferForm = ({
         variant_title: variantTitle || null,
         original_price: originalPrice,
         offer_amount: amount,
+        quantity,
         buyer_email: email.trim(),
         buyer_name: name.trim() || null,
       });
@@ -80,6 +82,7 @@ const OfferForm = ({
             variantTitle,
             originalPrice,
             offerAmount: amount,
+            quantity,
             buyerEmail: email.trim(),
             buyerName: name.trim(),
           },
@@ -121,9 +124,33 @@ const OfferForm = ({
         </div>
       </div>
 
+      {/* Quantity selector */}
+      <div className="flex items-center gap-3">
+        <p className="text-[11px] text-muted-foreground/70 font-normal">Quantity</p>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+            disabled={quantity <= 1}
+            className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <Minus className="w-3 h-3" />
+          </button>
+          <span className="w-6 text-center text-xs font-medium tabular-nums">{quantity}</span>
+          <button
+            type="button"
+            onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+            disabled={quantity >= 10}
+            className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <Plus className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+
       {/* Offer amount */}
       <div>
-        <Label className="text-sm font-medium mb-2 block">Your Offer</Label>
+        <Label className="text-sm font-medium mb-2 block">Your Offer (per item)</Label>
         <div className="relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium text-lg">£</span>
           <Input
@@ -139,7 +166,7 @@ const OfferForm = ({
         </div>
         {discount > 0 && (
           <p className="text-xs text-muted-foreground mt-1.5">
-            That's <span className="font-medium text-foreground">{discount}% off</span> the listed price
+            That's <span className="font-medium text-foreground">{discount}% off</span> per item
           </p>
         )}
       </div>
@@ -161,6 +188,13 @@ const OfferForm = ({
           </button>
         ))}
       </div>
+
+      {/* Total line */}
+      {amount > 0 && quantity > 1 && (
+        <p className="text-xs font-medium text-muted-foreground -mt-2">
+          Total for {quantity} items: <span className="text-foreground">£{(amount * quantity).toFixed(2)}</span>
+        </p>
+      )}
 
       {/* Name & Email */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
