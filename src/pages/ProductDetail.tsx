@@ -332,32 +332,30 @@ const ProductDetail = () => {
         </div>
       </main>
 
-      {/* Mobile sticky: Buy Now + Make Offer + Apple Pay */}
+      {/* Mobile sticky */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border px-4 py-3 md:hidden">
-        <div className="flex flex-col gap-2">
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={handleAddToCart}
-              disabled={isLoading || !variant?.availableForSale}
-              className="bg-primary text-primary-foreground py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin mx-auto" />
-              ) : !variant?.availableForSale ? (
-                "Sold Out"
-              ) : (
-                "Add to Basket"
-              )}
-            </button>
-            <MakeOfferModal
-              productTitle={product.title}
-              productHandle={product.handle}
-              productImage={images[0]?.node.url}
-              variantId={variant?.id}
-              variantTitle={variant?.title}
-              originalPrice={price}
-            />
-          </div>
+        <div className="flex flex-col items-center gap-2">
+          <button
+            onClick={handleAddToCart}
+            disabled={isLoading || !variant?.availableForSale}
+            className="w-full bg-primary text-primary-foreground py-4 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin mx-auto" />
+            ) : !variant?.availableForSale ? (
+              "Sold Out"
+            ) : (
+              "Add to Basket"
+            )}
+          </button>
+          <MakeOfferModal
+            productTitle={product.title}
+            productHandle={product.handle}
+            productImage={images[0]?.node.url}
+            variantId={variant?.id}
+            variantTitle={variant?.title}
+            originalPrice={price}
+          />
         </div>
       </div>
     </Layout>
