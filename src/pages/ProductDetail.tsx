@@ -362,22 +362,25 @@ const ProductDetail = () => {
               originalPrice={price}
             />
           </div>
-          <button
-            onClick={handleBuyNow}
-            disabled={buyNowLoading || !variant?.availableForSale}
-            className="w-full flex items-center justify-center gap-2 bg-foreground text-background py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          <div
+            onClick={!buyNowLoading && variant?.availableForSale ? handleBuyNow : undefined}
+            role="button"
+            aria-label="Buy with Apple Pay"
+            className={`w-full h-[44px] rounded-md overflow-hidden cursor-pointer ${buyNowLoading || !variant?.availableForSale ? 'opacity-50 pointer-events-none' : 'hover:opacity-90'} transition-opacity`}
+            style={{
+              WebkitAppearance: '-apple-pay-button' as any,
+              appearance: '-apple-pay-button' as any,
+              // @ts-ignore
+              '--apple-pay-button-type': 'buy',
+              '--apple-pay-button-style': 'black',
+            } as React.CSSProperties}
           >
-            {buyNowLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <>
-                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden="true">
-                  <path d="M17.72 7.85c-.05.04-1.01.58-1.01 1.79 0 1.39 1.22 1.88 1.26 1.9-.01.04-.2.67-.65 1.33-.39.57-.8 1.14-1.42 1.14s-.78-.36-1.5-.36c-.7 0-.95.37-1.52.37s-.96-.53-1.42-1.17c-.53-.76-.96-1.95-.96-3.06 0-1.8 1.17-2.75 2.31-2.75.61 0 1.12.4 1.5.4.37 0 .94-.42 1.63-.42.26 0 1.21.02 1.78.92zM14.94 5.04c.3-.36.51-.85.51-1.35 0-.07-.01-.14-.01-.2-.49.02-.1.07-1.56.73-.37.37-.69.87-.69 1.37 0 .07.01.15.02.2.04.01.1.01.14.01.44 0 .93-.33 1.29-.72z"/>
-                </svg>
-                Buy with Apple Pay
-              </>
+            {buyNowLoading && (
+              <div className="w-full h-full flex items-center justify-center bg-black rounded-md">
+                <Loader2 className="h-4 w-4 animate-spin text-white" />
+              </div>
             )}
-          </button>
+          </div>
         </div>
       </div>
     </Layout>
