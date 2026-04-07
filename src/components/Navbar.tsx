@@ -180,6 +180,7 @@ export const Navbar = () => {
               <X className="w-4 h-4" />
             </button>
           </div>
+          <SearchResults query={searchQuery} onClose={() => { setSearchOpen(false); setSearchQuery(""); }} />
         </div>
       )}
 
