@@ -25,13 +25,6 @@ interface ProductNode {
   options: Array<{ name: string; values: string[] }>;
 }
 
-const TRUST_ICONS = [
-  { icon: Truck, label: "Free Delivery" },
-  { icon: RotateCcw, label: "30 Day Returns" },
-  { icon: ShieldCheck, label: "Secure Payment" },
-  { icon: Phone, label: "UK Support" },
-];
-
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
   const [product, setProduct] = useState<ProductNode | null>(null);
