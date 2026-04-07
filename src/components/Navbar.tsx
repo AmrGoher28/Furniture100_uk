@@ -55,15 +55,7 @@ export const Navbar = () => {
       }`}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Top bar with phone */}
-      <div className="hidden md:block border-b border-border/50">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-end py-1.5">
-          <a href="tel:+441234567890" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-            <Phone className="w-3 h-3" />
-            01234 567 890
-          </a>
-        </div>
-      </div>
+      {/* Spacer for top alignment */}
 
       {/* Main nav row */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-[72px]">
