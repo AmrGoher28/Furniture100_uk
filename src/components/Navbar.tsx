@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, User, Heart, Menu, ShoppingBag, ChevronDown, X } from "lucide-react";
+import { Search, User, Heart, Menu, ShoppingBag, ChevronDown, X, Shield } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import { SearchResults } from "./SearchResults";
 import { CartDrawer } from "./CartDrawer";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
@@ -27,6 +28,7 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -85,6 +87,15 @@ export const Navbar = () => {
             Shop
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
           </button>
+          {user && (
+            <Link
+              to="/admin/products"
+              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+            >
+              <Shield className="w-3.5 h-3.5" />
+              Admin
+            </Link>
+          )}
         </div>
 
         {/* Right: Icons */}
@@ -156,6 +167,11 @@ export const Navbar = () => {
                   <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Heart className="w-4 h-4" /> Wishlist
                   </Link>
+                  {user && (
+                    <Link to="/admin/products" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
+                      <Shield className="w-4 h-4" /> Admin
+                    </Link>
+                  )}
                 </div>
               </div>
             </SheetContent>
