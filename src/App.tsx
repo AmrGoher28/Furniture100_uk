@@ -45,7 +45,8 @@ const AppContent = () => {
       <Route path="/admin/categories" element={<AdminCategories />} />
       <Route path="/unsubscribe" element={<UnsubscribePage />} />
       <Route path="*" element={<NotFound />} />
-    </Routes>
+      </Routes>
+    </>
   );
 };
 
