@@ -164,54 +164,6 @@ export type Database = {
         }
         Relationships: []
       }
-      product_audits: {
-        Row: {
-          audit_batch_id: string | null
-          created_at: string
-          flags: string[] | null
-          id: string
-          image_match_notes: string | null
-          image_match_score: number | null
-          inferred_specs: Json | null
-          original_description: string | null
-          product_handle: string
-          product_image: string | null
-          product_title: string
-          status: string
-          suggested_description: string | null
-        }
-        Insert: {
-          audit_batch_id?: string | null
-          created_at?: string
-          flags?: string[] | null
-          id?: string
-          image_match_notes?: string | null
-          image_match_score?: number | null
-          inferred_specs?: Json | null
-          original_description?: string | null
-          product_handle: string
-          product_image?: string | null
-          product_title: string
-          status?: string
-          suggested_description?: string | null
-        }
-        Update: {
-          audit_batch_id?: string | null
-          created_at?: string
-          flags?: string[] | null
-          id?: string
-          image_match_notes?: string | null
-          image_match_score?: number | null
-          inferred_specs?: Json | null
-          original_description?: string | null
-          product_handle?: string
-          product_image?: string | null
-          product_title?: string
-          status?: string
-          suggested_description?: string | null
-        }
-        Relationships: []
-      }
       product_categories: {
         Row: {
           category_slug: string

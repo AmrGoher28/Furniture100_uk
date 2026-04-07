@@ -16,7 +16,6 @@ import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
 import AdminOffers from "./pages/AdminOffers";
 import AdminCategories from "./pages/AdminCategories";
-import ProductAuditPage from "./pages/ProductAuditPage";
 import AuthPage from "./pages/AuthPage";
 import AccountPage from "./pages/AccountPage";
 import UnsubscribePage from "./pages/UnsubscribePage";
@@ -42,7 +41,6 @@ const AppContent = () => {
       <Route path="/account" element={<AccountPage />} />
       <Route path="/admin/offers" element={<AdminOffers />} />
       <Route path="/admin/categories" element={<AdminCategories />} />
-      <Route path="/admin/product-audit" element={<ProductAuditPage />} />
       <Route path="/unsubscribe" element={<UnsubscribePage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
