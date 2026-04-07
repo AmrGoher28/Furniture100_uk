@@ -179,17 +179,27 @@ const ProductDetail = () => {
               {/* Thumbnails — desktop only */}
               {images.length > 1 && (
                 <div className="hidden md:flex gap-2 overflow-x-auto">
-                  {images.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedImage(idx)}
-                      className={`w-20 h-20 bg-secondary overflow-hidden rounded-md border-2 transition-colors shrink-0 ${
-                        idx === selectedImage ? "border-gold" : "border-transparent hover:border-border"
-                      }`}
-                    >
-                      <img src={img.node.url} alt="" className="w-full h-full object-cover" />
-                    </button>
-                  ))}
+                  {images.map((img, idx) => {
+                    const isLast = idx === images.length - 1 && images.length > 1;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedImage(idx)}
+                        className={`relative w-20 h-20 bg-secondary overflow-hidden rounded-md border-2 transition-colors shrink-0 ${
+                          idx === selectedImage ? "border-gold" : "border-transparent hover:border-border"
+                        }`}
+                      >
+                        <img src={img.node.url} alt="" className="w-full h-full object-cover" />
+                        {isLast && (
+                          <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
+                            <span className="text-background text-[10px] font-medium leading-tight text-center">
+                              View All {images.length}
+                            </span>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               )}
             </div>
