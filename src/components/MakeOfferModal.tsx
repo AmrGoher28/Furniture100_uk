@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Tag } from "lucide-react";
+import { Loader2, Tag, Lock } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface MakeOfferModalProps {
   productTitle: string;
@@ -16,23 +18,34 @@ interface MakeOfferModalProps {
   originalPrice: number;
 }
 
-const MakeOfferModal = ({
+const suggestPercents = [5, 10, 15] as const;
+
+const OfferForm = ({
   productTitle,
-  productHandle,
   productImage,
-  variantId,
   variantTitle,
   originalPrice,
-}: MakeOfferModalProps) => {
-  const [open, setOpen] = useState(false);
+  productHandle,
+  variantId,
+  onClose,
+}: MakeOfferModalProps & { onClose: () => void }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [offerAmount, setOfferAmount] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const amount = parseFloat(offerAmount) || 0;
+  const discount = amount > 0 && amount < originalPrice
+    ? Math.round(((originalPrice - amount) / originalPrice) * 100)
+    : 0;
+
+  const suggestions = suggestPercents.map((pct) => ({
+    pct,
+    value: Math.round(originalPrice * (1 - pct / 100)),
+  }));
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const amount = parseFloat(offerAmount);
     if (!amount || amount <= 0) {
       toast.error("Please enter a valid offer amount");
       return;
@@ -55,10 +68,8 @@ const MakeOfferModal = ({
         buyer_email: email.trim(),
         buyer_name: name.trim() || null,
       });
-
       if (error) throw error;
 
-      // Trigger notification edge function
       try {
         await supabase.functions.invoke("handle-offer", {
           body: {
@@ -74,7 +85,6 @@ const MakeOfferModal = ({
           },
         });
       } catch {
-        // Non-critical — offer is saved even if notification fails
         console.warn("Offer notification failed");
       }
 
@@ -82,10 +92,7 @@ const MakeOfferModal = ({
         description: "We'll review your offer and get back to you via email.",
         position: "top-center",
       });
-      setOpen(false);
-      setName("");
-      setEmail("");
-      setOfferAmount("");
+      onClose();
     } catch (err) {
       console.error(err);
       toast.error("Failed to submit offer. Please try again.");
@@ -95,80 +102,159 @@ const MakeOfferModal = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <button className="w-full flex items-center justify-center gap-2 border border-border py-3 rounded-md text-sm text-muted-foreground hover:text-foreground hover:border-foreground transition-colors">
-          <Tag className="w-4 h-4" />
-          Make an Offer
-        </button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-background border-border">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-serif">Make an Offer</DialogTitle>
-        </DialogHeader>
-        <div className="mb-4">
-          <p className="text-sm text-muted-foreground">
-            {productTitle}
-            {variantTitle && variantTitle !== "Default Title" && (
-              <span> — {variantTitle}</span>
-            )}
-          </p>
-          <p className="text-sm font-medium mt-1">
-            Listed price: <span className="text-foreground">£{originalPrice.toFixed(2)}</span>
-          </p>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      {/* Product preview */}
+      <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/40 border border-border/50">
+        {productImage && (
+          <img
+            src={productImage}
+            alt={productTitle}
+            className="w-14 h-14 rounded-lg object-cover flex-shrink-0"
+          />
+        )}
+        <div className="min-w-0">
+          <p className="text-sm font-medium truncate">{productTitle}</p>
+          {variantTitle && variantTitle !== "Default Title" && (
+            <p className="text-xs text-muted-foreground">{variantTitle}</p>
+          )}
+          <p className="text-sm font-semibold mt-0.5">£{originalPrice.toFixed(2)}</p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="offer-name" className="text-sm">Your Name</Label>
-            <Input
-              id="offer-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="John Smith"
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="offer-email" className="text-sm">Your Email *</Label>
-            <Input
-              id="offer-email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="offer-amount" className="text-sm">Your Offer (£) *</Label>
-            <Input
-              id="offer-amount"
-              type="number"
-              required
-              min="1"
-              step="0.01"
-              value={offerAmount}
-              onChange={(e) => setOfferAmount(e.target.value)}
-              placeholder={`e.g. ${(originalPrice * 0.85).toFixed(0)}`}
-              className="mt-1"
-            />
-          </div>
-          <Button
-            type="submit"
-            disabled={submitting}
-            className="w-full"
-          >
-            {submitting ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              "Submit Offer"
-            )}
-          </Button>
-          <p className="text-xs text-muted-foreground text-center">
-            We'll review your offer and respond via email within 24 hours.
+      </div>
+
+      {/* Offer amount */}
+      <div>
+        <Label className="text-sm font-medium mb-2 block">Your Offer</Label>
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium text-lg">£</span>
+          <Input
+            type="number"
+            required
+            min="1"
+            step="0.01"
+            value={offerAmount}
+            onChange={(e) => setOfferAmount(e.target.value)}
+            placeholder="0.00"
+            className="pl-8 h-14 text-xl font-semibold rounded-xl border-border/60 focus-visible:ring-gold/30"
+          />
+        </div>
+        {discount > 0 && (
+          <p className="text-xs text-muted-foreground mt-1.5">
+            That's <span className="font-medium text-foreground">{discount}% off</span> the listed price
           </p>
-        </form>
+        )}
+      </div>
+
+      {/* Quick suggestions */}
+      <div className="flex gap-2">
+        {suggestions.map(({ pct, value }) => (
+          <button
+            key={pct}
+            type="button"
+            onClick={() => setOfferAmount(String(value))}
+            className={`flex-1 py-2 px-2 rounded-lg border text-xs font-medium transition-colors ${
+              offerAmount === String(value)
+                ? "border-foreground bg-foreground text-background"
+                : "border-border/60 bg-secondary/30 text-muted-foreground hover:border-foreground/40"
+            }`}
+          >
+            £{value} <span className="text-[10px] opacity-70">(-{pct}%)</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Name & Email */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="relative">
+          <Input
+            id="offer-name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder=" "
+            className="peer h-12 rounded-xl pt-4 pb-1 px-3"
+          />
+          <label
+            htmlFor="offer-name"
+            className="absolute left-3 top-1 text-[10px] text-muted-foreground pointer-events-none transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-sm peer-focus:top-1 peer-focus:text-[10px]"
+          >
+            Your Name
+          </label>
+        </div>
+        <div className="relative">
+          <Input
+            id="offer-email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder=" "
+            className="peer h-12 rounded-xl pt-4 pb-1 px-3"
+          />
+          <label
+            htmlFor="offer-email"
+            className="absolute left-3 top-1 text-[10px] text-muted-foreground pointer-events-none transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-sm peer-focus:top-1 peer-focus:text-[10px]"
+          >
+            Email Address *
+          </label>
+        </div>
+      </div>
+
+      {/* Submit */}
+      <Button
+        type="submit"
+        disabled={submitting}
+        className="w-full h-13 rounded-xl text-sm font-medium gap-2"
+      >
+        {submitting ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <>
+            <Lock className="w-3.5 h-3.5" />
+            Send My Offer
+          </>
+        )}
+      </Button>
+      <p className="text-[11px] text-muted-foreground text-center -mt-2">
+        No obligation — we'll respond within 24 hours
+      </p>
+    </form>
+  );
+};
+
+const MakeOfferModal = (props: MakeOfferModalProps) => {
+  const [open, setOpen] = useState(false);
+  const isMobile = useIsMobile();
+
+  const trigger = (
+    <button className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4">
+      <Tag className="w-3.5 h-3.5" />
+      Make an Offer
+    </button>
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+        <DrawerContent className="max-h-[85vh] rounded-t-2xl border-border/50">
+          <DrawerHeader className="pb-2">
+            <DrawerTitle className="text-lg">Make an Offer</DrawerTitle>
+          </DrawerHeader>
+          <div className="overflow-y-auto px-4 pb-6 overscroll-contain" style={{ WebkitOverflowScrolling: "touch" }}>
+            <OfferForm {...props} onClose={() => setOpen(false)} />
+          </div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="sm:max-w-md rounded-2xl bg-background border-border/50 shadow-xl max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-xl">Make an Offer</DialogTitle>
+        </DialogHeader>
+        <OfferForm {...props} onClose={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );
