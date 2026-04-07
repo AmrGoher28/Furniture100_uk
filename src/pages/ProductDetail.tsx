@@ -245,11 +245,11 @@ const ProductDetail = () => {
               })}
 
               {/* Desktop buttons */}
-              <div className="hidden md:flex flex-col gap-2 mb-2">
+              <div className="hidden md:flex flex-col gap-3 mb-3">
                 <button
                   onClick={handleAddToCart}
                   disabled={isLoading || !variant?.availableForSale}
-                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-4 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -265,11 +265,11 @@ const ProductDetail = () => {
               <ProductTrustBadges />
 
               {/* Delivery banner */}
-              <div className="mb-3">
+              <div className="mb-4">
                 <DeliveryBanner />
               </div>
 
-              <div className="hidden md:flex flex-col gap-2 mb-8">
+              <div className="hidden md:flex flex-col items-center gap-3 mb-10">
                 <MakeOfferModal
                   productTitle={product.title}
                   productHandle={product.handle}
@@ -293,10 +293,10 @@ const ProductDetail = () => {
                       });
                     }
                   }}
-                  className={`w-full flex items-center justify-center gap-2 border py-3 rounded-md text-sm transition-colors ${
+                  className={`flex items-center gap-2 text-sm transition-colors ${
                     isInWishlist(product.handle)
-                      ? "border-gold text-gold"
-                      : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
+                      ? "text-gold"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <Heart className={`w-4 h-4 ${isInWishlist(product.handle) ? "fill-gold" : ""}`} />
@@ -304,17 +304,21 @@ const ProductDetail = () => {
                 </button>
               </div>
 
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                {product.description}
-              </p>
+              {/* Description */}
+              <div className="mb-8">
+                <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium mb-3">Description</p>
+                <p className="text-muted-foreground leading-relaxed">
+                  {product.description}
+                </p>
+              </div>
 
               {/* Product Specs Accordion */}
-              <div className="mb-2">
+              <div className="mb-3">
                 <ProductSpecs />
               </div>
 
               {/* FAQ Accordion */}
-              <div className="mb-8">
+              <div className="mb-10">
                 <ProductFAQ />
               </div>
             </div>
