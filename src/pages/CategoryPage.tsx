@@ -28,6 +28,7 @@ const CategoryPage = () => {
   const [sort, setSort] = useState<SortOption>("featured");
   const [showFilters, setShowFilters] = useState(false);
   const [usedDbMapping, setUsedDbMapping] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
