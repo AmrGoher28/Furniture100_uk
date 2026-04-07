@@ -22,7 +22,7 @@ const UpdateSchema = z.object({
 });
 
 type ShopifyTokenCandidate = {
-  name: "SHOPIFY_ADMIN_TOKEN" | "SHOPIFY_ACCESS_TOKEN";
+  name: string;
   value: string;
 };
 
@@ -40,14 +40,31 @@ function createAuthClient(req: Request) {
   });
 }
 
+function getShopifyTokenCandidates(): ShopifyTokenCandidate[] {
+  const env = Deno.env.toObject();
+  return Object.entries(env)
+    .filter(([key, value]) => {
+      if (!value) return false;
+      return key === "SHOPIFY_ADMIN_TOKEN"
+        || key === "SHOPIFY_ACCESS_TOKEN"
+        || key.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN");
+    })
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => {
+      const score = (name: string) => {
+        if (name.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN")) return 0;
+        if (name === "SHOPIFY_ADMIN_TOKEN") return 1;
+        return 2;
+      };
+      return score(a.name) - score(b.name);
+    });
+}
+
 async function resolveWorkingShopifyToken(): Promise<ShopifyTokenCandidate> {
-  const candidates: ShopifyTokenCandidate[] = [
-    { name: "SHOPIFY_ADMIN_TOKEN", value: Deno.env.get("SHOPIFY_ADMIN_TOKEN") || "" },
-    { name: "SHOPIFY_ACCESS_TOKEN", value: Deno.env.get("SHOPIFY_ACCESS_TOKEN") || "" },
-  ].filter((candidate) => candidate.value);
+  const candidates = getShopifyTokenCandidates();
 
   if (candidates.length === 0) {
-    throw new Error("No Shopify admin token is configured for backend product editing.");
+    throw new Error("No Shopify token is configured for backend product editing.");
   }
 
   const failures: string[] = [];
@@ -72,7 +89,7 @@ async function resolveWorkingShopifyToken(): Promise<ShopifyTokenCandidate> {
     console.error(`[admin-update-product] ${candidate.name} probe failed:`, probeText);
   }
 
-  throw new Error(`No valid Shopify admin token is available (${failures.join(", ")}). Reconnect Shopify or refresh the admin token.`);
+  throw new Error(`No valid Shopify token is available (${failures.join(", ")}). Reconnect Shopify or refresh the token.`);
 }
 
 Deno.serve(async (req) => {
