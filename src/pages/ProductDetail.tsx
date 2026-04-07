@@ -98,6 +98,31 @@ const ProductDetail = () => {
     toast.success("Added to basket", { position: "top-center" });
   };
 
+  const handleBuyNow = async () => {
+    if (!variant) return;
+    setBuyNowLoading(true);
+    try {
+      const result = await createShopifyCart({
+        lineId: null,
+        product: { node: product },
+        variantId: variant.id,
+        variantTitle: variant.title,
+        price: variant.price,
+        quantity: 1,
+        selectedOptions: variant.selectedOptions || [],
+      });
+      if (result?.checkoutUrl) {
+        window.open(result.checkoutUrl, "_blank");
+      } else {
+        toast.error("Could not create checkout");
+      }
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setBuyNowLoading(false);
+    }
+  };
+
   return (
     <Layout>
       <main className="flex-1 py-8 md:py-12 px-6 md:px-12 pb-24 md:pb-12">
