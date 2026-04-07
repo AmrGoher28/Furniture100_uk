@@ -13,9 +13,7 @@ const Index = () => {
     <Layout>
       <Hero />
       <TrustBar />
-      <div className="mt-6 md:mt-0">
-        <FeaturedCategories />
-      </div>
+      <FeaturedCategories />
       <div id="best-sellers">
         <BestSellers />
       </div>

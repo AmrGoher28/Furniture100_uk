@@ -53,15 +53,14 @@ export const Hero = () => {
         />
       ))}
 
-      <div className="absolute inset-0 hidden md:block bg-black/30 z-[1]" />
-      <div className="absolute inset-0 md:hidden bg-gradient-to-t from-black/60 via-black/20 to-transparent z-[1]" />
+      <div className="absolute inset-0 bg-black/30 z-[1]" />
 
 
       <div className="relative z-10 text-center max-w-3xl mx-auto px-2">
         <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-primary-foreground mb-6 md:mb-8 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3)' }}>
           Premium Furniture.<br />Delivered Nationwide
         </h1>
-        <p className="hidden md:block text-primary-foreground/70 text-xs sm:text-sm font-light mb-8 tracking-wide" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
+        <p className="text-primary-foreground/70 text-xs sm:text-sm font-light mb-8 tracking-wide" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
           Don't like the price? Make an offer.
         </p>
         <Link

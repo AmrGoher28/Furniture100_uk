@@ -1,23 +1,25 @@
 
 
-## Simplify Mobile Hero & Reduce Redundancy
+## Redesign Category/Shop Page + Mobile 2-Column Grid
 
-Four targeted changes, all mobile-only (desktop unchanged).
+Two changes to `src/pages/CategoryPage.tsx`:
 
-### 1. Remove "Make an offer" subtext from Hero
-**`src/components/Hero.tsx`** — Hide the `<p>` tag on mobile using `hidden md:block` so it only shows on desktop.
+### 1. High-End Minimal Redesign
+- **Product cards**: Remove "Add to Basket" buttons, star ratings, and `handleAddToCart`/`ShoppingBag`/`useProductReviews` imports. Cards show only image → name → price. Name: `text-sm font-light`, price: `text-sm text-muted-foreground font-normal`.
+- **Image hover**: Replace `ProductImageCarousel` with a simple `<img>` that scales to 1.03 on hover and swaps to the second image if available (using `group-hover` + CSS opacity swap).
+- **Hero banner**: Reduce height ~40% (`h-28 md:h-40`), lighter overlay, serif title (`font-serif font-normal text-2xl md:text-4xl`).
+- **Sidebar**: Lighter font weights (`font-light`), more spacing (`space-y-3`), active state = underline instead of gold color. Remove "Subcategories" heading, nest them indented under parent.
+- **Sort/count bar**: Smaller (`text-xs`), lighter color, less visual weight.
+- **Spacing**: Increase grid gaps (`gap-8 md:gap-14`), more section padding (`py-12 md:py-20`), aspect ratio `aspect-[4/5]`.
 
-### 2. Add bottom gradient overlay on Hero
-**`src/components/Hero.tsx`** — Replace the flat `bg-black/30` overlay with a bottom-up gradient on mobile: `bg-gradient-to-t from-black/60 via-black/20 to-transparent`. Keep the existing flat overlay for desktop using responsive classes.
+### 2. Mobile 2-Column Grid
+- Change `grid-cols-1 sm:grid-cols-2` → `grid-cols-2 lg:grid-cols-3` so mobile always shows 2 products side-by-side.
+- Tighter gap on mobile (`gap-4 md:gap-14`).
 
-### 3. Hide TrustBar on mobile
-**`src/components/TrustBar.tsx`** — Add `hidden md:block` to the outer `<section>` so the scrolling trust strip is only visible on desktop.
-
-### 4. Add spacing between Hero and FeaturedCategories on mobile
-**`src/pages/Index.tsx`** — Wrap the `<FeaturedCategories />` in a div with `mt-6 md:mt-0` (or similar) to add breathing room on mobile only.
+### Also update the homepage ProductGrid
+- In `src/components/ProductGrid.tsx`, change `grid-cols-1 md:grid-cols-2` → `grid-cols-2 lg:grid-cols-3` for consistent 2-column mobile grid across the site.
 
 ### Files Modified
-- `src/components/Hero.tsx` — hide subtext on mobile, add gradient overlay
-- `src/components/TrustBar.tsx` — hide on mobile
-- `src/pages/Index.tsx` — mobile spacing tweak
+- `src/pages/CategoryPage.tsx` — main redesign + mobile grid
+- `src/components/ProductGrid.tsx` — mobile grid only (line 119)
 

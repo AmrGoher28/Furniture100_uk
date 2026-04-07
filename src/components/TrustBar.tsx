@@ -39,7 +39,7 @@ export const TrustBar = () => {
 
   return (
     <section
-      className="hidden md:block bg-card py-3 overflow-hidden"
+      className="bg-card py-3 overflow-hidden"
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
     >
