@@ -67,7 +67,7 @@ export const Navbar = () => {
 
         {/* Centre: Navigation (desktop) */}
         <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
+          {NAV_LINKS.filter(l => l.label !== "Shop").map((link) => (
             <Link
               key={link.label}
               to={link.href}
@@ -81,7 +81,7 @@ export const Navbar = () => {
             onClick={() => setMegaOpen(!megaOpen)}
             className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
           >
-            Categories
+            Shop
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
           </button>
         </div>
