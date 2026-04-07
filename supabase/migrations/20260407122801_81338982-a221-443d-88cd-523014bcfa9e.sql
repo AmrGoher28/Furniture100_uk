@@ -1,0 +1,1 @@
+ALTER TABLE public.offers ADD COLUMN quantity integer NOT NULL DEFAULT 1;
