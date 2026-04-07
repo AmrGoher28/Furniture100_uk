@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, User, Heart, Menu, ShoppingBag, ChevronDown, X, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useAdminMode } from "@/hooks/useAdminMode";
 import { SearchResults } from "./SearchResults";
 import { CartDrawer } from "./CartDrawer";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
@@ -29,6 +30,7 @@ export const Navbar = () => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin, setShowLogin } = useAdminMode();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -49,6 +51,14 @@ export const Navbar = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
 
+  const handleAdminClick = () => {
+    if (isAdmin) {
+      navigate("/admin/products");
+    } else {
+      setShowLogin(true);
+    }
+  };
+
   return (
     <nav
       className={`sticky top-0 z-50 border-b border-border transition-all duration-300 ${
@@ -58,8 +68,6 @@ export const Navbar = () => {
       }`}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Spacer for top alignment */}
-
       {/* Main nav row */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-[72px]">
         {/* Left: Logo */}
@@ -87,15 +95,13 @@ export const Navbar = () => {
             Shop
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
           </button>
-          {user && (
-            <Link
-              to="/admin/products"
-              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
-            >
-              <Shield className="w-3.5 h-3.5" />
-              Admin
-            </Link>
-          )}
+          <button
+            onClick={handleAdminClick}
+            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+          >
+            <Shield className="w-3.5 h-3.5" />
+            Admin
+          </button>
         </div>
 
         {/* Right: Icons */}
@@ -167,11 +173,12 @@ export const Navbar = () => {
                   <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Heart className="w-4 h-4" /> Wishlist
                   </Link>
-                  {user && (
-                    <Link to="/admin/products" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
-                      <Shield className="w-4 h-4" /> Admin
-                    </Link>
-                  )}
+                  <button
+                    onClick={() => { setMobileOpen(false); handleAdminClick(); }}
+                    className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light w-full text-left"
+                  >
+                    <Shield className="w-4 h-4" /> Admin
+                  </button>
                 </div>
               </div>
             </SheetContent>

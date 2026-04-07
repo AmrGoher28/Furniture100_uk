@@ -15,8 +15,6 @@ import KlarnaInfo from "@/components/KlarnaInfo";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useAdminMode } from "@/hooks/useAdminMode";
 import { useProductOverrides } from "@/hooks/useProductOverrides";
-import AdminLoginModal from "@/components/admin/AdminLoginModal";
-import AdminBadge from "@/components/admin/AdminBadge";
 import InlineEditor from "@/components/admin/InlineEditor";
 import { toast } from "sonner";
 
@@ -42,7 +40,7 @@ const ProductDetail = () => {
   const isLoading = useCartStore((s) => s.isLoading);
   const [buyNowLoading, setBuyNowLoading] = useState(false);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const { isAdmin, showLogin, setShowLogin, login, logout } = useAdminMode();
+  const { isAdmin } = useAdminMode();
   const { overrides, saveOverride } = useProductOverrides(handle);
 
   useEffect(() => {
@@ -131,10 +129,8 @@ const ProductDetail = () => {
 
   return (
     <Layout>
-      {/* Admin login modal */}
-      <AdminLoginModal open={showLogin} onClose={() => setShowLogin(false)} onLogin={login} />
-      {/* Admin badge */}
-      {isAdmin && <AdminBadge onExit={logout} />}
+
+
 
       <main className="flex-1 py-10 md:py-14 px-6 md:px-12 pb-28 md:pb-14">
         <div className="max-w-7xl mx-auto">
