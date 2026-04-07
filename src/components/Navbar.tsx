@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, User, Heart, Menu, ShoppingBag, Phone, ChevronDown, X } from "lucide-react";
+import { Search, User, Heart, Menu, ShoppingBag, ChevronDown, X } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
