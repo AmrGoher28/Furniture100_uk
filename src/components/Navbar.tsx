@@ -165,18 +165,18 @@ export const Navbar = () => {
 
       {/* Search bar dropdown */}
       {searchOpen && (
-        <div className="border-t border-border px-6 md:px-12 py-3 bg-background animate-fade-in">
-          <div className="max-w-xl mx-auto flex items-center gap-3">
-            <Search className="w-4 h-4 text-muted-foreground" />
+        <div className="border-t border-border bg-background animate-fade-in">
+          <div className="max-w-xl mx-auto flex items-center gap-3 px-6 md:px-12 py-4">
+            <Search className="w-4 h-4 text-muted-foreground shrink-0" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search for furniture..."
+              placeholder="What are you looking for?"
               autoFocus
               className="flex-1 bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground font-light"
             />
-            <button onClick={() => { setSearchOpen(false); setSearchQuery(""); }} className="text-muted-foreground hover:text-foreground">
+            <button onClick={() => { setSearchOpen(false); setSearchQuery(""); }} className="text-muted-foreground hover:text-foreground shrink-0">
               <X className="w-4 h-4" />
             </button>
           </div>
