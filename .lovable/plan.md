@@ -1,52 +1,36 @@
 
 
-## 1. Klarna Payment Messaging on Product Page
+## Add Quantity to Make an Offer Modal
 
-**File: `src/pages/ProductDetail.tsx`**
+### What changes
 
-Replace the current minimal Klarna line (line 213-215) with an enhanced component:
-- Show "Or 3 interest-free payments of **£XX.XX** with [Klarna logo]"
-- Calculate dynamically: `(price / 3).toFixed(2)`
-- Style: `text-xs text-muted-foreground` — slightly smaller than price
-- "Klarna" text links to a small popover/dialog explaining how Klarna works (pay in 3, no interest, soft credit check)
-- Use a small inline Klarna pink logo (SVG or text badge)
-- Add a `useState` for the modal open state, use the existing `Dialog` component for the explainer
+**Database: Add `quantity` column to `offers` table**
+- New migration: `ALTER TABLE public.offers ADD COLUMN quantity integer NOT NULL DEFAULT 1;`
 
-**New: `src/components/KlarnaInfo.tsx`**
-- Small reusable component containing:
-  - The Klarna messaging line with dynamic price
-  - A `Dialog` modal triggered by clicking "Klarna" / "Learn more"
-  - Modal content: brief explanation of Klarna Pay in 3 (3 equal payments, no interest, example breakdown)
-  - Styled minimal and on-brand
+**File: `src/components/MakeOfferModal.tsx`**
 
----
+1. Add `quantity` state (default 1, min 1, max 10) with compact plus/minus controls — same style as the product page quantity selector (32px circles, small text)
+2. Place the quantity selector between the product preview card and the "Your Offer" input
+3. Label it "Quantity" in sentence case, small muted font
+4. Update the "Your Offer" label to clarify it's per item: "Your Offer (per item)"
+5. Show a dynamic total line below the offer input: "Total for {quantity} items: £{amount * quantity}" in muted text
+6. Update suggestion pills to remain per-item (no change needed, they already calculate from `originalPrice`)
+7. Pass `quantity` into the Supabase insert and the edge function notification body
+8. Update discount helper text to remain per-item based
 
-## 2. Font Consistency Audit & Fixes
+### Layout order in the form
+```text
+[Product thumbnail + name + price]
+[Quantity: - 1 +]
+[Your Offer (per item): £___]
+[  That's 15% off per item  ]
+[£237 (-5%)  £224 (-10%)  £212 (-15%)]
+[Total for 2 items: £448.00]
+[Name] [Email]
+[Send My Offer]
+```
 
-**Root styles are correct** in `src/index.css`: Playfair Display for headings, Inter 300 for body. The issue is inline `style={{ fontFamily: ... }}` overrides scattered across components that sometimes conflict or are redundant.
-
-**Files to fix:**
-
-| File | Issue | Fix |
-|---|---|---|
-| `src/pages/ProductDetail.tsx` line 210 | Price has explicit `fontFamily: Inter` — redundant (body default) | Remove `style` attr |
-| `src/pages/AboutPage.tsx` line 48 | Value card headings forced to Inter — these are `<h3>` so should be Playfair per brand | Remove `style` attr, let CSS handle it |
-| `src/pages/AboutPage.tsx` line 61 | Stats forced to Playfair — redundant for `<p>` used as display text | Keep but ensure consistent |
-| `src/components/WhyChooseUs.tsx` line 37 | `<h3>` forced to Inter — should be Playfair | Remove `style` attr |
-| `src/components/BestSellers.tsx` line 89 | `<h3>` forced to Inter — should be Playfair | Remove `style` attr |
-| `src/components/Footer.tsx` line 10 | Brand name forced to Playfair — redundant but harmless | Keep (it's a `<span>` not heading) |
-| `src/components/Navbar.tsx` lines 64, 112 | Brand name forced to Playfair — redundant but harmless | Keep (it's a `<span>`) |
-| `src/pages/AuthPage.tsx` line 66 | `<h1>` forced to Playfair — redundant | Remove `style` attr |
-| `src/pages/AccountPage.tsx` line 36 | `<h1>` forced to Playfair — redundant | Remove `style` attr |
-
-**Key principle**: All `<h1>`–`<h6>` get Playfair automatically from CSS. Remove all redundant inline `fontFamily` on headings. For `<h3>` tags that were incorrectly forced to Inter (WhyChooseUs, BestSellers, AboutPage values), remove the override so they use the correct serif heading font.
-
-**Files modified:**
-- `src/pages/ProductDetail.tsx` — Klarna component + remove price font override
-- `src/components/KlarnaInfo.tsx` — new component
-- `src/pages/AboutPage.tsx` — remove redundant font overrides
-- `src/pages/AuthPage.tsx` — remove redundant font override
-- `src/pages/AccountPage.tsx` — remove redundant font override
-- `src/components/WhyChooseUs.tsx` — remove incorrect Inter override on h3
-- `src/components/BestSellers.tsx` — remove incorrect Inter override on h3
+### Files modified
+- `src/components/MakeOfferModal.tsx` — quantity state, UI, data submission
+- New migration — add `quantity` column to `offers` table
 
