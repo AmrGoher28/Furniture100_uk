@@ -90,10 +90,10 @@ const ProductDetail = () => {
       variantId: variant.id,
       variantTitle: variant.title,
       price: variant.price,
-      quantity: 1,
+      quantity,
       selectedOptions: variant.selectedOptions || [],
     });
-    toast.success("Added to basket", { position: "top-center" });
+    toast.success(`Added ${quantity} to basket`, { position: "top-center" });
   };
 
   const handleBuyNow = async () => {
