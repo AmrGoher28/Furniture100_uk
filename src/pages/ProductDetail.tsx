@@ -214,7 +214,7 @@ const ProductDetail = () => {
               <KlarnaInfo price={price * quantity} />
 
               {/* Divider */}
-              <div className="border-t border-border/40 my-6" />
+              <div className="border-t border-border/40 my-4" />
 
               {/* Variant selectors */}
               {product.options.map((option) => {
