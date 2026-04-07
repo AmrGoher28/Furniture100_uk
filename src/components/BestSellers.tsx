@@ -81,20 +81,11 @@ export const BestSellers = () => {
                   to={`/product/${product.node.handle}`}
                   className="group block"
                 >
-                  <div className="aspect-square bg-card overflow-hidden rounded-xl mb-4 warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300">
-                    {image ? (
-                      <img
-                        src={image.url}
-                        alt={image.altText || product.node.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                        No image
-                      </div>
-                    )}
-                  </div>
+                  <ProductImageCarousel
+                    images={product.node.images.edges.map((e) => e.node)}
+                    title={product.node.title}
+                    className="aspect-square bg-card rounded-xl mb-4 warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300"
+                  />
                   <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {product.node.title}
                   </h3>
