@@ -122,10 +122,10 @@ const ProductDetail = () => {
 
   return (
     <Layout>
-      <main className="flex-1 py-8 md:py-12 px-6 md:px-12 pb-24 md:pb-12">
+      <main className="flex-1 py-10 md:py-14 px-6 md:px-12 pb-28 md:pb-14">
         <div className="max-w-7xl mx-auto">
           {/* Breadcrumb */}
-          <nav className="text-xs text-muted-foreground mb-6">
+          <nav className="text-xs text-muted-foreground mb-8">
             <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
             <span className="mx-2">/</span>
             <Link to="/shop" className="hover:text-foreground transition-colors">Shop</Link>
@@ -133,10 +133,10 @@ const ProductDetail = () => {
             <span className="text-foreground">{product.title}</span>
           </nav>
 
-          <div className="grid md:grid-cols-2 gap-8 md:gap-16">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-20">
             {/* Images */}
             <div>
-              <div className="relative aspect-square bg-secondary overflow-hidden rounded-lg mb-3 group">
+              <div className="relative aspect-square bg-secondary overflow-hidden rounded-xl shadow-sm mb-3 group">
                 {images[selectedImage] ? (
                   <img
                     src={images[selectedImage].node.url}
@@ -206,11 +206,14 @@ const ProductDetail = () => {
 
             {/* Details */}
             <div>
-              <h1 className="text-2xl md:text-4xl mb-3">{product.title}</h1>
-              <p className="text-2xl font-semibold mb-2">
+              <h1 className="text-xl md:text-4xl mb-4">{product.title}</h1>
+              <p className="text-3xl md:text-4xl font-bold mb-2">
                 £{price.toFixed(2)}
               </p>
               <KlarnaInfo price={price} />
+
+              {/* Divider */}
+              <div className="border-t border-border/40 my-6" />
 
               {/* Variant selectors */}
               {product.options.map((option) => {
@@ -242,11 +245,11 @@ const ProductDetail = () => {
               })}
 
               {/* Desktop buttons */}
-              <div className="hidden md:flex flex-col gap-2 mb-2">
+              <div className="hidden md:flex flex-col gap-3 mb-3">
                 <button
                   onClick={handleAddToCart}
                   disabled={isLoading || !variant?.availableForSale}
-                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-4 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -262,11 +265,11 @@ const ProductDetail = () => {
               <ProductTrustBadges />
 
               {/* Delivery banner */}
-              <div className="mb-3">
+              <div className="mb-4">
                 <DeliveryBanner />
               </div>
 
-              <div className="hidden md:flex flex-col gap-2 mb-8">
+              <div className="hidden md:flex flex-col items-center gap-3 mb-10">
                 <MakeOfferModal
                   productTitle={product.title}
                   productHandle={product.handle}
@@ -290,10 +293,10 @@ const ProductDetail = () => {
                       });
                     }
                   }}
-                  className={`w-full flex items-center justify-center gap-2 border py-3 rounded-md text-sm transition-colors ${
+                  className={`flex items-center gap-2 text-sm transition-colors ${
                     isInWishlist(product.handle)
-                      ? "border-gold text-gold"
-                      : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
+                      ? "text-gold"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <Heart className={`w-4 h-4 ${isInWishlist(product.handle) ? "fill-gold" : ""}`} />
@@ -301,17 +304,21 @@ const ProductDetail = () => {
                 </button>
               </div>
 
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                {product.description}
-              </p>
+              {/* Description */}
+              <div className="mb-8">
+                <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium mb-3">Description</p>
+                <p className="text-muted-foreground leading-relaxed">
+                  {product.description}
+                </p>
+              </div>
 
               {/* Product Specs Accordion */}
-              <div className="mb-2">
+              <div className="mb-3">
                 <ProductSpecs />
               </div>
 
               {/* FAQ Accordion */}
-              <div className="mb-8">
+              <div className="mb-10">
                 <ProductFAQ />
               </div>
             </div>
@@ -325,32 +332,30 @@ const ProductDetail = () => {
         </div>
       </main>
 
-      {/* Mobile sticky: Buy Now + Make Offer + Apple Pay */}
+      {/* Mobile sticky */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border px-4 py-3 md:hidden">
-        <div className="flex flex-col gap-2">
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={handleAddToCart}
-              disabled={isLoading || !variant?.availableForSale}
-              className="bg-primary text-primary-foreground py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin mx-auto" />
-              ) : !variant?.availableForSale ? (
-                "Sold Out"
-              ) : (
-                "Add to Basket"
-              )}
-            </button>
-            <MakeOfferModal
-              productTitle={product.title}
-              productHandle={product.handle}
-              productImage={images[0]?.node.url}
-              variantId={variant?.id}
-              variantTitle={variant?.title}
-              originalPrice={price}
-            />
-          </div>
+        <div className="flex flex-col items-center gap-2">
+          <button
+            onClick={handleAddToCart}
+            disabled={isLoading || !variant?.availableForSale}
+            className="w-full bg-primary text-primary-foreground py-4 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin mx-auto" />
+            ) : !variant?.availableForSale ? (
+              "Sold Out"
+            ) : (
+              "Add to Basket"
+            )}
+          </button>
+          <MakeOfferModal
+            productTitle={product.title}
+            productHandle={product.handle}
+            productImage={images[0]?.node.url}
+            variantId={variant?.id}
+            variantTitle={variant?.title}
+            originalPrice={price}
+          />
         </div>
       </div>
     </Layout>
