@@ -41,6 +41,7 @@ const AppContent = () => {
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/account" element={<AccountPage />} />
       <Route path="/admin/offers" element={<AdminOffers />} />
+      <Route path="/admin/products" element={<AdminProducts />} />
       <Route path="/admin/categories" element={<AdminCategories />} />
       <Route path="/unsubscribe" element={<UnsubscribePage />} />
       <Route path="*" element={<NotFound />} />
