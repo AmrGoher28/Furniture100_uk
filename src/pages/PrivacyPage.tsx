@@ -50,7 +50,7 @@ const PrivacyPage = () => {
           <div>
             <h2 className="text-2xl mb-3">7. Contact</h2>
             <p className="text-muted-foreground leading-relaxed">
-              For any privacy-related queries, please email <a href="mailto:hello@furniture100.co.uk" className="text-gold hover:underline">hello@furniture100.co.uk</a> or call 01234 567 890.
+              For any privacy-related queries, please email <a href="mailto:hello@furniture100.co.uk" className="text-gold hover:underline">hello@furniture100.co.uk</a>.
             </p>
           </div>
           <p className="text-xs text-muted-foreground pt-4 border-t border-border">

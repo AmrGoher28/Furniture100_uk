@@ -26,15 +26,6 @@ const ContactPage = () => {
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center shrink-0">
-                  <Phone className="w-4 h-4 text-gold" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold mb-1">Phone</p>
-                  <a href="tel:+441234567890" className="text-sm text-muted-foreground hover:text-gold transition-colors">01234 567 890</a>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center shrink-0">
                   <Mail className="w-4 h-4 text-gold" />
                 </div>
                 <div>

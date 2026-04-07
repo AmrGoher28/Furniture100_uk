@@ -17,7 +17,7 @@ const ReturnsPage = () => {
 
           <h2 className="text-2xl mb-4">How to Return</h2>
           <ol className="space-y-3 text-muted-foreground mb-6 list-decimal list-inside">
-            <li>Contact our team at <a href="mailto:hello@furniture100.co.uk" className="text-gold hover:underline">hello@furniture100.co.uk</a> or call <a href="tel:+441234567890" className="text-gold hover:underline">01234 567 890</a> to arrange your return.</li>
+            <li>Contact our team at <a href="mailto:hello@furniture100.co.uk" className="text-gold hover:underline">hello@furniture100.co.uk</a> to arrange your return.</li>
             <li>We'll provide a prepaid returns label or arrange collection for larger items.</li>
             <li>Pack the item securely in its original packaging where possible.</li>
             <li>Once we receive the item and confirm its condition, your refund will be processed within 5–7 working days.</li>

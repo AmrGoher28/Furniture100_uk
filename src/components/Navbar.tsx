@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, User, Heart, Menu, ShoppingBag, Phone, ChevronDown, X } from "lucide-react";
+import { Search, User, Heart, Menu, ShoppingBag, ChevronDown, X } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
@@ -11,6 +11,11 @@ const NAV_LINKS = [
   { label: "Shop", href: "/shop" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
+];
+
+const SHOP_CHILDREN = [
+  { label: "Shop All", href: "/shop" },
+  ...CATEGORIES.map((cat) => ({ label: cat.name, href: `/category/${cat.slug}` })),
 ];
 
 export const Navbar = () => {
@@ -50,15 +55,7 @@ export const Navbar = () => {
       }`}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Top bar with phone */}
-      <div className="hidden md:block border-b border-border/50">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-end py-1.5">
-          <a href="tel:+441234567890" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-            <Phone className="w-3 h-3" />
-            01234 567 890
-          </a>
-        </div>
-      </div>
+      {/* Spacer for top alignment */}
 
       {/* Main nav row */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-[72px]">
@@ -70,7 +67,7 @@ export const Navbar = () => {
 
         {/* Centre: Navigation (desktop) */}
         <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
+          {NAV_LINKS.filter(l => l.label !== "Shop").map((link) => (
             <Link
               key={link.label}
               to={link.href}
@@ -84,7 +81,7 @@ export const Navbar = () => {
             onClick={() => setMegaOpen(!megaOpen)}
             className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
           >
-            Categories
+            Shop
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
           </button>
         </div>
@@ -118,7 +115,7 @@ export const Navbar = () => {
               </div>
 
               <div className="px-6 py-4">
-                {NAV_LINKS.map((link) => (
+                {NAV_LINKS.filter(l => l.label !== "Shop").map((link) => (
                   <Link
                     key={link.label}
                     to={link.href}
@@ -129,35 +126,26 @@ export const Navbar = () => {
                   </Link>
                 ))}
 
-                <Accordion type="single" collapsible className="w-full mt-2">
-                  {CATEGORIES.map((cat) => (
-                    <AccordionItem key={cat.slug} value={cat.slug} className="border-border/30">
-                      <AccordionTrigger className="text-sm font-light text-muted-foreground hover:text-foreground py-3 hover:no-underline">
-                        {cat.name}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="flex flex-col gap-2 pl-4 pb-2">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="shop" className="border-border/30">
+                    <AccordionTrigger className="text-sm font-light text-muted-foreground hover:text-foreground py-3 hover:no-underline">
+                      Shop
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="flex flex-col gap-2 pl-4 pb-2">
+                        {SHOP_CHILDREN.map((item) => (
                           <Link
-                            to={`/category/${cat.slug}`}
+                            key={item.href}
+                            to={item.href}
                             onClick={() => setMobileOpen(false)}
                             className="text-sm text-muted-foreground hover:text-foreground font-light"
                           >
-                            All {cat.name}
+                            {item.label}
                           </Link>
-                          {cat.subcategories.map((sub) => (
-                            <Link
-                              key={sub.slug}
-                              to={`/category/${cat.slug}`}
-                              onClick={() => setMobileOpen(false)}
-                              className="text-sm text-muted-foreground hover:text-foreground font-light"
-                            >
-                              {sub.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
                 </Accordion>
 
                 <div className="border-t border-border/30 mt-4 pt-4 flex flex-col gap-3">
@@ -167,9 +155,6 @@ export const Navbar = () => {
                   <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Heart className="w-4 h-4" /> Wishlist
                   </Link>
-                  <a href="tel:+441234567890" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
-                    <Phone className="w-4 h-4" /> 01234 567 890
-                  </a>
                 </div>
               </div>
             </SheetContent>
