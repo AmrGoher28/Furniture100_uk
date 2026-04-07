@@ -6,6 +6,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
 import { Loader2, ShoppingBag, SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import ProductImageCarousel from "@/components/ProductImageCarousel";
 import { useProductReviews } from "@/hooks/useProductReviews";
 import ProductStars from "@/components/ProductStars";
 
