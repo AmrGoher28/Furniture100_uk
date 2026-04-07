@@ -15,8 +15,6 @@ import KlarnaInfo from "@/components/KlarnaInfo";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useAdminMode } from "@/hooks/useAdminMode";
 import { useProductOverrides } from "@/hooks/useProductOverrides";
-import AdminLoginModal from "@/components/admin/AdminLoginModal";
-import AdminBadge from "@/components/admin/AdminBadge";
 import InlineEditor from "@/components/admin/InlineEditor";
 import { toast } from "sonner";
 
