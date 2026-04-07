@@ -6,6 +6,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
 import { Loader2, ShoppingBag, SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import ProductImageCarousel from "@/components/ProductImageCarousel";
 import { useProductReviews } from "@/hooks/useProductReviews";
 import ProductStars from "@/components/ProductStars";
 
@@ -268,13 +269,11 @@ const CategoryPage = () => {
                       const price = product.node.priceRange.minVariantPrice;
                       return (
                         <Link key={product.node.id} to={`/product/${product.node.handle}`} className="group block">
-                          <div className="aspect-square bg-secondary overflow-hidden rounded-lg mb-4">
-                            {image ? (
-                              <img src={image.url} alt={image.altText || product.node.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
-                            )}
-                          </div>
+                          <ProductImageCarousel
+                            images={product.node.images.edges.map((e) => e.node)}
+                            title={product.node.title}
+                            className="aspect-square bg-secondary rounded-lg mb-4"
+                          />
                           <h3 className="text-sm font-medium mb-1 group-hover:text-gold transition-colors">{product.node.title}</h3>
                           {summaries[product.node.handle] && (
                             <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />

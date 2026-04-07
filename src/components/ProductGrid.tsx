@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import { fetchProductsPage, ShopifyProduct, ProductsPageInfo } from "@/lib/shopify";
 import { Loader2 } from "lucide-react";
+import ProductImageCarousel from "@/components/ProductImageCarousel";
 
 const CATEGORIES: Record<string, string[]> = {
   All: [],
@@ -149,20 +150,11 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
                     to={`/product/${product.node.handle}`}
                     className="group block"
                   >
-                    <div className="aspect-[4/5] bg-card overflow-hidden mb-5 rounded-xl warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300">
-                      {image ? (
-                        <img
-                          src={image.url}
-                          alt={image.altText || product.node.title}
-                          className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                          <span className="text-xs tracking-[0.2em] uppercase font-light">No image</span>
-                        </div>
-                      )}
-                    </div>
+                    <ProductImageCarousel
+                      images={product.node.images.edges.map((e) => e.node)}
+                      title={product.node.title}
+                      className="aspect-[4/5] bg-card mb-5 rounded-xl warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300"
+                    />
                     <h3 className="text-lg mb-1">{product.node.title}</h3>
                     <p className="text-sm text-muted-foreground font-light">
                       From {price.currencyCode} {parseFloat(price.amount).toFixed(0)}
