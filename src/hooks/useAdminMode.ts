@@ -1,9 +1,27 @@
-import { useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 
 const ADMIN_KEY = "swifliving_admin";
 const ADMIN_PASSWORD = "Furniture100Admin";
 
-export function useAdminMode() {
+interface AdminContextType {
+  isAdmin: boolean;
+  showLogin: boolean;
+  setShowLogin: (v: boolean) => void;
+  login: (password: string) => boolean;
+  logout: () => void;
+}
+
+const AdminContext = createContext<AdminContextType>({
+  isAdmin: false,
+  showLogin: false,
+  setShowLogin: () => {},
+  login: () => false,
+  logout: () => {},
+});
+
+export const useAdminMode = () => useContext(AdminContext);
+
+export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(() => sessionStorage.getItem(ADMIN_KEY) === "true");
   const [showLogin, setShowLogin] = useState(false);
 
@@ -29,5 +47,9 @@ export function useAdminMode() {
     setIsAdmin(false);
   }, []);
 
-  return { isAdmin, showLogin, setShowLogin, login, logout };
-}
+  return (
+    <AdminContext.Provider value={{ isAdmin, showLogin, setShowLogin, login, logout }}>
+      {children}
+    </AdminContext.Provider>
+  );
+};
