@@ -15,7 +15,7 @@ interface ProductImageCarouselProps {
 const ProductImageCarousel = ({ images, title, className = "" }: ProductImageCarouselProps) => {
   const [current, setCurrent] = useState(0);
   const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
+  const didSwipe = useRef(false);
 
   const count = images.length;
 
@@ -33,14 +33,31 @@ const ProductImageCarousel = ({ images, title, className = "" }: ProductImageCar
 
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    didSwipe.current = false;
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    const diff = Math.abs(e.touches[0].clientX - touchStartX.current);
+    if (diff > 10) {
+      didSwipe.current = true;
+    }
   };
 
   const onTouchEnd = (e: React.TouchEvent) => {
-    touchEndX.current = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) > 40) {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 30) {
+      didSwipe.current = true;
       if (diff > 0) setCurrent((c) => (c === count - 1 ? 0 : c + 1));
       else setCurrent((c) => (c === 0 ? count - 1 : c - 1));
+    }
+  };
+
+  // Prevent the parent Link from navigating when user swiped
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (didSwipe.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      didSwipe.current = false;
     }
   };
 
@@ -56,7 +73,9 @@ const ProductImageCarousel = ({ images, title, className = "" }: ProductImageCar
     <div
       className={`relative overflow-hidden group/carousel ${className}`}
       onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
+      onClickCapture={onClickCapture}
     >
       {images.map((img, i) => (
         <img
@@ -67,6 +86,7 @@ const ProductImageCarousel = ({ images, title, className = "" }: ProductImageCar
             i === current ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
           loading={i === 0 ? "eager" : "lazy"}
+          draggable={false}
         />
       ))}
 
