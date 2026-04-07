@@ -58,7 +58,7 @@ const AboutPage = () => {
         <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 text-center">
           {stats.map((s) => (
             <div key={s.label}>
-              <p className="text-3xl md:text-4xl font-semibold text-gold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{s.value}</p>
+              <p className="text-3xl md:text-4xl font-semibold text-gold mb-2 font-serif">{s.value}</p>
               <p className="text-xs md:text-sm text-muted-foreground tracking-wide">{s.label}</p>
             </div>
           ))}

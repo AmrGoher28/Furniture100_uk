@@ -61,10 +61,7 @@ const AuthPage = () => {
     <Layout>
       <section className="py-16 md:py-24 px-6">
         <div className="max-w-md mx-auto">
-          <h1
-            className="text-3xl md:text-4xl text-center mb-2"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h1 className="text-3xl md:text-4xl text-center mb-2">
             {isLogin ? "Welcome Back" : "Create Account"}
           </h1>
           <p className="text-center text-muted-foreground text-sm mb-8 font-light">

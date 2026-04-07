@@ -34,7 +34,7 @@ export const WhyChooseUs = () => {
               <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-card flex items-center justify-center warm-shadow">
                 <r.icon className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="text-base font-medium mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <h3 className="text-base font-medium mb-2">
                 {r.title}
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed font-light">{r.description}</p>

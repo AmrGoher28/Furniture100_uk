@@ -11,6 +11,7 @@ import ProductTrustBadges from "@/components/product/ProductTrustBadges";
 import DeliveryBanner from "@/components/product/DeliveryBanner";
 import ProductSpecs from "@/components/product/ProductSpecs";
 import ProductFAQ from "@/components/product/ProductFAQ";
+import KlarnaInfo from "@/components/KlarnaInfo";
 import { useWishlist } from "@/hooks/useWishlist";
 import { toast } from "sonner";
 
