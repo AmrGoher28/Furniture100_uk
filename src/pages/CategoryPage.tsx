@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { ShopifyProduct, fetchProductsByHandles, fetchProductsPage, ProductsPageInfo } from "@/lib/shopify";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
-import { Loader2, SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import { Loader2, SlidersHorizontal, ChevronDown, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
@@ -16,6 +16,7 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
 ];
 
 const PAGE_SIZE = 24;
+const ITEMS_PER_PAGE = 12;
 
 const CategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -27,6 +28,7 @@ const CategoryPage = () => {
   const [sort, setSort] = useState<SortOption>("featured");
   const [showFilters, setShowFilters] = useState(false);
   const [usedDbMapping, setUsedDbMapping] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
@@ -112,6 +114,39 @@ const CategoryPage = () => {
     if (sort === "price-desc") return parseFloat(b.node.priceRange.minVariantPrice.amount) - parseFloat(a.node.priceRange.minVariantPrice.amount);
     return 0;
   });
+
+  // Pagination
+  const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = sortedProducts.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  // Reset page when category or sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [slug, sort]);
+
+  const getPageNumbers = () => {
+    const pages: (number | "...")[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (currentPage > 3) pages.push("...");
+      for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+        pages.push(i);
+      }
+      if (currentPage < totalPages - 2) pages.push("...");
+      pages.push(totalPages);
+    }
+    return pages;
+  };
+
+  const goToPage = (p: number) => {
+    setCurrentPage(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const title = category?.name || "All Products";
 
@@ -243,7 +278,7 @@ const CategoryPage = () => {
               ) : (
                 <>
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-14">
-                    {sortedProducts.map((product) => {
+                    {paginatedProducts.map((product) => {
                       const images = product.node.images.edges;
                       const firstImg = images[0]?.node;
                       const secondImg = images[1]?.node;
@@ -278,8 +313,48 @@ const CategoryPage = () => {
                     })}
                   </div>
 
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="flex items-center justify-center gap-1 pt-14 pb-4">
+                      <button
+                        onClick={() => goToPage(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="p-1.5 text-muted-foreground/50 hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="Previous page"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      {getPageNumbers().map((p, i) =>
+                        p === "..." ? (
+                          <span key={`ellipsis-${i}`} className="px-1.5 text-xs text-muted-foreground/40 select-none">…</span>
+                        ) : (
+                          <button
+                            key={p}
+                            onClick={() => goToPage(p)}
+                            className={`min-w-[28px] h-7 text-xs transition-colors ${
+                              p === currentPage
+                                ? "text-foreground border-b border-foreground"
+                                : "text-muted-foreground/50 hover:text-foreground"
+                            }`}
+                          >
+                            {p}
+                          </button>
+                        )
+                      )}
+                      <button
+                        onClick={() => goToPage(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="p-1.5 text-muted-foreground/50 hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="Next page"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Infinite scroll sentinel for loading more from API */}
                   {pageInfo.hasNextPage && !usedDbMapping && (
-                    <div ref={sentinelRef} className="flex justify-center py-10">
+                    <div ref={sentinelRef} className="flex justify-center py-4">
                       {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground/40" />}
                     </div>
                   )}
