@@ -42,6 +42,8 @@ Deno.serve(async (req) => {
       });
     }
 
+    console.log("[admin-update-product] Using token from:", Deno.env.get("SHOPIFY_ACCESS_TOKEN") ? "SHOPIFY_ACCESS_TOKEN" : "SHOPIFY_ADMIN_TOKEN");
+
     const body = await req.json();
     const { productId, updates } = body;
 
