@@ -207,12 +207,10 @@ const ProductDetail = () => {
             {/* Details */}
             <div>
               <h1 className="text-2xl md:text-4xl mb-3">{product.title}</h1>
-              <p className="text-2xl font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <p className="text-2xl font-semibold mb-2">
                 £{price.toFixed(2)}
               </p>
-              <p className="text-xs text-muted-foreground mb-6">
-                From £{klarnaMonthly}/month with Klarna. <span className="text-gold cursor-pointer">Learn more</span>
-              </p>
+              <KlarnaInfo price={price} />
 
               {/* Variant selectors */}
               {product.options.map((option) => {
