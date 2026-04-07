@@ -24,7 +24,7 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
     debounceRef.current = setTimeout(async () => {
       setLoading(true);
       try {
-        const { products } = await fetchProductsPage(8, null, query.trim());
+        const { products } = await fetchProductsPage(6, null, query.trim());
         setResults(products);
       } catch (e) {
         console.error("Search error:", e);
@@ -41,41 +41,48 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
   if (!query.trim()) return null;
 
   return (
-    <div className="border-t border-border bg-background px-6 md:px-12 py-4 animate-fade-in max-h-[60vh] overflow-y-auto">
-      <div className="max-w-3xl mx-auto">
+    <div className="border-t border-border/50 bg-background">
+      <div className="max-w-3xl mx-auto px-6 md:px-12 py-6">
         {loading ? (
-          <div className="flex items-center justify-center py-8">
+          <div className="flex items-center justify-center py-10">
             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           </div>
         ) : results.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-8">
+          <p className="text-sm text-muted-foreground text-center py-10 font-light">
             No results found for "{query}"
           </p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {results.map((p) => {
-              const img = p.node.images.edges[0]?.node.url;
-              const price = parseFloat(p.node.priceRange.minVariantPrice.amount);
-              return (
-                <Link
-                  key={p.node.id}
-                  to={`/product/${p.node.handle}`}
-                  onClick={onClose}
-                  className="group"
-                >
-                  <div className="aspect-square bg-secondary rounded-md overflow-hidden mb-2">
-                    {img ? (
-                      <img src={img} alt={p.node.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">No image</div>
-                    )}
-                  </div>
-                  <p className="text-xs font-medium text-foreground truncate">{p.node.title}</p>
-                  <p className="text-xs text-muted-foreground">£{price.toFixed(2)}</p>
-                </Link>
-              );
-            })}
-          </div>
+          <>
+            <p className="text-xs text-muted-foreground mb-4 font-light tracking-wide uppercase">
+              {results.length} result{results.length !== 1 ? "s" : ""}
+            </p>
+            <div className="flex flex-col divide-y divide-border/40">
+              {results.map((p) => {
+                const img = p.node.images.edges[0]?.node.url;
+                const price = parseFloat(p.node.priceRange.minVariantPrice.amount);
+                return (
+                  <Link
+                    key={p.node.id}
+                    to={`/product/${p.node.handle}`}
+                    onClick={onClose}
+                    className="flex items-center gap-4 py-3 group"
+                  >
+                    <div className="w-14 h-14 bg-secondary rounded-md overflow-hidden shrink-0">
+                      {img ? (
+                        <img src={img} alt={p.node.title} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground text-[10px]">No image</div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-foreground truncate group-hover:text-gold transition-colors">{p.node.title}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">£{price.toFixed(2)}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
     </div>
