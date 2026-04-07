@@ -115,7 +115,7 @@ export const Navbar = () => {
               </div>
 
               <div className="px-6 py-4">
-                {NAV_LINKS.map((link) => (
+                {NAV_LINKS.filter(l => l.label !== "Shop").map((link) => (
                   <Link
                     key={link.label}
                     to={link.href}
@@ -126,35 +126,26 @@ export const Navbar = () => {
                   </Link>
                 ))}
 
-                <Accordion type="single" collapsible className="w-full mt-2">
-                  {CATEGORIES.map((cat) => (
-                    <AccordionItem key={cat.slug} value={cat.slug} className="border-border/30">
-                      <AccordionTrigger className="text-sm font-light text-muted-foreground hover:text-foreground py-3 hover:no-underline">
-                        {cat.name}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="flex flex-col gap-2 pl-4 pb-2">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="shop" className="border-border/30">
+                    <AccordionTrigger className="text-sm font-light text-muted-foreground hover:text-foreground py-3 hover:no-underline">
+                      Shop
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="flex flex-col gap-2 pl-4 pb-2">
+                        {SHOP_CHILDREN.map((item) => (
                           <Link
-                            to={`/category/${cat.slug}`}
+                            key={item.href}
+                            to={item.href}
                             onClick={() => setMobileOpen(false)}
                             className="text-sm text-muted-foreground hover:text-foreground font-light"
                           >
-                            All {cat.name}
+                            {item.label}
                           </Link>
-                          {cat.subcategories.map((sub) => (
-                            <Link
-                              key={sub.slug}
-                              to={`/category/${cat.slug}`}
-                              onClick={() => setMobileOpen(false)}
-                              className="text-sm text-muted-foreground hover:text-foreground font-light"
-                            >
-                              {sub.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
                 </Accordion>
 
                 <div className="border-t border-border/30 mt-4 pt-4 flex flex-col gap-3">
@@ -164,9 +155,6 @@ export const Navbar = () => {
                   <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Heart className="w-4 h-4" /> Wishlist
                   </Link>
-                  <a href="tel:+441234567890" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
-                    <Phone className="w-4 h-4" /> 01234 567 890
-                  </a>
                 </div>
               </div>
             </SheetContent>
