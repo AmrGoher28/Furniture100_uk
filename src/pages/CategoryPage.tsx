@@ -278,7 +278,7 @@ const CategoryPage = () => {
               ) : (
                 <>
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-14">
-                    {sortedProducts.map((product) => {
+                    {paginatedProducts.map((product) => {
                       const images = product.node.images.edges;
                       const firstImg = images[0]?.node;
                       const secondImg = images[1]?.node;
@@ -313,8 +313,48 @@ const CategoryPage = () => {
                     })}
                   </div>
 
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="flex items-center justify-center gap-1 pt-14 pb-4">
+                      <button
+                        onClick={() => goToPage(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="p-1.5 text-muted-foreground/50 hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="Previous page"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      {getPageNumbers().map((p, i) =>
+                        p === "..." ? (
+                          <span key={`ellipsis-${i}`} className="px-1.5 text-xs text-muted-foreground/40 select-none">…</span>
+                        ) : (
+                          <button
+                            key={p}
+                            onClick={() => goToPage(p)}
+                            className={`min-w-[28px] h-7 text-xs transition-colors ${
+                              p === currentPage
+                                ? "text-foreground border-b border-foreground"
+                                : "text-muted-foreground/50 hover:text-foreground"
+                            }`}
+                          >
+                            {p}
+                          </button>
+                        )
+                      )}
+                      <button
+                        onClick={() => goToPage(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="p-1.5 text-muted-foreground/50 hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="Next page"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Infinite scroll sentinel for loading more from API */}
                   {pageInfo.hasNextPage && !usedDbMapping && (
-                    <div ref={sentinelRef} className="flex justify-center py-10">
+                    <div ref={sentinelRef} className="flex justify-center py-4">
                       {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground/40" />}
                     </div>
                   )}
