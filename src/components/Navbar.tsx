@@ -167,6 +167,11 @@ export const Navbar = () => {
                   <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Heart className="w-4 h-4" /> Wishlist
                   </Link>
+                  {user && (
+                    <Link to="/admin/products" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
+                      <Shield className="w-4 h-4" /> Admin
+                    </Link>
+                  )}
                 </div>
               </div>
             </SheetContent>
