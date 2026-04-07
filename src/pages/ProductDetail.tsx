@@ -136,7 +136,7 @@ const ProductDetail = () => {
           <div className="grid md:grid-cols-2 gap-8 md:gap-16">
             {/* Images */}
             <div>
-              <div className="relative aspect-square bg-secondary overflow-hidden rounded-lg mb-3 group">
+              <div className="relative aspect-square bg-secondary overflow-hidden rounded-xl shadow-sm mb-3 group">
                 {images[selectedImage] ? (
                   <img
                     src={images[selectedImage].node.url}
