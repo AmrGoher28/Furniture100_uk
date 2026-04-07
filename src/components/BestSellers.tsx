@@ -79,25 +79,27 @@ export const BestSellers = () => {
                 <Link
                   key={product.node.id}
                   to={`/product/${product.node.handle}`}
-                  className="group block"
+                  className="group flex flex-col h-full"
                 >
                   <ProductImageCarousel
                     images={product.node.images.edges.map((e) => e.node)}
                     title={product.node.title}
                     className="aspect-square bg-card rounded-xl mb-4 warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300"
                   />
-                  <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors">
-                    {product.node.title}
-                  </h3>
-                  {summaries[product.node.handle] && (
-                    <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
-                  )}
-                  <p className="text-base font-medium mb-3">
-                    £{parseFloat(price.amount).toFixed(2)}
-                  </p>
+                  <div className="flex flex-col flex-1">
+                    <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors">
+                      {product.node.title}
+                    </h3>
+                    {summaries[product.node.handle] && (
+                      <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
+                    )}
+                    <p className="text-base font-medium mb-3">
+                      £{parseFloat(price.amount).toFixed(2)}
+                    </p>
+                  </div>
                   <button
                     onClick={(e) => handleAddToCart(e, product)}
-                    className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
+                    className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-opacity mt-auto"
                   >
                     <ShoppingBag className="w-4 h-4" />
                     Add to Basket
