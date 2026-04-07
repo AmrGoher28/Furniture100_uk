@@ -3,6 +3,14 @@ import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CATEGORIES } from "@/lib/categories";
 
+const FEATURED = [
+  CATEGORIES[0], // Lounge Chairs
+  CATEGORIES[1], // Sofas
+  CATEGORIES[4], // Mirrors
+  CATEGORIES[2], // Office Chairs
+  CATEGORIES[3], // Dining
+];
+
 export const FeaturedCategories = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -29,35 +37,39 @@ export const FeaturedCategories = () => {
     el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
   };
 
+  const CategoryCard = ({ cat, className = "" }: { cat: typeof CATEGORIES[0]; className?: string }) => (
+    <Link
+      to={`/category/${cat.slug}`}
+      className={`group relative overflow-hidden rounded-xl warm-shadow hover:warm-shadow-lg transition-shadow duration-300 ${className}`}
+    >
+      <img
+        src={cat.image}
+        alt={cat.name}
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-t md:from-black/60 md:to-transparent" />
+      {/* Top-down gradient only on mobile */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/15 to-transparent md:hidden" />
+      <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
+        <p className="text-primary-foreground text-xs md:text-sm font-medium tracking-wide">
+          {cat.name}
+        </p>
+      </div>
+    </Link>
+  );
+
   return (
-    <section className="py-12 md:py-20">
+    <section className="py-12 md:py-24">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <h2 className="text-2xl md:text-3xl mb-1">Shop By Category</h2>
-            <p className="text-muted-foreground font-light text-sm">Find the perfect piece for every room</p>
-          </div>
-          <div className="hidden md:flex items-center gap-2">
-            <button
-              onClick={() => scroll("left")}
-              disabled={!canScrollLeft}
-              className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              disabled={!canScrollRight}
-              className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl mb-1 md:mb-3">Shop By Category</h2>
+          <p className="text-muted-foreground font-light text-sm">Find the perfect piece for every room</p>
         </div>
       </div>
 
-      <div className="relative">
-        {/* Fade edges */}
+      {/* Mobile: sliding carousel */}
+      <div className="md:hidden relative">
         {canScrollLeft && (
           <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
         )}
@@ -67,29 +79,28 @@ export const FeaturedCategories = () => {
 
         <div
           ref={scrollRef}
-          className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide px-6 md:px-12 snap-x snap-mandatory"
+          className="flex gap-3 overflow-x-auto px-6 snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
         >
           {CATEGORIES.map((cat) => (
-            <Link
+            <CategoryCard
               key={cat.slug}
-              to={`/category/${cat.slug}`}
-              className="group relative flex-shrink-0 w-[140px] md:w-[180px] aspect-[3/4] overflow-hidden rounded-xl snap-start"
-            >
-              <img
-                src={cat.image}
-                alt={cat.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-              />
-              {/* Dark gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/15 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
-                <p className="text-primary-foreground text-xs md:text-sm font-medium tracking-wide">
-                  {cat.name}
-                </p>
-              </div>
-            </Link>
+              cat={cat}
+              className="flex-shrink-0 w-[140px] aspect-[3/4] snap-start"
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop: grid layout */}
+      <div className="hidden md:block max-w-7xl mx-auto px-6 md:px-12">
+        <div className="grid grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+          {FEATURED.map((cat) => (
+            <CategoryCard
+              key={cat.slug}
+              cat={cat}
+              className="aspect-[3/4]"
+            />
           ))}
         </div>
       </div>
