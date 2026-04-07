@@ -236,20 +236,39 @@ const ProductDetail = () => {
                 );
               })}
 
-              {/* Add to basket — hidden on mobile (sticky version below) */}
-              <button
-                onClick={handleAddToCart}
-                disabled={isLoading || !variant?.availableForSale}
-                className="hidden md:flex w-full items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 mb-3"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : !variant?.availableForSale ? (
-                  "Sold Out"
-                ) : (
-                  "Add to Basket"
-                )}
-              </button>
+              {/* Desktop buttons */}
+              <div className="hidden md:flex flex-col gap-2 mb-3">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={isLoading || !variant?.availableForSale}
+                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : !variant?.availableForSale ? (
+                    "Sold Out"
+                  ) : (
+                    "Add to Basket"
+                  )}
+                </button>
+
+                <button
+                  onClick={handleBuyNow}
+                  disabled={buyNowLoading || !variant?.availableForSale}
+                  className="w-full flex items-center justify-center gap-2 bg-foreground text-background py-3.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  {buyNowLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>
+                      <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden="true">
+                        <path d="M17.72 7.85c-.05.04-1.01.58-1.01 1.79 0 1.39 1.22 1.88 1.26 1.9-.01.04-.2.67-.65 1.33-.39.57-.8 1.14-1.42 1.14s-.78-.36-1.5-.36c-.7 0-.95.37-1.52.37s-.96-.53-1.42-1.17c-.53-.76-.96-1.95-.96-3.06 0-1.8 1.17-2.75 2.31-2.75.61 0 1.12.4 1.5.4.37 0 .94-.42 1.63-.42.26 0 1.21.02 1.78.92zM14.94 5.04c.3-.36.51-.85.51-1.35 0-.07-.01-.14-.01-.2-.49.02-.1.07-1.56.73-.37.37-.69.87-.69 1.37 0 .07.01.15.02.2.04.01.1.01.14.01.44 0 .93-.33 1.29-.72z"/>
+                      </svg>
+                      Buy with Apple Pay
+                    </>
+                  )}
+                </button>
+              </div>
 
               <div className="hidden md:flex flex-col gap-2 mb-8">
                 <MakeOfferModal
