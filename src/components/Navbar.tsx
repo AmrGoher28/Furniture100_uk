@@ -29,6 +29,7 @@ export const Navbar = () => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin, setShowLogin } = useAdminMode();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
