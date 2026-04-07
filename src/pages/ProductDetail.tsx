@@ -3,10 +3,14 @@ import { useParams, Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY, createShopifyCart } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
-import { Loader2, ArrowLeft, Truck, RotateCcw, ShieldCheck, Phone, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import MakeOfferModal from "@/components/MakeOfferModal";
 import ProductReviews from "@/components/ProductReviews";
 import SimilarProducts from "@/components/SimilarProducts";
+import ProductTrustBadges from "@/components/product/ProductTrustBadges";
+import DeliveryBanner from "@/components/product/DeliveryBanner";
+import ProductSpecs from "@/components/product/ProductSpecs";
+import ProductFAQ from "@/components/product/ProductFAQ";
 import { useWishlist } from "@/hooks/useWishlist";
 import { toast } from "sonner";
 
@@ -20,13 +24,6 @@ interface ProductNode {
   variants: { edges: Array<{ node: { id: string; title: string; price: { amount: string; currencyCode: string }; availableForSale: boolean; selectedOptions: Array<{ name: string; value: string }> } }> };
   options: Array<{ name: string; values: string[] }>;
 }
-
-const TRUST_ICONS = [
-  { icon: Truck, label: "Free Delivery" },
-  { icon: RotateCcw, label: "30 Day Returns" },
-  { icon: ShieldCheck, label: "Secure Payment" },
-  { icon: Phone, label: "UK Support" },
-];
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -182,17 +179,27 @@ const ProductDetail = () => {
               {/* Thumbnails — desktop only */}
               {images.length > 1 && (
                 <div className="hidden md:flex gap-2 overflow-x-auto">
-                  {images.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedImage(idx)}
-                      className={`w-20 h-20 bg-secondary overflow-hidden rounded-md border-2 transition-colors shrink-0 ${
-                        idx === selectedImage ? "border-gold" : "border-transparent hover:border-border"
-                      }`}
-                    >
-                      <img src={img.node.url} alt="" className="w-full h-full object-cover" />
-                    </button>
-                  ))}
+                  {images.map((img, idx) => {
+                    const isLast = idx === images.length - 1 && images.length > 1;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedImage(idx)}
+                        className={`relative w-20 h-20 bg-secondary overflow-hidden rounded-md border-2 transition-colors shrink-0 ${
+                          idx === selectedImage ? "border-gold" : "border-transparent hover:border-border"
+                        }`}
+                      >
+                        <img src={img.node.url} alt="" className="w-full h-full object-cover" />
+                        {isLast && (
+                          <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
+                            <span className="text-background text-[10px] font-medium leading-tight text-center">
+                              View All {images.length}
+                            </span>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -237,7 +244,7 @@ const ProductDetail = () => {
               })}
 
               {/* Desktop buttons */}
-              <div className="hidden md:flex flex-col gap-2 mb-3">
+              <div className="hidden md:flex flex-col gap-2 mb-2">
                 <button
                   onClick={handleAddToCart}
                   disabled={isLoading || !variant?.availableForSale}
@@ -251,6 +258,14 @@ const ProductDetail = () => {
                     "Add to Basket"
                   )}
                 </button>
+              </div>
+
+              {/* Trust badges row */}
+              <ProductTrustBadges />
+
+              {/* Delivery banner */}
+              <div className="mb-3">
+                <DeliveryBanner />
               </div>
 
               <div className="hidden md:flex flex-col gap-2 mb-8">
@@ -288,23 +303,19 @@ const ProductDetail = () => {
                 </button>
               </div>
 
-              <p className="text-muted-foreground leading-relaxed mb-8">
+              <p className="text-muted-foreground leading-relaxed mb-6">
                 {product.description}
               </p>
 
-              {/* Trust icons */}
-              <div className="grid grid-cols-2 gap-3 mb-8">
-                {TRUST_ICONS.map((t) => (
-                  <div key={t.label} className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <t.icon className="w-4 h-4 text-gold" />
-                    {t.label}
-                  </div>
-                ))}
+              {/* Product Specs Accordion */}
+              <div className="mb-2">
+                <ProductSpecs />
               </div>
 
-              <p className="text-sm text-muted-foreground">
-                🚚 Order today, delivered in <strong className="text-foreground">3–5 working days</strong>
-              </p>
+              {/* FAQ Accordion */}
+              <div className="mb-8">
+                <ProductFAQ />
+              </div>
             </div>
           </div>
 
