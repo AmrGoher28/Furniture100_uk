@@ -36,8 +36,7 @@ const DeliveryPage = () => {
           <h2 className="text-2xl mb-4">Need Help?</h2>
           <p className="text-muted-foreground leading-relaxed">
             If you have any questions about your delivery, please contact our team at{" "}
-            <a href="mailto:hello@furniture100.co.uk" className="text-gold hover:underline">hello@furniture100.co.uk</a>{" "}
-            or call <a href="tel:+441234567890" className="text-gold hover:underline">01234 567 890</a>.
+            <a href="mailto:hello@furniture100.co.uk" className="text-gold hover:underline">hello@furniture100.co.uk</a>.
           </p>
         </div>
       </section>
