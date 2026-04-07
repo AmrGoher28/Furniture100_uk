@@ -87,6 +87,15 @@ export const Navbar = () => {
             Shop
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
           </button>
+          {user && (
+            <Link
+              to="/admin/products"
+              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+            >
+              <Shield className="w-3.5 h-3.5" />
+              Admin
+            </Link>
+          )}
         </div>
 
         {/* Right: Icons */}
