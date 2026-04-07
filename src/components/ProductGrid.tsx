@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import { fetchProductsPage, ShopifyProduct, ProductsPageInfo } from "@/lib/shopify";
 import { Loader2 } from "lucide-react";
+import ProductImageCarousel from "@/components/ProductImageCarousel";
 
 const CATEGORIES: Record<string, string[]> = {
   All: [],
