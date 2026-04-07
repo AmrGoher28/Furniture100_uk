@@ -13,6 +13,11 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
+const SHOP_CHILDREN = [
+  { label: "Shop All", href: "/shop" },
+  ...CATEGORIES.map((cat) => ({ label: cat.name, href: `/category/${cat.slug}` })),
+];
+
 export const Navbar = () => {
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);

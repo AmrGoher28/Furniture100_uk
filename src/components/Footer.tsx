@@ -47,7 +47,6 @@ export const Footer = () => {
           <div>
             <p className="text-sm font-medium mb-4 text-primary-foreground">Contact Us</p>
             <div className="space-y-2.5">
-              <p className="text-sm text-primary-foreground/60 font-light">01234 567 890</p>
               <p className="text-sm text-primary-foreground/60 font-light">hello@furniture100.co.uk</p>
               <p className="text-sm text-primary-foreground/60 font-light">Mon – Fri, 9am – 5pm</p>
             </div>
