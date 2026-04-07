@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, User, Heart, Menu, ShoppingBag, ChevronDown, X } from "lucide-react";
+import { Search, User, Heart, Menu, ShoppingBag, ChevronDown, X, Shield } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import { SearchResults } from "./SearchResults";
 import { CartDrawer } from "./CartDrawer";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
