@@ -2,13 +2,9 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { ShopifyProduct, fetchProductsByHandles, fetchProductsPage, ProductsPageInfo } from "@/lib/shopify";
-import { useCartStore } from "@/stores/cartStore";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
-import { Loader2, ShoppingBag, SlidersHorizontal, ChevronDown, X } from "lucide-react";
-import ProductImageCarousel from "@/components/ProductImageCarousel";
-import { useProductReviews } from "@/hooks/useProductReviews";
-import ProductStars from "@/components/ProductStars";
+import { Loader2, SlidersHorizontal, ChevronDown, X } from "lucide-react";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
@@ -31,8 +27,6 @@ const CategoryPage = () => {
   const [sort, setSort] = useState<SortOption>("featured");
   const [showFilters, setShowFilters] = useState(false);
   const [usedDbMapping, setUsedDbMapping] = useState(false);
-  const addItem = useCartStore((s) => s.addItem);
-  const { summaries } = useProductReviews();
   const observerRef = useRef<IntersectionObserver | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
@@ -86,27 +80,18 @@ const CategoryPage = () => {
     }
   }, [loadingMore, pageInfo, usedDbMapping]);
 
-  // Infinite scroll observer
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
-
     observerRef.current = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMore();
-        }
+        if (entries[0].isIntersecting) loadMore();
       },
       { rootMargin: "400px" }
     );
-
-    if (sentinelRef.current) {
-      observerRef.current.observe(sentinelRef.current);
-    }
-
+    if (sentinelRef.current) observerRef.current.observe(sentinelRef.current);
     return () => observerRef.current?.disconnect();
   }, [loadMore]);
 
-  // Filter by category name for non-db-mapped categories
   const displayProducts = category && !usedDbMapping
     ? products.filter((p) => {
         const t = p.node.title.toLowerCase();
@@ -128,123 +113,117 @@ const CategoryPage = () => {
     return 0;
   });
 
-  const handleAddToCart = (e: React.MouseEvent, product: ShopifyProduct) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const variant = product.node.variants.edges[0]?.node;
-    if (!variant) return;
-    addItem({
-      product,
-      variantId: variant.id,
-      variantTitle: variant.title,
-      price: variant.price,
-      quantity: 1,
-      selectedOptions: variant.selectedOptions,
-    });
-  };
-
   const title = category?.name || "All Products";
 
   return (
     <Layout>
-      {/* Hero banner */}
-      <section className="relative h-48 md:h-64 flex items-center justify-center bg-secondary overflow-hidden">
+      {/* Hero banner – reduced height, editorial feel */}
+      <section className="relative h-28 md:h-40 flex items-center justify-center bg-secondary overflow-hidden">
         {category?.image && (
           <>
             <img src={category.image} alt={title} className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-foreground/40" />
+            <div className="absolute inset-0 bg-foreground/20" />
           </>
         )}
         <div className="relative z-10 text-center">
-          <nav className="text-xs text-white/70 mb-2">
-            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+          <nav className="text-[10px] tracking-[0.15em] uppercase text-white/60 mb-1.5">
+            <Link to="/" className="hover:text-white/90 transition-colors">Home</Link>
             <span className="mx-2">/</span>
-            <span className="text-white">{title}</span>
+            <span className="text-white/80">{title}</span>
           </nav>
-          <h1 className={`text-3xl md:text-5xl ${category?.image ? "text-white" : "text-foreground"}`}>{title}</h1>
+          <h1 className={`font-serif font-normal text-2xl md:text-4xl ${category?.image ? "text-white" : "text-foreground"}`}>
+            {title}
+          </h1>
         </div>
       </section>
 
-      <section className="py-8 md:py-12 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto">
-          {/* Toolbar */}
-          <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
-            <p className="text-sm text-muted-foreground">
-              {loading ? "Loading..." : `Showing ${sortedProducts.length} product${sortedProducts.length !== 1 ? "s" : ""}`}
+      <section className="py-12 md:py-20 px-6 md:px-16">
+        <div className="max-w-[1600px] mx-auto">
+          {/* Toolbar – subtle */}
+          <div className="flex items-center justify-between mb-10 gap-4 flex-wrap">
+            <p className="text-xs text-muted-foreground/70 font-light">
+              {loading ? "Loading…" : `${sortedProducts.length} product${sortedProducts.length !== 1 ? "s" : ""}`}
             </p>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="md:hidden flex items-center gap-1.5 text-sm border border-border px-3 py-1.5 rounded-md"
+                className="md:hidden flex items-center gap-1.5 text-xs text-muted-foreground border border-border/50 px-3 py-1.5 rounded-md"
               >
-                <SlidersHorizontal className="w-3.5 h-3.5" />
+                <SlidersHorizontal className="w-3 h-3" />
                 Filters
               </button>
               <div className="relative">
                 <select
                   value={sort}
                   onChange={(e) => setSort(e.target.value as SortOption)}
-                  className="appearance-none bg-background border border-border rounded-md px-3 py-1.5 pr-8 text-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-gold"
+                  className="appearance-none bg-transparent border-none text-xs text-muted-foreground cursor-pointer focus:outline-none pr-5"
                 >
                   {SORT_OPTIONS.map((o) => (
                     <option key={o.value} value={o.value}>{o.label}</option>
                   ))}
                 </select>
-                <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
+                <ChevronDown className="w-3 h-3 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground/50" />
               </div>
             </div>
           </div>
 
-          <div className="flex gap-8">
-            {/* Sidebar filters (desktop) */}
-            <aside className="hidden md:block w-56 shrink-0">
-              <p className="text-sm font-semibold mb-4">Categories</p>
-              <div className="space-y-2 mb-8">
+          <div className="flex gap-12 md:gap-16">
+            {/* Sidebar – refined */}
+            <aside className="hidden md:block w-48 shrink-0">
+              <div className="space-y-3">
                 <Link
                   to="/shop"
-                  className={`block text-sm transition-colors ${!category ? "text-gold font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                  className={`block text-sm font-light transition-colors ${!category ? "text-foreground border-b border-foreground pb-0.5 inline-block" : "text-muted-foreground/70 hover:text-foreground"}`}
                 >
                   All Products
                 </Link>
                 {CATEGORIES.map((cat) => (
-                  <Link
-                    key={cat.slug}
-                    to={`/category/${cat.slug}`}
-                    className={`block text-sm transition-colors ${cat.slug === slug ? "text-gold font-medium" : "text-muted-foreground hover:text-foreground"}`}
-                  >
-                    {cat.name}
-                  </Link>
+                  <div key={cat.slug}>
+                    <Link
+                      to={`/category/${cat.slug}`}
+                      className={`block text-sm font-light transition-colors ${cat.slug === slug ? "text-foreground border-b border-foreground pb-0.5 inline-block" : "text-muted-foreground/70 hover:text-foreground"}`}
+                    >
+                      {cat.name}
+                    </Link>
+                    {/* Nested subcategories */}
+                    {cat.slug === slug && cat.subcategories && cat.subcategories.length > 0 && (
+                      <div className="pl-4 mt-2 space-y-2">
+                        {cat.subcategories.map((sub) => (
+                          <span key={sub.slug} className="block text-xs font-light text-muted-foreground/60">
+                            {sub.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
-
-              {category && category.subcategories.length > 0 && (
-                <>
-                  <p className="text-sm font-semibold mb-4">Subcategories</p>
-                  <div className="space-y-2">
-                    {category.subcategories.map((sub) => (
-                      <span key={sub.slug} className="block text-sm text-muted-foreground">
-                        {sub.name}
-                      </span>
-                    ))}
-                  </div>
-                </>
-              )}
             </aside>
 
             {/* Mobile filters overlay */}
             {showFilters && (
-              <div className="fixed inset-0 z-50 bg-background p-6 overflow-y-auto md:hidden animate-fade-in">
-                <div className="flex items-center justify-between mb-6">
-                  <p className="text-lg font-semibold">Filters</p>
-                  <button onClick={() => setShowFilters(false)}><X className="w-5 h-5" /></button>
+              <div className="fixed inset-0 z-50 bg-background p-8 overflow-y-auto md:hidden animate-fade-in">
+                <div className="flex items-center justify-between mb-8">
+                  <p className="text-sm font-light tracking-wide">Filters</p>
+                  <button onClick={() => setShowFilters(false)}><X className="w-4 h-4 text-muted-foreground" /></button>
                 </div>
-                <p className="text-sm font-semibold mb-3">Categories</p>
-                <div className="space-y-2 mb-6">
-                  <Link to="/shop" onClick={() => setShowFilters(false)} className="block text-sm text-muted-foreground hover:text-foreground">All Products</Link>
+                <div className="space-y-3">
+                  <Link to="/shop" onClick={() => setShowFilters(false)} className="block text-sm font-light text-muted-foreground hover:text-foreground">All Products</Link>
                   {CATEGORIES.map((cat) => (
-                    <Link key={cat.slug} to={`/category/${cat.slug}`} onClick={() => setShowFilters(false)} className="block text-sm text-muted-foreground hover:text-foreground">
-                      {cat.name}
-                    </Link>
+                    <div key={cat.slug}>
+                      <Link to={`/category/${cat.slug}`} onClick={() => setShowFilters(false)} className="block text-sm font-light text-muted-foreground hover:text-foreground">
+                        {cat.name}
+                      </Link>
+                      {cat.subcategories && cat.subcategories.length > 0 && (
+                        <div className="pl-4 mt-1.5 space-y-1.5">
+                          {cat.subcategories.map((sub) => (
+                            <span key={sub.slug} className="block text-xs font-light text-muted-foreground/60">
+                              {sub.name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -254,47 +233,54 @@ const CategoryPage = () => {
             <div className="flex-1">
               {loading && products.length === 0 ? (
                 <div className="flex justify-center py-24">
-                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground/50" />
                 </div>
               ) : sortedProducts.length === 0 && !loading ? (
                 <div className="text-center py-24">
-                  <p className="text-2xl mb-3">No products found</p>
-                  <p className="text-muted-foreground">Check back soon for new arrivals.</p>
+                  <p className="text-xl font-light mb-2">No products found</p>
+                  <p className="text-sm text-muted-foreground/60 font-light">Check back soon for new arrivals.</p>
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-14">
                     {sortedProducts.map((product) => {
-                      const image = product.node.images.edges[0]?.node;
+                      const images = product.node.images.edges;
+                      const firstImg = images[0]?.node;
+                      const secondImg = images[1]?.node;
                       const price = product.node.priceRange.minVariantPrice;
+
                       return (
                         <Link key={product.node.id} to={`/product/${product.node.handle}`} className="group block">
-                          <ProductImageCarousel
-                            images={product.node.images.edges.map((e) => e.node)}
-                            title={product.node.title}
-                            className="aspect-square bg-secondary rounded-lg mb-4"
-                          />
-                          <h3 className="text-sm font-medium mb-1 group-hover:text-gold transition-colors">{product.node.title}</h3>
-                          {summaries[product.node.handle] && (
-                            <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
-                          )}
-                          <p className="text-base font-semibold mb-3">£{parseFloat(price.amount).toFixed(2)}</p>
-                          <button
-                            onClick={(e) => handleAddToCart(e, product)}
-                            className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
-                          >
-                            <ShoppingBag className="w-4 h-4" />
-                            Add to Basket
-                          </button>
+                          <div className="aspect-[4/5] bg-card rounded-lg overflow-hidden mb-4 relative">
+                            {firstImg && (
+                              <img
+                                src={firstImg.url}
+                                alt={firstImg.altText || product.node.title}
+                                className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.03] ${secondImg ? "group-hover:opacity-0" : ""}`}
+                                loading="lazy"
+                              />
+                            )}
+                            {secondImg && (
+                              <img
+                                src={secondImg.url}
+                                alt={secondImg.altText || product.node.title}
+                                className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-[1.03]"
+                                loading="lazy"
+                              />
+                            )}
+                          </div>
+                          <h3 className="text-sm font-light mb-1 text-foreground/80">{product.node.title}</h3>
+                          <p className="text-sm text-muted-foreground font-normal">
+                            £{parseFloat(price.amount).toFixed(0)}
+                          </p>
                         </Link>
                       );
                     })}
                   </div>
 
-                  {/* Infinite scroll sentinel */}
                   {pageInfo.hasNextPage && !usedDbMapping && (
-                    <div ref={sentinelRef} className="flex justify-center py-8">
-                      {loadingMore && <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />}
+                    <div ref={sentinelRef} className="flex justify-center py-10">
+                      {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground/40" />}
                     </div>
                   )}
                 </>
