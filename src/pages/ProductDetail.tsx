@@ -342,25 +342,6 @@ const ProductDetail = () => {
               originalPrice={price}
             />
           </div>
-          <div
-            onClick={!buyNowLoading && variant?.availableForSale ? handleBuyNow : undefined}
-            role="button"
-            aria-label="Buy with Apple Pay"
-            className={`w-full h-[44px] rounded-md overflow-hidden cursor-pointer ${buyNowLoading || !variant?.availableForSale ? 'opacity-50 pointer-events-none' : 'hover:opacity-90'} transition-opacity`}
-            style={{
-              WebkitAppearance: '-apple-pay-button' as any,
-              appearance: '-apple-pay-button' as any,
-              // @ts-ignore
-              '--apple-pay-button-type': 'buy',
-              '--apple-pay-button-style': 'black',
-            } as React.CSSProperties}
-          >
-            {buyNowLoading && (
-              <div className="w-full h-full flex items-center justify-center bg-black rounded-md">
-                <Loader2 className="h-4 w-4 animate-spin text-white" />
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </Layout>
