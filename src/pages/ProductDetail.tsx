@@ -13,6 +13,11 @@ import ProductSpecs from "@/components/product/ProductSpecs";
 import ProductFAQ from "@/components/product/ProductFAQ";
 import KlarnaInfo from "@/components/KlarnaInfo";
 import { useWishlist } from "@/hooks/useWishlist";
+import { useAdminMode } from "@/hooks/useAdminMode";
+import { useProductOverrides } from "@/hooks/useProductOverrides";
+import AdminLoginModal from "@/components/admin/AdminLoginModal";
+import AdminBadge from "@/components/admin/AdminBadge";
+import InlineEditor from "@/components/admin/InlineEditor";
 import { toast } from "sonner";
 
 interface ProductNode {
@@ -37,6 +42,8 @@ const ProductDetail = () => {
   const isLoading = useCartStore((s) => s.isLoading);
   const [buyNowLoading, setBuyNowLoading] = useState(false);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { isAdmin, showLogin, setShowLogin, login, logout } = useAdminMode();
+  const { overrides, saveOverride } = useProductOverrides(handle);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -82,6 +89,7 @@ const ProductDetail = () => {
   const variant = product.variants.edges[selectedVariantIdx]?.node;
   const images = product.images.edges;
   const price = parseFloat(variant?.price.amount || "0");
+  const description = overrides["description"] || product.description;
 
   const handleAddToCart = async () => {
     if (!variant) return;
@@ -123,6 +131,11 @@ const ProductDetail = () => {
 
   return (
     <Layout>
+      {/* Admin login modal */}
+      <AdminLoginModal open={showLogin} onClose={() => setShowLogin(false)} onLogin={login} />
+      {/* Admin badge */}
+      {isAdmin && <AdminBadge onExit={logout} />}
+
       <main className="flex-1 py-10 md:py-14 px-6 md:px-12 pb-28 md:pb-14">
         <div className="max-w-7xl mx-auto">
           {/* Breadcrumb */}
@@ -147,7 +160,6 @@ const ProductDetail = () => {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
                 )}
-                {/* Mobile swipe arrows */}
                 {images.length > 1 && (
                   <>
                     <button
@@ -162,7 +174,6 @@ const ProductDetail = () => {
                     >
                       <ChevronRight className="w-5 h-5" />
                     </button>
-                    {/* Dot indicators */}
                     <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
                       {images.map((_, idx) => (
                         <button
@@ -245,7 +256,7 @@ const ProductDetail = () => {
                 );
               })}
 
-              {/* Quantity + Add to Basket — desktop: same row, mobile: stacked compact */}
+              {/* Quantity + Add to Basket */}
               <div className="flex flex-col gap-2 mb-3 md:mb-3">
                 {/* Mobile quantity row */}
                 <div className="flex items-center gap-3 md:hidden">
@@ -356,20 +367,28 @@ const ProductDetail = () => {
 
               {/* Description */}
               <div className="mb-8">
-                <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium mb-3">Description</p>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium mb-3 flex items-center gap-1">
+                  Description
+                  <InlineEditor
+                    value={description}
+                    onSave={(v) => saveOverride("description", v)}
+                    isAdmin={isAdmin}
+                    label="Description"
+                  />
+                </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  {product.description}
+                  {description}
                 </p>
               </div>
 
               {/* Product Specs Accordion */}
               <div className="mb-3">
-                <ProductSpecs />
+                <ProductSpecs isAdmin={isAdmin} overrides={overrides} onSave={saveOverride} />
               </div>
 
               {/* FAQ Accordion */}
               <div className="mb-10">
-                <ProductFAQ />
+                <ProductFAQ isAdmin={isAdmin} overrides={overrides} onSave={saveOverride} />
               </div>
             </div>
           </div>
