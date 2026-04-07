@@ -16,6 +16,7 @@ import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
 import AdminOffers from "./pages/AdminOffers";
 import AdminCategories from "./pages/AdminCategories";
+import ProductAuditPage from "./pages/ProductAuditPage";
 import AuthPage from "./pages/AuthPage";
 import AccountPage from "./pages/AccountPage";
 import UnsubscribePage from "./pages/UnsubscribePage";
