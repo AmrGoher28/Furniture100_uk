@@ -57,7 +57,9 @@ export const ProductEditModal = ({
       });
 
       if (error) throw error;
-      if (data?.error) throw new Error(data.error);
+      if (data?.error) {
+        throw new Error(data.details ? `${data.error}: ${data.details}` : data.error);
+      }
 
       toast.success("Product updated successfully");
       onSaved();

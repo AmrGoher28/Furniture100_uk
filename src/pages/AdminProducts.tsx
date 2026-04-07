@@ -80,8 +80,8 @@ const AdminProducts = () => {
     return badges;
   };
 
-  const handleApplyDescription = (desc: string) => {
-    // This is handled inside the AI tools + edit modal flow
+  const handleApplyDescription = (_desc: string) => {
+    // handled by modal flow
   };
 
   if (authLoading) return <Layout><div className="flex justify-center py-20"><Loader2 className="w-6 h-6 animate-spin" /></div></Layout>;
