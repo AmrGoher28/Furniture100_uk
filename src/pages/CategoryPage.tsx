@@ -277,7 +277,7 @@ const CategoryPage = () => {
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-14">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-[3.5rem] gap-y-8 md:gap-y-12">
                     {paginatedProducts.map((product) => {
                       const images = product.node.images.edges;
                       const firstImg = images[0]?.node;
@@ -285,13 +285,13 @@ const CategoryPage = () => {
                       const price = product.node.priceRange.minVariantPrice;
 
                       return (
-                        <Link key={product.node.id} to={`/product/${product.node.handle}`} className="group block">
-                          <div className="aspect-[4/5] bg-card rounded-lg overflow-hidden mb-4 relative">
+                        <Link key={product.node.id} to={`/product/${product.node.handle}`} className="group flex flex-col">
+                          <div className="aspect-[4/5] bg-card rounded-lg overflow-hidden mb-2.5 relative">
                             {firstImg && (
                               <img
                                 src={firstImg.url}
                                 alt={firstImg.altText || product.node.title}
-                                className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.03] ${secondImg ? "group-hover:opacity-0" : ""}`}
+                                className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.02] ${secondImg ? "group-hover:opacity-0" : ""}`}
                                 loading="lazy"
                               />
                             )}
@@ -299,13 +299,14 @@ const CategoryPage = () => {
                               <img
                                 src={secondImg.url}
                                 alt={secondImg.altText || product.node.title}
-                                className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-[1.03]"
+                                className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-[1.02]"
                                 loading="lazy"
                               />
                             )}
+                            <div className="absolute inset-0 bg-[hsl(var(--accent))]/0 group-hover:bg-[hsl(var(--accent))]/[0.05] transition-colors duration-500 pointer-events-none" />
                           </div>
-                          <h3 className="text-sm font-light mb-1 text-foreground/80">{product.node.title}</h3>
-                          <p className="text-sm text-muted-foreground font-normal">
+                          <h3 className="text-xs md:text-[13px] font-light leading-snug text-foreground/80 mb-0.5 max-h-[2.6em] overflow-hidden">{product.node.title}</h3>
+                          <p className="text-xs text-muted-foreground/60 font-light">
                             £{parseFloat(price.amount).toFixed(0)}
                           </p>
                         </Link>
