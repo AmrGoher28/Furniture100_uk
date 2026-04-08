@@ -8,9 +8,56 @@ const corsHeaders = {
 const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const adminEmail = Deno.env.get("ADMIN_NOTIFICATION_EMAIL") || "";
-const shopifyAdminToken = Deno.env.get("SHOPIFY_ADMIN_TOKEN") || "";
 const shopifyStoreDomain = "swifliving-showroom-build-xw1vp.myshopify.com";
+const SHOPIFY_API_VERSION = "2025-07";
 const siteUrl = Deno.env.get("SITE_URL") || "https://luxe-calm-shop.lovable.app";
+
+type ShopifyTokenCandidate = { name: string; value: string };
+
+function getShopifyTokenCandidates(): ShopifyTokenCandidate[] {
+  const env = Deno.env.toObject();
+  return Object.entries(env)
+    .filter(([key, value]) => {
+      if (!value) return false;
+      return key === "SHOPIFY_ADMIN_TOKEN"
+        || key === "SHOPIFY_ACCESS_TOKEN"
+        || key.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN");
+    })
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => {
+      const score = (name: string) => {
+        if (name.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN")) return 0;
+        if (name === "SHOPIFY_ADMIN_TOKEN") return 1;
+        return 2;
+      };
+      return score(a.name) - score(b.name);
+    });
+}
+
+async function resolveWorkingShopifyToken(): Promise<ShopifyTokenCandidate | null> {
+  const candidates = getShopifyTokenCandidates();
+  if (candidates.length === 0) return null;
+
+  for (const candidate of candidates) {
+    const probe = await fetch(
+      `https://${shopifyStoreDomain}/admin/api/${SHOPIFY_API_VERSION}/shop.json`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Access-Token": candidate.value,
+        },
+      }
+    );
+    if (probe.ok) {
+      console.log(`[OFFER] Using Shopify token: ${candidate.name}`);
+      return candidate;
+    }
+    await probe.text();
+    console.warn(`[OFFER] Token ${candidate.name} returned ${probe.status}`);
+  }
+  return null;
+}
 
 async function sendOfferEmail(supabase: any, templateName: string, recipientEmail: string, templateData: Record<string, any>, idempotencyKey: string) {
   try {
@@ -107,27 +154,32 @@ Deno.serve(async (req) => {
       }
 
       if (action === "accept") {
-        const agreedPrice = offer.offer_amount;
-        const discount = offer.original_price - agreedPrice;
+        const agreedPrice = Number(offer.offer_amount);
+        const discount = Number(offer.original_price) - agreedPrice;
 
-        if (shopifyAdminToken) {
+        // Resolve a working Shopify token
+        const token = await resolveWorkingShopifyToken();
+
+        if (token) {
           try {
             const draftOrderRes = await fetch(
-              `https://${shopifyStoreDomain}/admin/api/2025-07/draft_orders.json`,
+              `https://${shopifyStoreDomain}/admin/api/${SHOPIFY_API_VERSION}/draft_orders.json`,
               {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  "X-Shopify-Access-Token": shopifyAdminToken,
+                  "X-Shopify-Access-Token": token.value,
                 },
                 body: JSON.stringify({
                   draft_order: {
                     line_items: [
                       {
-                        variant_id: offer.variant_id ? offer.variant_id.replace("gid://shopify/ProductVariant/", "") : undefined,
+                        variant_id: offer.variant_id
+                          ? offer.variant_id.replace("gid://shopify/ProductVariant/", "")
+                          : undefined,
                         title: offer.product_title,
                         price: agreedPrice.toString(),
-                        quantity: 1,
+                        quantity: offer.quantity || 1,
                       },
                     ],
                     applied_discount: {
@@ -151,13 +203,14 @@ Deno.serve(async (req) => {
             if (draftOrderData.draft_order) {
               const draftOrder = draftOrderData.draft_order;
               
-              await fetch(
-                `https://${shopifyStoreDomain}/admin/api/2025-07/draft_orders/${draftOrder.id}/send_invoice.json`,
+              // Send invoice via Shopify
+              const invoiceRes = await fetch(
+                `https://${shopifyStoreDomain}/admin/api/${SHOPIFY_API_VERSION}/draft_orders/${draftOrder.id}/send_invoice.json`,
                 {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
-                    "X-Shopify-Access-Token": shopifyAdminToken,
+                    "X-Shopify-Access-Token": token.value,
                   },
                   body: JSON.stringify({
                     draft_order_invoice: {
@@ -169,6 +222,9 @@ Deno.serve(async (req) => {
                 }
               );
 
+              const invoiceData = await invoiceRes.json();
+              console.log(`[OFFER] Invoice send result:`, JSON.stringify(invoiceData));
+
               await supabase.from("offers").update({
                 status: "accepted",
                 shopify_draft_order_id: draftOrder.id.toString(),
@@ -177,7 +233,7 @@ Deno.serve(async (req) => {
 
               console.log(`[OFFER] Accepted offer ${offerId}, Draft Order created: ${draftOrder.id}`);
             } else {
-              console.error("[OFFER] Failed to create draft order:", draftOrderData);
+              console.error("[OFFER] Failed to create draft order:", JSON.stringify(draftOrderData));
               await supabase.from("offers").update({ status: "accepted" }).eq("id", offerId);
             }
           } catch (shopifyErr) {
@@ -185,8 +241,8 @@ Deno.serve(async (req) => {
             await supabase.from("offers").update({ status: "accepted" }).eq("id", offerId);
           }
         } else {
+          console.warn("[OFFER] No working Shopify token found — accepting without draft order");
           await supabase.from("offers").update({ status: "accepted" }).eq("id", offerId);
-          console.log(`[OFFER] Accepted offer ${offerId} (no Shopify token configured)`);
         }
 
         return new Response(JSON.stringify({ success: true }), {
