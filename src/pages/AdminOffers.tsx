@@ -84,7 +84,8 @@ const AdminOffers = () => {
       fetchOffers();
     } catch (err) {
       console.error(err);
-      toast.error(`Failed to ${action} offer`);
+      const message = err instanceof Error ? err.message : `Failed to ${action} offer`;
+      toast.error(message);
     } finally {
       setActionLoading(null);
     }
