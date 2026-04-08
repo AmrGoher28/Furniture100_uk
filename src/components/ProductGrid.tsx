@@ -140,23 +140,22 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-12">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-[3.5rem] gap-y-8 md:gap-y-12">
               {filteredProducts.map((product) => {
-                const image = product.node.images.edges[0]?.node;
                 const price = product.node.priceRange.minVariantPrice;
                 return (
                   <Link
                     key={product.node.id}
                     to={`/product/${product.node.handle}`}
-                    className="group block"
+                    className="group flex flex-col"
                   >
                     <ProductImageCarousel
                       images={product.node.images.edges.map((e) => e.node)}
                       title={product.node.title}
-                      className="aspect-[4/5] bg-card mb-5 rounded-xl warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300"
+                      className="aspect-[4/5] bg-card mb-2.5 rounded-xl warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300"
                     />
-                    <h3 className="text-lg mb-1">{product.node.title}</h3>
-                    <p className="text-sm text-muted-foreground font-light">
+                    <h3 className="text-xs md:text-[13px] font-light leading-snug text-foreground/80 mb-0.5 max-h-[2.6em] overflow-hidden">{product.node.title}</h3>
+                    <p className="text-xs text-muted-foreground/60 font-light">
                       From {price.currencyCode} {parseFloat(price.amount).toFixed(0)}
                     </p>
                   </Link>
