@@ -8,7 +8,7 @@ const corsHeaders = {
 const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const adminEmail = Deno.env.get("ADMIN_NOTIFICATION_EMAIL") || "";
-const shopifyStoreDomain = "swifliving-showroom-build-xw1vp.myshopify.com";
+const shopifyStoreDomain = Deno.env.get("SHOPIFY_STORE_DOMAIN") || "swifliving-showroom-build-xw1vp.myshopify.com";
 const SHOPIFY_API_VERSION = "2025-07";
 const siteUrl = Deno.env.get("SITE_URL") || "https://luxe-calm-shop.lovable.app";
 
