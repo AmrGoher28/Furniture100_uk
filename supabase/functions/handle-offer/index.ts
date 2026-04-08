@@ -11,13 +11,11 @@ const adminEmail = Deno.env.get("ADMIN_NOTIFICATION_EMAIL") || "";
 const shopifyStoreDomain = Deno.env.get("SHOPIFY_STORE_DOMAIN") || "swifliving-showroom-build-xw1vp.myshopify.com";
 const SHOPIFY_API_VERSION = "2025-07";
 const siteUrl = Deno.env.get("SITE_URL") || "https://luxe-calm-shop.lovable.app";
-
-type ShopifyTokenCandidate = { name: string; value: string };
+const SHOPIFY_GATEWAY_URL = "https://connector-gateway.lovable.dev/shopify";
 
 type ShopifyRequestResult =
   | {
       success: true;
-      token: ShopifyTokenCandidate;
       data: unknown;
       text: string;
       status: number;
@@ -54,42 +52,18 @@ function stringifyDetails(value: unknown) {
   }
 }
 
-function getShopifyTokenCandidates(): ShopifyTokenCandidate[] {
-  const env = Deno.env.toObject();
-  return Object.entries(env)
-    .filter(([key, value]) => {
-      if (!value) return false;
-      return key === "SHOPIFY_ADMIN_TOKEN"
-        || key === "SHOPIFY_ACCESS_TOKEN"
-        || key.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN");
-    })
-    .map(([name, value]) => ({ name, value }))
-    .sort((a, b) => {
-      const score = (name: string) => {
-        if (name.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN")) return 0;
-        if (name === "SHOPIFY_ADMIN_TOKEN") return 1;
-        return 2;
-      };
-      return score(a.name) - score(b.name);
-    });
-}
-
-async function resolveWorkingShopifyToken(): Promise<ShopifyTokenCandidate | null> {
-  const candidates = getShopifyTokenCandidates();
-  return candidates[0] ?? null;
-}
-
 async function shopifyAdminRequest(
   endpoint: string,
   options: {
     method?: string;
     body?: Record<string, unknown>;
-    preferredTokenName?: string;
   } = {},
 ): Promise<ShopifyRequestResult> {
-  const candidates = getShopifyTokenCandidates();
+  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+  const SHOPIFY_API_KEY = Deno.env.get("SHOPIFY_ACCESS_TOKEN");
 
-  if (candidates.length === 0) {
+  if (!LOVABLE_API_KEY || !SHOPIFY_API_KEY) {
+    console.error("[OFFER] Missing gateway credentials: LOVABLE_API_KEY=" + !!LOVABLE_API_KEY + " SHOPIFY_ACCESS_TOKEN=" + !!SHOPIFY_API_KEY);
     return {
       success: false,
       error: "Shopify is not authenticated in the backend right now, so the draft order and invoice email could not be created.",
@@ -97,79 +71,43 @@ async function shopifyAdminRequest(
     };
   }
 
-  const orderedCandidates = options.preferredTokenName
-    ? [...candidates].sort((a, b) => {
-        if (a.name === options.preferredTokenName) return -1;
-        if (b.name === options.preferredTokenName) return 1;
-        return 0;
-      })
-    : candidates;
+  try {
+    const url = `${SHOPIFY_GATEWAY_URL}/admin/api/${SHOPIFY_API_VERSION}/${endpoint}`;
+    console.log(`[OFFER] Calling Shopify gateway: ${options.method ?? "GET"} ${url}`);
 
-  let lastAuthFailure: { name: string; status: number; details: string } | null = null;
+    const response = await fetch(url, {
+      method: options.method ?? "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+        "X-Connection-Api-Key": SHOPIFY_API_KEY,
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined,
+    });
 
-  for (const candidate of orderedCandidates) {
-    try {
-      const response = await fetch(
-        `https://${shopifyStoreDomain}/admin/api/${SHOPIFY_API_VERSION}/${endpoint}`,
-        {
-          method: options.method ?? "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Shopify-Access-Token": candidate.value,
-          },
-          body: options.body ? JSON.stringify(options.body) : undefined,
-        },
-      );
+    const text = await response.text();
+    const data = parseJsonSafely(text);
 
-      const text = await response.text();
-      const data = parseJsonSafely(text);
-
-      if (response.ok) {
-        console.log(`[OFFER] Shopify ${endpoint} succeeded with token ${candidate.name}`);
-        return {
-          success: true,
-          token: candidate,
-          data,
-          text,
-          status: response.status,
-        };
-      }
-
-      const details = stringifyDetails(data);
-      console.warn(`[OFFER] Shopify ${endpoint} failed with ${candidate.name}: ${response.status} ${details}`);
-
-      if (response.status === 401 || response.status === 403) {
-        lastAuthFailure = {
-          name: candidate.name,
-          status: response.status,
-          details,
-        };
-        continue;
-      }
-
-      return {
-        success: false,
-        error: "Shopify could not process this offer request.",
-        details,
-        status: response.status,
-      };
-    } catch (err) {
-      const details = err instanceof Error ? err.message : String(err);
-      console.error(`[OFFER] Shopify ${endpoint} request crashed with ${candidate.name}:`, err);
-      lastAuthFailure = {
-        name: candidate.name,
-        status: 502,
-        details,
-      };
+    if (response.ok) {
+      console.log(`[OFFER] Shopify ${endpoint} succeeded via gateway`);
+      return { success: true, data, text, status: response.status };
     }
-  }
 
-  return {
-    success: false,
-    error: "Shopify is not authenticated in the backend right now, so the draft order and invoice email could not be created.",
-    details: lastAuthFailure ? `${lastAuthFailure.name}: ${lastAuthFailure.details}` : undefined,
-    status: lastAuthFailure?.status ?? 502,
-  };
+    const details = stringifyDetails(data);
+    console.error(`[OFFER] Shopify ${endpoint} failed via gateway: ${response.status} ${details}`);
+    return {
+      success: false,
+      error: response.status === 401 || response.status === 403
+        ? "Shopify is not authenticated in the backend right now, so the draft order and invoice email could not be created."
+        : "Shopify could not process this offer request.",
+      details,
+      status: response.status,
+    };
+  } catch (err) {
+    const details = err instanceof Error ? err.message : String(err);
+    console.error(`[OFFER] Shopify gateway request crashed:`, err);
+    return { success: false, error: "Unexpected Shopify error.", details, status: 502 };
+  }
 }
 
 async function sendOfferEmail(
@@ -267,19 +205,10 @@ Deno.serve(async (req) => {
       if (action === "accept") {
         const agreedPrice = Number(offer.offer_amount);
         const discount = Number(offer.original_price) - agreedPrice;
-        const token = await resolveWorkingShopifyToken();
-
-        if (!token) {
-          console.warn("[OFFER] No working Shopify token found — keeping offer pending");
-          return jsonResponse({
-            error: "Shopify is not authenticated in the backend right now, so the draft order and invoice email could not be created.",
-          }, 502);
-        }
 
         try {
           const draftOrderResult = await shopifyAdminRequest("draft_orders.json", {
             method: "POST",
-            preferredTokenName: token.name,
             body: {
               draft_order: {
                 line_items: [
@@ -311,11 +240,11 @@ Deno.serve(async (req) => {
             }, draftOrderResult.status || 502);
           }
 
-          const draftOrderPayload = draftOrderResult.data as Record<string, any> | string | null;
+          const draftOrderPayload = (draftOrderResult as { success: true; data: unknown }).data as Record<string, any> | string | null;
           const draftOrder = typeof draftOrderPayload === "object" && draftOrderPayload ? draftOrderPayload.draft_order : null;
 
           if (!draftOrder) {
-            console.error("[OFFER] Missing draft order in Shopify response:", draftOrderResult.text);
+            console.error("[OFFER] Missing draft order in Shopify response:", (draftOrderResult as { success: true; text: string }).text);
             return jsonResponse({
               error: "Shopify did not return a draft order.",
               details: stringifyDetails(draftOrderPayload),
@@ -324,7 +253,6 @@ Deno.serve(async (req) => {
 
           const invoiceResult = await shopifyAdminRequest(`draft_orders/${draftOrder.id}/send_invoice.json`, {
             method: "POST",
-            preferredTokenName: draftOrderResult.token.name,
             body: {
               draft_order_invoice: {
                 to: offer.buyer_email,
@@ -346,11 +274,11 @@ Deno.serve(async (req) => {
               error: "The draft order was created, but Shopify could not send the invoice email.",
               invoiceUrl: draftOrder.invoice_url || null,
               details: invoiceResult.details,
-            }, invoiceResult.status || 502);
+            }, invoiceResult.status ?? 502);
           }
 
           console.log(`[OFFER] Accepted offer ${offerId}, Draft Order created: ${draftOrder.id}`);
-          console.log(`[OFFER] Invoice send result:`, stringifyDetails(invoiceResult.data));
+          console.log(`[OFFER] Invoice send result:`, stringifyDetails((invoiceResult as { success: true; data: unknown }).data));
 
           return jsonResponse({
             success: true,
