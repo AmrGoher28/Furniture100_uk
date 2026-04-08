@@ -146,7 +146,27 @@ const ProductDetail = () => {
           <div className="grid md:grid-cols-2 gap-10 md:gap-20">
             {/* Images */}
             <div>
-              <div className="relative aspect-square bg-secondary overflow-hidden rounded-xl shadow-sm mb-3 group">
+              <div
+                className="relative aspect-square bg-secondary overflow-hidden rounded-xl shadow-sm mb-3 group touch-pan-y"
+                onTouchStart={(e) => {
+                  const touch = e.touches[0];
+                  (e.currentTarget as any)._touchStartX = touch.clientX;
+                  (e.currentTarget as any)._touchStartY = touch.clientY;
+                }}
+                onTouchEnd={(e) => {
+                  const startX = (e.currentTarget as any)._touchStartX;
+                  const startY = (e.currentTarget as any)._touchStartY;
+                  if (startX == null) return;
+                  const endX = e.changedTouches[0].clientX;
+                  const endY = e.changedTouches[0].clientY;
+                  const dx = endX - startX;
+                  const dy = endY - startY;
+                  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+                    if (dx < 0) setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+                    else setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+                  }
+                }}
+              >
                 {images[selectedImage] ? (
                   <img
                     src={images[selectedImage].node.url}
@@ -160,13 +180,13 @@ const ProductDetail = () => {
                   <>
                     <button
                       onClick={() => setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 text-foreground shadow-sm transition-opacity md:opacity-0 md:group-hover:opacity-100"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 text-foreground shadow-sm hidden md:block md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
                       onClick={() => setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 text-foreground shadow-sm transition-opacity md:opacity-0 md:group-hover:opacity-100"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 text-foreground shadow-sm hidden md:block md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                     >
                       <ChevronRight className="w-5 h-5" />
                     </button>
