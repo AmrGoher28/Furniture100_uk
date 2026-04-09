@@ -51,6 +51,12 @@ export const useCartStore = create<CartStore>()(
                 checkoutUrl: result.checkoutUrl,
                 items: [{ ...item, lineId: result.lineId }],
               });
+              trackAddToCart({
+                itemId: item.variantId,
+                itemName: item.product?.node?.title ?? item.variantTitle,
+                price: parseFloat(item.price.amount),
+                quantity: item.quantity,
+              });
             }
           } else if (existingItem) {
             const newQuantity = existingItem.quantity + item.quantity;

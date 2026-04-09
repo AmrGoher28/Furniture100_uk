@@ -19,7 +19,7 @@ export const CartDrawer = () => {
       trackBeginCheckout({
         items: items.map((i) => ({
           itemId: i.variantId,
-          itemName: i.title,
+          itemName: i.product?.node?.title ?? i.variantTitle,
           price: parseFloat(i.price.amount),
           quantity: i.quantity,
         })),
