@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-const GOOGLE_ADS_ID = 'AW-XXXXXXXXX'; // TODO: Replace with real ID
+const GOOGLE_ADS_ID = 'AW-18077126044';
 
 // Ensure gtag is available
 function gtag(...args: any[]) {
