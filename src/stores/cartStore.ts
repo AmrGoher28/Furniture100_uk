@@ -10,6 +10,7 @@ import {
   storefrontApiRequest,
   CART_QUERY,
 } from '@/lib/shopify';
+import { trackAddToCart } from '@/lib/gtag';
 
 export type { CartItem, ShopifyProduct };
 
