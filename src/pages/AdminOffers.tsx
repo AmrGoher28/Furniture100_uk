@@ -42,15 +42,16 @@ const AdminOffers = () => {
   const [counterAmounts, setCounterAmounts] = useState<Record<string, string>>({});
 
   const fetchOffers = async () => {
-    const { data, error } = await supabase
-      .from("offers")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (error) {
-      console.error(error);
+    try {
+      const { data, error } = await supabase.functions.invoke("admin-list-offers", {
+        body: { adminPassword: "Furniture100Admin" },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      setOffers(data?.offers || []);
+    } catch (err) {
+      console.error(err);
       toast.error("Failed to load offers");
-    } else {
-      setOffers(data || []);
     }
     setLoading(false);
   };
