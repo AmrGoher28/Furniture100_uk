@@ -338,6 +338,8 @@ const ProductDetail = () => {
                 </div>
               </div>
 
+              {/* Trust badges row */}
+              <ProductTrustBadges />
 
               {/* Delivery banner */}
               <div className="mb-4">
