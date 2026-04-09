@@ -11,7 +11,6 @@ const adminEmail = Deno.env.get("ADMIN_NOTIFICATION_EMAIL") || "";
 const shopifyStoreDomain = Deno.env.get("SHOPIFY_STORE_DOMAIN") || "swifliving-showroom-build-xw1vp.myshopify.com";
 const SHOPIFY_API_VERSION = "2025-07";
 const siteUrl = Deno.env.get("SITE_URL") || "https://luxe-calm-shop.lovable.app";
-const SHOPIFY_GATEWAY_URL = "https://connector-gateway.lovable.dev/shopify";
 
 type ShopifyRequestResult =
   | {
@@ -59,28 +58,27 @@ async function shopifyAdminRequest(
     body?: Record<string, unknown>;
   } = {},
 ): Promise<ShopifyRequestResult> {
-  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-  const SHOPIFY_API_KEY = Deno.env.get("SHOPIFY_ACCESS_TOKEN");
+  // Try multiple token sources
+  const token = Deno.env.get("SHOPIFY_ADMIN_TOKEN") || Deno.env.get("SHOPIFY_ACCESS_TOKEN");
 
-  if (!LOVABLE_API_KEY || !SHOPIFY_API_KEY) {
-    console.error("[OFFER] Missing gateway credentials: LOVABLE_API_KEY=" + !!LOVABLE_API_KEY + " SHOPIFY_ACCESS_TOKEN=" + !!SHOPIFY_API_KEY);
+  if (!token) {
+    console.error("[OFFER] Missing Shopify admin token");
     return {
       success: false,
-      error: "Shopify is not authenticated in the backend right now, so the draft order and invoice email could not be created.",
+      error: "Shopify is not authenticated in the backend right now.",
       status: 502,
     };
   }
 
   try {
-    const url = `${SHOPIFY_GATEWAY_URL}/admin/api/${SHOPIFY_API_VERSION}/${endpoint}`;
-    console.log(`[OFFER] Calling Shopify gateway: ${options.method ?? "GET"} ${url}`);
+    const url = `https://${shopifyStoreDomain}/admin/api/${SHOPIFY_API_VERSION}/${endpoint}`;
+    console.log(`[OFFER] Calling Shopify Admin API: ${options.method ?? "GET"} ${url}`);
 
     const response = await fetch(url, {
       method: options.method ?? "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
-        "X-Connection-Api-Key": SHOPIFY_API_KEY,
+        "X-Shopify-Access-Token": token,
       },
       body: options.body ? JSON.stringify(options.body) : undefined,
     });
@@ -89,23 +87,23 @@ async function shopifyAdminRequest(
     const data = parseJsonSafely(text);
 
     if (response.ok) {
-      console.log(`[OFFER] Shopify ${endpoint} succeeded via gateway`);
+      console.log(`[OFFER] Shopify ${endpoint} succeeded`);
       return { success: true, data, text, status: response.status };
     }
 
     const details = stringifyDetails(data);
-    console.error(`[OFFER] Shopify ${endpoint} failed via gateway: ${response.status} ${details}`);
+    console.error(`[OFFER] Shopify ${endpoint} failed: ${response.status} ${details}`);
     return {
       success: false,
       error: response.status === 401 || response.status === 403
-        ? "Shopify is not authenticated in the backend right now, so the draft order and invoice email could not be created."
+        ? "Shopify is not authenticated in the backend right now."
         : "Shopify could not process this offer request.",
       details,
       status: response.status,
     };
   } catch (err) {
     const details = err instanceof Error ? err.message : String(err);
-    console.error(`[OFFER] Shopify gateway request crashed:`, err);
+    console.error(`[OFFER] Shopify Admin API request crashed:`, err);
     return { success: false, error: "Unexpected Shopify error.", details, status: 502 };
   }
 }
