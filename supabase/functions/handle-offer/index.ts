@@ -58,58 +58,67 @@ async function shopifyAdminRequest(
     body?: Record<string, unknown>;
   } = {},
 ): Promise<ShopifyRequestResult> {
-  // Try multiple token sources — the online access token key includes a user suffix
-  const envKeys = Object.keys(Deno.env.toObject());
-  const onlineTokenKey = envKeys.find(k => k.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN"));
-  const token = (onlineTokenKey ? Deno.env.get(onlineTokenKey) : null) 
-    || Deno.env.get("SHOPIFY_ADMIN_TOKEN") 
-    || Deno.env.get("SHOPIFY_ACCESS_TOKEN");
-
-  if (!token) {
-    console.error("[OFFER] Missing Shopify admin token");
-    return {
-      success: false,
-      error: "Shopify is not authenticated in the backend right now.",
-      status: 502,
-    };
-  }
-
-  try {
-    const url = `https://${shopifyStoreDomain}/admin/api/${SHOPIFY_API_VERSION}/${endpoint}`;
-    console.log(`[OFFER] Calling Shopify Admin API: ${options.method ?? "GET"} ${url}`);
-
-    const response = await fetch(url, {
-      method: options.method ?? "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": token,
-      },
-      body: options.body ? JSON.stringify(options.body) : undefined,
-    });
-
-    const text = await response.text();
-    const data = parseJsonSafely(text);
-
-    if (response.ok) {
-      console.log(`[OFFER] Shopify ${endpoint} succeeded`);
-      return { success: true, data, text, status: response.status };
+  // Collect all candidate tokens
+  const envObj = Deno.env.toObject();
+  const candidates: { name: string; value: string }[] = [];
+  
+  for (const [key, value] of Object.entries(envObj)) {
+    if (key.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN") && value) {
+      candidates.unshift({ name: key, value }); // prefer online tokens
     }
-
-    const details = stringifyDetails(data);
-    console.error(`[OFFER] Shopify ${endpoint} failed: ${response.status} ${details}`);
-    return {
-      success: false,
-      error: response.status === 401 || response.status === 403
-        ? "Shopify is not authenticated in the backend right now."
-        : "Shopify could not process this offer request.",
-      details,
-      status: response.status,
-    };
-  } catch (err) {
-    const details = err instanceof Error ? err.message : String(err);
-    console.error(`[OFFER] Shopify Admin API request crashed:`, err);
-    return { success: false, error: "Unexpected Shopify error.", details, status: 502 };
   }
+  const adminToken = Deno.env.get("SHOPIFY_ADMIN_TOKEN");
+  if (adminToken) candidates.push({ name: "SHOPIFY_ADMIN_TOKEN", value: adminToken });
+  const accessToken = Deno.env.get("SHOPIFY_ACCESS_TOKEN");
+  if (accessToken) candidates.push({ name: "SHOPIFY_ACCESS_TOKEN", value: accessToken });
+
+  if (candidates.length === 0) {
+    console.error("[OFFER] No Shopify tokens found");
+    return { success: false, error: "Shopify is not authenticated.", status: 502 };
+  }
+
+  // Try each token
+  for (const candidate of candidates) {
+    try {
+      const url = `https://${shopifyStoreDomain}/admin/api/${SHOPIFY_API_VERSION}/${endpoint}`;
+      console.log(`[OFFER] Trying ${candidate.name} for ${options.method ?? "GET"} ${url}`);
+
+      const response = await fetch(url, {
+        method: options.method ?? "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Access-Token": candidate.value,
+        },
+        body: options.body ? JSON.stringify(options.body) : undefined,
+      });
+
+      const text = await response.text();
+      const data = parseJsonSafely(text);
+
+      if (response.ok) {
+        console.log(`[OFFER] Shopify ${endpoint} succeeded with ${candidate.name}`);
+        return { success: true, data, text, status: response.status };
+      }
+
+      if (response.status === 401 || response.status === 403) {
+        console.warn(`[OFFER] Token ${candidate.name} rejected (${response.status}), trying next...`);
+        continue;
+      }
+
+      const details = stringifyDetails(data);
+      console.error(`[OFFER] Shopify ${endpoint} failed: ${response.status} ${details}`);
+      return { success: false, error: "Shopify could not process this offer request.", details, status: response.status };
+    } catch (err) {
+      console.error(`[OFFER] Error with ${candidate.name}:`, err);
+      continue;
+    }
+  }
+
+  return {
+    success: false,
+    error: "All Shopify tokens were rejected. Please reconnect your Shopify account.",
+    status: 401,
+  };
 }
 
 async function sendOfferEmail(
