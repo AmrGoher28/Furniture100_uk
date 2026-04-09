@@ -58,8 +58,12 @@ async function shopifyAdminRequest(
     body?: Record<string, unknown>;
   } = {},
 ): Promise<ShopifyRequestResult> {
-  // Try multiple token sources
-  const token = Deno.env.get("SHOPIFY_ADMIN_TOKEN") || Deno.env.get("SHOPIFY_ACCESS_TOKEN");
+  // Try multiple token sources — the online access token key includes a user suffix
+  const envKeys = Object.keys(Deno.env.toObject());
+  const onlineTokenKey = envKeys.find(k => k.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN"));
+  const token = (onlineTokenKey ? Deno.env.get(onlineTokenKey) : null) 
+    || Deno.env.get("SHOPIFY_ADMIN_TOKEN") 
+    || Deno.env.get("SHOPIFY_ACCESS_TOKEN");
 
   if (!token) {
     console.error("[OFFER] Missing Shopify admin token");
