@@ -70,7 +70,7 @@ export function trackBeginCheckout({
   // Also fire Google Ads conversion event for checkout
   // Replace 'CHECKOUT_LABEL' with your actual conversion label
   gtag('event', 'conversion', {
-    send_to: `${GOOGLE_ADS_ID}/CHECKOUT_LABEL`,
+    send_to: `${GOOGLE_ADS_ID}/U4tjCMitjJkcEJyb7KtD`,
     value: totalValue,
     currency,
   });
