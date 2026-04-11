@@ -95,13 +95,6 @@ export const Navbar = () => {
             Shop
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
           </button>
-          <button
-            onClick={handleAdminClick}
-            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
-          >
-            <Shield className="w-3.5 h-3.5" />
-            Admin
-          </button>
         </div>
 
         {/* Right: Icons */}
@@ -173,12 +166,6 @@ export const Navbar = () => {
                   <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
                     <Heart className="w-4 h-4" /> Wishlist
                   </Link>
-                  <button
-                    onClick={() => { setMobileOpen(false); handleAdminClick(); }}
-                    className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light w-full text-left"
-                  >
-                    <Shield className="w-4 h-4" /> Admin
-                  </button>
                 </div>
               </div>
             </SheetContent>
