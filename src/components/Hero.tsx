@@ -47,6 +47,7 @@ export const Hero = () => {
           alt={slide.alt}
           fetchPriority={i === 0 ? "high" : undefined}
           loading={i === 0 ? undefined : "lazy"}
+          decoding={i === 0 ? "sync" : "async"}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}

@@ -47,6 +47,7 @@ export const FeaturedCategories = () => {
         alt={cat.name}
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
+        decoding="async"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-t md:from-black/60 md:to-transparent" />
       {/* Top-down gradient only on mobile */}
