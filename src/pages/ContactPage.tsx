@@ -1,14 +1,58 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
-import { Phone, Mail, Clock, MapPin } from "lucide-react";
+import { Mail, Clock, MapPin } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const ContactPage = () => {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: wire up contact form
-    setForm({ name: "", email: "", subject: "", message: "" });
+    if (sending) return;
+    setSending(true);
+
+    try {
+      const id = crypto.randomUUID();
+
+      // Send confirmation to customer
+      const confirmPromise = supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "contact-confirmation",
+          recipientEmail: form.email,
+          idempotencyKey: `contact-confirm-${id}`,
+          templateData: { name: form.name },
+        },
+      });
+
+      // Send notification to admin
+      const notifyPromise = supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "contact-notification",
+          idempotencyKey: `contact-notify-${id}`,
+          templateData: {
+            name: form.name,
+            email: form.email,
+            subject: form.subject,
+            message: form.message,
+          },
+        },
+      });
+
+      const [confirmRes, notifyRes] = await Promise.all([confirmPromise, notifyPromise]);
+
+      if (confirmRes.error || notifyRes.error) {
+        throw new Error("Failed to send");
+      }
+
+      toast.success("Message sent! We'll get back to you soon.");
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch {
+      toast.error("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -65,6 +109,7 @@ const ContactPage = () => {
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   required
+                  maxLength={100}
                   className="w-full border border-border rounded-md px-4 py-2.5 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-gold"
                 />
               </div>
@@ -75,6 +120,7 @@ const ContactPage = () => {
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   required
+                  maxLength={255}
                   className="w-full border border-border rounded-md px-4 py-2.5 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-gold"
                 />
               </div>
@@ -85,6 +131,7 @@ const ContactPage = () => {
                   value={form.subject}
                   onChange={(e) => setForm({ ...form, subject: e.target.value })}
                   required
+                  maxLength={200}
                   className="w-full border border-border rounded-md px-4 py-2.5 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-gold"
                 />
               </div>
@@ -94,15 +141,17 @@ const ContactPage = () => {
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   required
+                  maxLength={2000}
                   rows={5}
                   className="w-full border border-border rounded-md px-4 py-2.5 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-gold resize-none"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-primary text-primary-foreground py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
+                disabled={sending}
+                className="w-full bg-primary text-primary-foreground py-3 rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
               >
-                Send Message
+                {sending ? "Sending…" : "Send Message"}
               </button>
             </form>
           </div>
