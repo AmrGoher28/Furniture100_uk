@@ -172,6 +172,7 @@ const ProductDetail = () => {
                     src={images[selectedImage].node.url}
                     alt={images[selectedImage].node.altText || product.title}
                     className="w-full h-full object-cover"
+                    decoding="async"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
