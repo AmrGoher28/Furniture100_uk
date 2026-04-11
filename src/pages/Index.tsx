@@ -7,6 +7,7 @@ import { LifestyleBanner } from "@/components/LifestyleBanner";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { CustomerReviews } from "@/components/CustomerReviews";
 import { Newsletter } from "@/components/Newsletter";
+import LazySection from "@/components/LazySection";
 
 const Index = () => {
   return (
@@ -17,11 +18,18 @@ const Index = () => {
       <div id="best-sellers">
         <BestSellers />
       </div>
-      <LifestyleBanner />
-      <WhyChooseUs />
-      <CustomerReviews />
-      
-      <Newsletter />
+      <LazySection minHeight="400px">
+        <LifestyleBanner />
+      </LazySection>
+      <LazySection minHeight="300px">
+        <WhyChooseUs />
+      </LazySection>
+      <LazySection minHeight="300px">
+        <CustomerReviews />
+      </LazySection>
+      <LazySection minHeight="200px">
+        <Newsletter />
+      </LazySection>
     </Layout>
   );
 };
