@@ -77,18 +77,24 @@ const ProductImageCarousel = ({ images, title, className = "" }: ProductImageCar
       onTouchEnd={onTouchEnd}
       onClickCapture={onClickCapture}
     >
-      {images.map((img, i) => (
-        <img
-          key={i}
-          src={img.url}
-          alt={img.altText || title}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-            i === current ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-          loading={i === 0 ? "eager" : "lazy"}
-          draggable={false}
-        />
-      ))}
+      {images.map((img, i) => {
+        // Only render current image and its neighbors to reduce DOM/network load
+        const distance = Math.min(Math.abs(i - current), count - Math.abs(i - current));
+        if (distance > 1) return null;
+        return (
+          <img
+            key={i}
+            src={img.url}
+            alt={img.altText || title}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+              i === current ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+            loading={i === current ? "eager" : "lazy"}
+            decoding="async"
+            draggable={false}
+          />
+        );
+      })}
 
       {count > 1 && (
         <>
