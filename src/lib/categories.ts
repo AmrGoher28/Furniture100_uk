@@ -75,7 +75,7 @@ export const CATEGORIES: Category[] = [
   {
     name: "Lighting",
     slug: "lighting",
-    image: "https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=400&q=75&fm=webp",
     subcategories: [
       { name: "Floor Lamps", slug: "floor-lamps" },
       { name: "Desk Lamps", slug: "desk-lamps" },

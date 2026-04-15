@@ -93,7 +93,7 @@ const ProductImageCarousel = ({ images, title, className = "" }: ProductImageCar
         return (
           <img
             key={i}
-            src={img.url}
+            src={optimizeImageUrl(img.url, 500)}
             alt={img.altText || title}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
               i === current ? "opacity-100" : "opacity-0 pointer-events-none"
