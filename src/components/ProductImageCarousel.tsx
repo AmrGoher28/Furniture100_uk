@@ -6,6 +6,15 @@ interface ImageNode {
   altText?: string | null;
 }
 
+/** Append Shopify CDN size/format params for responsive images */
+function optimizeImageUrl(url: string, width = 400): string {
+  if (url.includes('cdn.shopify.com')) {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}width=${width}&format=webp`;
+  }
+  return url;
+}
+
 interface ProductImageCarouselProps {
   images: ImageNode[];
   title: string;
