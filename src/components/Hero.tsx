@@ -1,19 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import heroSlide1 from "@/assets/hero-slide-1.webp";
-import heroSlide2 from "@/assets/hero-slide-2.webp";
-import heroSlide1Mobile from "@/assets/hero-slide-1-mobile.webp";
-import heroSlide2Mobile from "@/assets/hero-slide-2-mobile.webp";
 
 const slides = [
   {
-    desktop: heroSlide1,
-    mobile: heroSlide1Mobile,
+    desktop: "/hero-slide-1.webp",
+    mobile: "/hero-slide-1-mobile.webp",
     alt: "Stylish lounge chairs in a modern living room",
   },
   {
-    desktop: heroSlide2,
-    mobile: heroSlide2Mobile,
+    desktop: "/hero-slide-2.webp",
+    mobile: "/hero-slide-2-mobile.webp",
     alt: "Contemporary furniture in a beautifully styled space",
   },
 ];
