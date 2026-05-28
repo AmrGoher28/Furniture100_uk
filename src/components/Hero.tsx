@@ -30,7 +30,7 @@ export const Hero = () => {
 
   return (
     <section
-      className="relative h-[70vh] md:h-[88vh] min-h-[480px] flex items-end overflow-hidden bg-foreground"
+      className="relative h-[52vh] md:h-[88vh] min-h-[380px] flex items-end overflow-hidden bg-foreground"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
