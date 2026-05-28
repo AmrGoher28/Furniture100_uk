@@ -34,7 +34,7 @@ export const Navbar = () => {
   const { isAdmin, setShowLogin } = useAdminMode();
 
   const isHome = location.pathname === "/";
-  const transparent = isHome && !scrolled && !searchOpen && !megaOpen;
+  const transparent = false;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
