@@ -151,9 +151,19 @@ const CategoryPage = () => {
 
   const title = category?.name || "All Products";
 
+  const seoPath = slug ? `/category/${slug}` : "/shop";
+  const seoTitle = slug
+    ? `${title} | Furniture100`
+    : "Shop All Furniture | Furniture100";
+  const seoDesc = slug
+    ? `Shop premium ${title.toLowerCase()} at Furniture100. Free UK delivery and 30-day returns on every order.`
+    : "Browse our full collection of premium furniture — sofas, lounge chairs, dining, lighting and more. Free UK delivery.";
+
   return (
     <Layout>
+      <Seo title={seoTitle.slice(0, 60)} description={seoDesc.slice(0, 155)} path={seoPath} />
       {/* Hero banner – reduced height, editorial feel */}
+
       <section className="relative h-28 md:h-40 flex items-center justify-center bg-secondary overflow-hidden">
         {category?.image && (
           <>
