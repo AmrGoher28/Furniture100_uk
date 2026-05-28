@@ -90,21 +90,23 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
   return (
     <section id="collection" className="py-24 md:py-32 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4 font-light">
+        <div className="mb-16 max-w-2xl">
+          <p className="text-xs tracking-[0.25em] uppercase text-muted-foreground mb-5 font-medium">
             The Collection
           </p>
-          <h2 className="text-4xl md:text-5xl">Crafted for Living</h2>
+          <h2 style={{ fontSize: "clamp(1.875rem, 4vw, 3.25rem)", letterSpacing: "-0.03em" }}>
+            Crafted for living.
+          </h2>
         </div>
 
         {subCategories.length > 0 && (
-          <div className="flex justify-center gap-3 md:gap-5 mb-16 flex-wrap overflow-x-auto">
+          <div className="flex gap-2 md:gap-3 mb-12 flex-wrap">
             <button
               onClick={() => setActiveSubCategory(null)}
-              className={`text-[11px] tracking-[0.15em] uppercase px-4 py-1.5 rounded-full border transition-colors ${
+              className={`text-xs tracking-tight px-5 h-9 rounded-full border transition-colors ${
                 !activeSubCategory
-                  ? "border-primary text-foreground bg-primary/10"
-                  : "border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
               }`}
             >
               All {activeCategory}
@@ -113,10 +115,10 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
               <button
                 key={sub}
                 onClick={() => setActiveSubCategory(sub)}
-                className={`text-[11px] tracking-[0.15em] uppercase px-4 py-1.5 rounded-full border transition-colors whitespace-nowrap ${
+                className={`text-xs tracking-tight px-5 h-9 rounded-full border transition-colors whitespace-nowrap ${
                   activeSubCategory === sub
-                    ? "border-primary text-foreground bg-primary/10"
-                    : "border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
                 }`}
               >
                 {sub}
@@ -125,22 +127,20 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
           </div>
         )}
 
-        {subCategories.length === 0 && <div className="mb-16" />}
-
         {loading && products.length === 0 ? (
           <div className="flex justify-center py-24">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         ) : filteredProducts.length === 0 && !loading ? (
           <div className="text-center py-24">
-            <p className="text-2xl mb-3">No products found</p>
-            <p className="text-muted-foreground font-light">
+            <p className="text-2xl mb-3 tracking-tight">No products found</p>
+            <p className="text-muted-foreground">
               New pieces are being prepared. Check back soon.
             </p>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-[3.5rem] gap-y-8 md:gap-y-12">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-10 gap-y-12 md:gap-y-16">
               {filteredProducts.map((product) => {
                 const price = product.node.priceRange.minVariantPrice;
                 return (
@@ -149,13 +149,15 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
                     to={`/product/${product.node.handle}`}
                     className="group flex flex-col"
                   >
-                    <ProductImageCarousel
-                      images={product.node.images.edges.map((e) => e.node)}
-                      title={product.node.title}
-                      className="aspect-[4/5] bg-card mb-2.5 rounded-xl warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300"
-                    />
-                    <h3 className="text-xs md:text-[13px] font-light leading-snug text-foreground/80 mb-0.5 max-h-[2.6em] overflow-hidden">{product.node.title}</h3>
-                    <p className="text-xs text-muted-foreground/60 font-light">
+                    <div className="relative overflow-hidden bg-card aspect-[4/5] mb-4">
+                      <ProductImageCarousel
+                        images={product.node.images.edges.map((e) => e.node)}
+                        title={product.node.title}
+                        className="absolute inset-0 w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      />
+                    </div>
+                    <h3 className="text-sm font-medium tracking-tight text-foreground mb-1 line-clamp-2">{product.node.title}</h3>
+                    <p className="text-sm text-foreground font-semibold">
                       From {price.currencyCode} {parseFloat(price.amount).toFixed(0)}
                     </p>
                   </Link>
@@ -164,7 +166,7 @@ export const ProductGrid = ({ activeCategory, onCategoryChange }: ProductGridPro
             </div>
 
             {pageInfo.hasNextPage && (
-              <div ref={sentinelRef} className="flex justify-center py-8">
+              <div ref={sentinelRef} className="flex justify-center py-12">
                 {loadingMore && <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />}
               </div>
             )}
