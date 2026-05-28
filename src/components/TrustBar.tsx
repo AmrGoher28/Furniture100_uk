@@ -1,57 +1,26 @@
-import { useEffect, useRef } from "react";
-import { Truck, RotateCcw, Star, ShieldCheck, HandCoins } from "lucide-react";
-
 const TRUST_ITEMS = [
-  { icon: Truck, label: "Free UK Delivery" },
-  { icon: RotateCcw, label: "30 Day Returns" },
-  { icon: Star, label: "Rated Excellent" },
-  { icon: ShieldCheck, label: "Secure Checkout" },
-  { icon: HandCoins, label: "Make an Offer" },
+  "Free UK Delivery",
+  "30 Day Returns",
+  "Rated Excellent",
+  "Klarna Available",
 ];
 
 export const TrustBar = () => {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    let animId: number;
-    let pos = 0;
-    const speed = 0.35;
-
-    const step = () => {
-      if (!pausedRef.current) {
-        pos -= speed;
-        const half = track.scrollWidth / 2;
-        if (Math.abs(pos) >= half) pos = 0;
-        track.style.transform = `translateX(${pos}px)`;
-      }
-      animId = requestAnimationFrame(step);
-    };
-
-    animId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animId);
-  }, []);
-
-  const items = [...TRUST_ITEMS, ...TRUST_ITEMS];
-
   return (
-    <section
-      className="bg-background border-b border-border py-4 overflow-hidden"
-      onMouseEnter={() => (pausedRef.current = true)}
-      onMouseLeave={() => (pausedRef.current = false)}
-    >
-      <div ref={trackRef} className="flex items-center whitespace-nowrap will-change-transform">
-        {items.map((item, i) => (
-          <span key={i} className="flex items-center gap-2 px-4 sm:px-8 md:px-12">
-            <item.icon className="w-3.5 h-3.5 md:w-4 md:h-4 text-foreground flex-shrink-0" strokeWidth={1.5} />
-            <span className="text-[11px] md:text-xs tracking-tight text-foreground font-medium">
-              {item.label}
-            </span>
-          </span>
-        ))}
+    <section className="bg-background border-b border-border">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 md:py-6">
+        <ul className="flex items-center justify-between md:justify-center gap-3 md:gap-16 text-foreground/70 overflow-hidden">
+          {TRUST_ITEMS.map((label, i) => (
+            <li
+              key={label}
+              className={`text-[9px] md:text-[11px] tracking-[0.15em] md:tracking-[0.18em] uppercase font-medium whitespace-nowrap ${
+                i === 3 ? "hidden sm:block" : ""
+              }`}
+            >
+              {label}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

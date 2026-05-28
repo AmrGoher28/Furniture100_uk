@@ -12,37 +12,40 @@ export const Newsletter = () => {
   };
 
   return (
-    <section className="bg-foreground py-24 md:py-32 px-6">
-      <div className="max-w-3xl mx-auto text-center">
-        <p className="text-xs tracking-[0.25em] uppercase text-background/50 mb-5 font-medium">Newsletter</p>
-        <h2 className="text-background mb-5" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)", letterSpacing: "-0.03em" }}>
+    <section className="bg-background py-24 md:py-32 px-6 border-t border-border">
+      <div className="max-w-xl mx-auto text-center">
+        <p className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-5 font-medium">Newsletter</p>
+        <h2
+          className="text-foreground mb-10"
+          style={{
+            fontSize: "clamp(1.5rem, 2.8vw, 2.25rem)",
+            letterSpacing: "-0.03em",
+            lineHeight: 1.15,
+            fontWeight: 500,
+          }}
+        >
           Get 10% off your first order.
         </h2>
-        <p className="text-background/65 mb-10 max-w-lg mx-auto">
-          Be first to hear about new arrivals and exclusive offers.
-        </p>
 
         {submitted ? (
-          <div className="border border-background/20 rounded-2xl p-8 max-w-md mx-auto">
-            <p className="text-background/60 text-xs uppercase tracking-widest mb-3">Your code</p>
-            <p className="text-3xl font-semibold text-background tracking-[0.15em] mb-3">WELCOME10</p>
-            <p className="text-background/50 text-xs">Use at checkout for 10% off.</p>
-          </div>
+          <p className="text-sm text-foreground">
+            Use code <span className="font-medium tracking-[0.15em]">WELCOME10</span> at checkout.
+          </p>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <form onSubmit={handleSubmit} className="flex items-center gap-4 max-w-md mx-auto border-b border-border focus-within:border-foreground transition-colors">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
-              className="flex-1 px-6 h-12 rounded-full bg-transparent border border-background/25 text-background placeholder:text-background/40 text-sm focus:outline-none focus:border-background transition-colors"
+              className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground py-3 focus:outline-none"
             />
             <button
               type="submit"
-              className="bg-background text-foreground px-8 h-12 rounded-full text-sm font-medium hover:bg-background/90 transition-colors"
+              className="text-xs tracking-[0.15em] uppercase text-foreground hover:opacity-60 transition-opacity py-3"
             >
-              Subscribe
+              Subscribe →
             </button>
           </form>
         )}

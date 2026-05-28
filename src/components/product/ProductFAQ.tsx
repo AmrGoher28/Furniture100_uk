@@ -27,6 +27,9 @@ interface Props {
   onSave?: (key: string, value: string) => void;
 }
 
+const triggerClass =
+  "text-[11px] tracking-[0.18em] uppercase font-medium hover:no-underline py-5";
+
 const ProductFAQ = ({ isAdmin = false, overrides = {}, onSave }: Props) => (
   <Accordion type="single" collapsible>
     {FAQS.map((faq, idx) => {
@@ -36,8 +39,8 @@ const ProductFAQ = ({ isAdmin = false, overrides = {}, onSave }: Props) => (
       const answer = overrides[aKey] || faq.a;
       return (
         <AccordionItem key={idx} value={`faq-${idx}`} className="border-border">
-          <AccordionTrigger className="text-sm hover:no-underline">
-            <span className="flex items-center gap-1">
+          <AccordionTrigger className={triggerClass}>
+            <span className="flex items-center gap-1 text-left">
               {question}
               <InlineEditor
                 value={question}
@@ -49,7 +52,7 @@ const ProductFAQ = ({ isAdmin = false, overrides = {}, onSave }: Props) => (
             </span>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="flex items-start gap-1">
+            <div className="flex items-start gap-1 pb-4">
               <p className="text-sm text-muted-foreground leading-relaxed">{answer}</p>
               <InlineEditor
                 value={answer}
