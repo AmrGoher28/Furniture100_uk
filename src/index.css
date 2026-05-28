@@ -9,8 +9,8 @@
     /* Near-black foreground #111 */
     --foreground: 0 0% 7%;
 
-    /* Off-white surfaces #FAFAFA */
-    --card: 0 0% 98%;
+    /* Cool neutral surfaces — zero hue, no warmth */
+    --card: 240 5% 96%;
     --card-foreground: 0 0% 7%;
 
     --popover: 0 0% 100%;
@@ -20,11 +20,11 @@
     --primary: 0 0% 7%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 98%;
+    --secondary: 240 5% 96%;
     --secondary-foreground: 0 0% 7%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 42%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 42%;
 
     /* Monochrome accent (same as foreground) */
     --accent: 0 0% 7%;
