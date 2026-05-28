@@ -5,7 +5,8 @@ import { Seo } from "@/components/Seo";
 import { ShopifyProduct, fetchProductsByHandles, fetchProductsPage, ProductsPageInfo } from "@/lib/shopify";
 import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
-import { Loader2, SlidersHorizontal, ChevronDown, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, ChevronDown, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ProductCard } from "@/components/ProductCard";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
@@ -116,14 +117,12 @@ const CategoryPage = () => {
     return 0;
   });
 
-  // Pagination
   const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
   const paginatedProducts = sortedProducts.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  // Reset page when category or sort changes
   useEffect(() => {
     setCurrentPage(1);
   }, [slug, sort]);
@@ -149,7 +148,8 @@ const CategoryPage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const title = category?.name || "All Products";
+  const title = category?.name || "Shop All";
+  const count = sortedProducts.length;
 
   const seoPath = slug ? `/category/${slug}` : "/shop";
   const seoTitle = slug
@@ -162,86 +162,85 @@ const CategoryPage = () => {
   return (
     <Layout>
       <Seo title={seoTitle.slice(0, 60)} description={seoDesc.slice(0, 155)} path={seoPath} />
-      {/* Hero banner – reduced height, editorial feel */}
 
-      <section className="relative h-28 md:h-40 flex items-center justify-center bg-secondary overflow-hidden">
-        {category?.image && (
-          <>
-            <img src={category.image} alt={title} className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-foreground/20" />
-          </>
-        )}
-        <div className="relative z-10 text-center">
-          <nav className="text-[10px] tracking-[0.15em] uppercase text-white/60 mb-1.5">
-            <Link to="/" className="hover:text-white/90 transition-colors">Home</Link>
+      {/* Calm header on white — no overlay image */}
+      <section className="bg-background border-b border-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-14 md:py-20">
+          <nav className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground mb-5">
+            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
             <span className="mx-2">/</span>
-            <span className="text-white/80">{title}</span>
+            <span className="text-foreground/70">{title}</span>
           </nav>
-          <h1 className={`font-serif font-normal text-2xl md:text-4xl ${category?.image ? "text-white" : "text-foreground"}`}>
+          <h1
+            className="text-foreground"
+            style={{
+              fontSize: "clamp(1.875rem, 4vw, 3rem)",
+              letterSpacing: "-0.035em",
+              lineHeight: 1.05,
+              fontWeight: 500,
+            }}
+          >
             {title}
           </h1>
+          {!loading && (
+            <p className="text-xs text-muted-foreground mt-3 tracking-tight">
+              {count} {count === 1 ? "piece" : "pieces"}
+            </p>
+          )}
         </div>
       </section>
 
-      <section className="py-12 md:py-20 px-6 md:px-16">
-        <div className="max-w-[1600px] mx-auto">
-          {/* Toolbar – subtle */}
-          <div className="flex items-center justify-between mb-10 gap-4 flex-wrap">
-            <p className="text-xs text-muted-foreground/70 font-light">
-              {loading ? "Loading…" : `${sortedProducts.length} product${sortedProducts.length !== 1 ? "s" : ""}`}
-            </p>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="md:hidden flex items-center gap-1.5 text-xs text-muted-foreground border border-border/50 px-3 py-1.5 rounded-md"
+      <section className="py-12 md:py-16 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+          {/* Thin toolbar — text only */}
+          <div className="flex items-center justify-between mb-12 md:mb-16 gap-4 border-b border-border pb-5">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="md:hidden text-[11px] tracking-[0.15em] uppercase text-foreground/70 hover:text-foreground transition-colors"
+            >
+              Filter
+            </button>
+            <Link
+              to="/shop"
+              className="hidden md:block text-[11px] tracking-[0.15em] uppercase text-foreground/70 hover:text-foreground transition-colors"
+            >
+              All Categories
+            </Link>
+            <div className="relative">
+              <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value as SortOption)}
+                className="appearance-none bg-transparent border-none text-[11px] tracking-[0.15em] uppercase text-foreground/70 hover:text-foreground cursor-pointer focus:outline-none pr-5 transition-colors"
               >
-                <SlidersHorizontal className="w-3 h-3" />
-                Filters
-              </button>
-              <div className="relative">
-                <select
-                  value={sort}
-                  onChange={(e) => setSort(e.target.value as SortOption)}
-                  className="appearance-none bg-transparent border-none text-xs text-muted-foreground cursor-pointer focus:outline-none pr-5"
-                >
-                  {SORT_OPTIONS.map((o) => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
-                </select>
-                <ChevronDown className="w-3 h-3 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground/50" />
-              </div>
+                {SORT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>Sort: {o.label}</option>
+                ))}
+              </select>
+              <ChevronDown className="w-3 h-3 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" strokeWidth={1.5} />
             </div>
           </div>
 
           <div className="flex gap-12 md:gap-16">
-            {/* Sidebar – refined */}
-            <aside className="hidden md:block w-48 shrink-0">
+            {/* Sidebar */}
+            <aside className="hidden md:block w-44 shrink-0">
+              <p className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground mb-5 font-medium">
+                Categories
+              </p>
               <div className="space-y-3">
                 <Link
                   to="/shop"
-                  className={`block text-sm font-light transition-colors ${!category ? "text-foreground border-b border-foreground pb-0.5 inline-block" : "text-muted-foreground/70 hover:text-foreground"}`}
+                  className={`block text-sm transition-colors ${!category ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
                 >
-                  All Products
+                  All
                 </Link>
                 {CATEGORIES.map((cat) => (
-                  <div key={cat.slug}>
-                    <Link
-                      to={`/category/${cat.slug}`}
-                      className={`block text-sm font-light transition-colors ${cat.slug === slug ? "text-foreground border-b border-foreground pb-0.5 inline-block" : "text-muted-foreground/70 hover:text-foreground"}`}
-                    >
-                      {cat.name}
-                    </Link>
-                    {/* Nested subcategories */}
-                    {cat.slug === slug && cat.subcategories && cat.subcategories.length > 0 && (
-                      <div className="pl-4 mt-2 space-y-2">
-                        {cat.subcategories.map((sub) => (
-                          <span key={sub.slug} className="block text-xs font-light text-muted-foreground/60">
-                            {sub.name}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <Link
+                    key={cat.slug}
+                    to={`/category/${cat.slug}`}
+                    className={`block text-sm transition-colors ${cat.slug === slug ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                  >
+                    {cat.name}
+                  </Link>
                 ))}
               </div>
             </aside>
@@ -249,27 +248,23 @@ const CategoryPage = () => {
             {/* Mobile filters overlay */}
             {showFilters && (
               <div className="fixed inset-0 z-50 bg-background p-8 overflow-y-auto md:hidden animate-fade-in">
-                <div className="flex items-center justify-between mb-8">
-                  <p className="text-sm font-light tracking-wide">Filters</p>
-                  <button onClick={() => setShowFilters(false)}><X className="w-4 h-4 text-muted-foreground" /></button>
+                <div className="flex items-center justify-between mb-10">
+                  <p className="text-[11px] tracking-[0.18em] uppercase font-medium">Categories</p>
+                  <button onClick={() => setShowFilters(false)} aria-label="Close">
+                    <X className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+                  </button>
                 </div>
-                <div className="space-y-3">
-                  <Link to="/shop" onClick={() => setShowFilters(false)} className="block text-sm font-light text-muted-foreground hover:text-foreground">All Products</Link>
+                <div className="space-y-4">
+                  <Link to="/shop" onClick={() => setShowFilters(false)} className="block text-sm text-foreground">All</Link>
                   {CATEGORIES.map((cat) => (
-                    <div key={cat.slug}>
-                      <Link to={`/category/${cat.slug}`} onClick={() => setShowFilters(false)} className="block text-sm font-light text-muted-foreground hover:text-foreground">
-                        {cat.name}
-                      </Link>
-                      {cat.subcategories && cat.subcategories.length > 0 && (
-                        <div className="pl-4 mt-1.5 space-y-1.5">
-                          {cat.subcategories.map((sub) => (
-                            <span key={sub.slug} className="block text-xs font-light text-muted-foreground/60">
-                              {sub.name}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                    <Link
+                      key={cat.slug}
+                      to={`/category/${cat.slug}`}
+                      onClick={() => setShowFilters(false)}
+                      className={`block text-sm transition-colors ${cat.slug === slug ? "text-foreground" : "text-muted-foreground"}`}
+                    >
+                      {cat.name}
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -279,74 +274,42 @@ const CategoryPage = () => {
             <div className="flex-1">
               {loading && products.length === 0 ? (
                 <div className="flex justify-center py-24">
-                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground/50" />
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                 </div>
               ) : sortedProducts.length === 0 && !loading ? (
                 <div className="text-center py-24">
-                  <p className="text-xl font-light mb-2">No products found</p>
-                  <p className="text-sm text-muted-foreground/60 font-light">Check back soon for new arrivals.</p>
+                  <p className="text-base text-foreground mb-2">No products found</p>
+                  <p className="text-sm text-muted-foreground">Check back soon for new arrivals.</p>
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-[3.5rem] gap-y-8 md:gap-y-12">
-                    {paginatedProducts.map((product) => {
-                      const images = product.node.images.edges;
-                      const firstImg = images[0]?.node;
-                      const secondImg = images[1]?.node;
-                      const price = product.node.priceRange.minVariantPrice;
-
-                      return (
-                        <Link key={product.node.id} to={`/product/${product.node.handle}`} className="group flex flex-col">
-                          <div className="aspect-[4/5] bg-card rounded-lg overflow-hidden mb-2.5 relative">
-                            {firstImg && (
-                              <img
-                                src={firstImg.url}
-                                alt={firstImg.altText || product.node.title}
-                                className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.02] ${secondImg ? "group-hover:opacity-0" : ""}`}
-                                loading="lazy"
-                              />
-                            )}
-                            {secondImg && (
-                              <img
-                                src={secondImg.url}
-                                alt={secondImg.altText || product.node.title}
-                                className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-[1.02]"
-                                loading="lazy"
-                              />
-                            )}
-                            <div className="absolute inset-0 bg-[hsl(var(--accent))]/0 group-hover:bg-[hsl(var(--accent))]/[0.05] transition-colors duration-500 pointer-events-none" />
-                          </div>
-                          <h3 className="text-xs md:text-[13px] font-light leading-snug text-foreground/80 mb-0.5 max-h-[2.6em] overflow-hidden">{product.node.title}</h3>
-                          <p className="text-xs text-muted-foreground/60 font-light">
-                            £{parseFloat(price.amount).toFixed(0)}
-                          </p>
-                        </Link>
-                      );
-                    })}
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-14 md:gap-y-20">
+                    {paginatedProducts.map((product) => (
+                      <ProductCard key={product.node.id} product={product} />
+                    ))}
                   </div>
 
-                  {/* Pagination */}
                   {totalPages > 1 && (
-                    <div className="flex items-center justify-center gap-1 pt-14 pb-4">
+                    <div className="flex items-center justify-center gap-2 pt-20 pb-4">
                       <button
                         onClick={() => goToPage(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="p-1.5 text-muted-foreground/50 hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         aria-label="Previous page"
                       >
-                        <ChevronLeft className="w-4 h-4" />
+                        <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
                       </button>
                       {getPageNumbers().map((p, i) =>
                         p === "..." ? (
-                          <span key={`ellipsis-${i}`} className="px-1.5 text-xs text-muted-foreground/40 select-none">…</span>
+                          <span key={`ellipsis-${i}`} className="px-2 text-xs text-muted-foreground select-none">…</span>
                         ) : (
                           <button
                             key={p}
                             onClick={() => goToPage(p)}
-                            className={`min-w-[28px] h-7 text-xs transition-colors ${
+                            className={`min-w-[28px] h-8 text-xs transition-colors ${
                               p === currentPage
                                 ? "text-foreground border-b border-foreground"
-                                : "text-muted-foreground/50 hover:text-foreground"
+                                : "text-muted-foreground hover:text-foreground"
                             }`}
                           >
                             {p}
@@ -356,18 +319,17 @@ const CategoryPage = () => {
                       <button
                         onClick={() => goToPage(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className="p-1.5 text-muted-foreground/50 hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         aria-label="Next page"
                       >
-                        <ChevronRight className="w-4 h-4" />
+                        <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
                       </button>
                     </div>
                   )}
 
-                  {/* Infinite scroll sentinel for loading more from API */}
                   {pageInfo.hasNextPage && !usedDbMapping && (
                     <div ref={sentinelRef} className="flex justify-center py-4">
-                      {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground/40" />}
+                      {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
                     </div>
                   )}
                 </>
