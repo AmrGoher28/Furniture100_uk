@@ -1,8 +1,10 @@
 import { Layout } from "@/components/Layout";
+import { Seo } from "@/components/Seo";
 
 const PrivacyPage = () => {
   return (
     <Layout>
+      <Seo title="Privacy Policy | Furniture100" description="How Furniture100 collects, uses and protects your personal data." path="/privacy" />
       <section className="bg-secondary py-16 md:py-24 px-6 text-center">
         <h1 className="text-4xl md:text-5xl mb-4">Privacy Policy</h1>
         <p className="text-muted-foreground max-w-xl mx-auto">How we collect, use and protect your data.</p>

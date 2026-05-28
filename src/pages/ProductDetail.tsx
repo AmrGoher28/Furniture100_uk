@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY, createShopifyCart } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
+import { Seo } from "@/components/Seo";
 import { Loader2, Heart, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import MakeOfferModal from "@/components/MakeOfferModal";
 import ProductReviews from "@/components/ProductReviews";
@@ -127,13 +128,54 @@ const ProductDetail = () => {
     }
   };
 
+  const heroImage = images[0]?.node.url;
+  const seoTitle = `${product.title} | Furniture100`;
+  const seoDesc = (description || `Shop ${product.title} at Furniture100. Free UK delivery, 30-day returns.`)
+    .replace(/<[^>]+>/g, "")
+    .slice(0, 155);
+
   return (
     <Layout>
-
-
+      <Seo
+        title={seoTitle.slice(0, 60)}
+        description={seoDesc}
+        path={`/product/${product.handle}`}
+        image={heroImage}
+        type="product"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: product.title,
+            description: seoDesc,
+            image: images.map((i) => i.node.url),
+            sku: variant?.id,
+            brand: { "@type": "Brand", name: "Furniture100" },
+            offers: {
+              "@type": "Offer",
+              url: `https://furniture100.co.uk/product/${product.handle}`,
+              priceCurrency: variant?.price.currencyCode || "GBP",
+              price: variant?.price.amount,
+              availability: variant?.availableForSale
+                ? "https://schema.org/InStock"
+                : "https://schema.org/OutOfStock",
+            },
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://furniture100.co.uk/" },
+              { "@type": "ListItem", position: 2, name: "Shop", item: "https://furniture100.co.uk/shop" },
+              { "@type": "ListItem", position: 3, name: product.title, item: `https://furniture100.co.uk/product/${product.handle}` },
+            ],
+          },
+        ]}
+      />
 
       <main className="flex-1 py-10 md:py-14 px-6 md:px-12 pb-28 md:pb-14">
         <div className="max-w-7xl mx-auto">
+
           {/* Breadcrumb */}
           <nav className="text-xs text-muted-foreground mb-8">
             <Link to="/" className="hover:text-foreground transition-colors">Home</Link>

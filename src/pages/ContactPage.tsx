@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
+import { Seo } from "@/components/Seo";
 import { Mail, Clock, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -57,6 +58,7 @@ const ContactPage = () => {
 
   return (
     <Layout>
+      <Seo title="Contact Us | Furniture100" description="Get in touch with Furniture100 — questions about orders, delivery or products. We're here to help." path="/contact" />
       <section className="bg-secondary py-16 md:py-24 px-6 text-center">
         <h1 className="text-4xl md:text-5xl mb-4">Contact Us</h1>
         <p className="text-muted-foreground max-w-xl mx-auto">We'd love to hear from you. Get in touch and we'll respond as soon as we can.</p>
