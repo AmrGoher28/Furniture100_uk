@@ -16,24 +16,18 @@ const slides = [
 
 export const Hero = () => {
   const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % slides.length);
   }, []);
 
   useEffect(() => {
-    if (paused) return;
-    const id = setInterval(next, 5000);
+    const id = setInterval(next, 8000);
     return () => clearInterval(id);
-  }, [paused, next]);
+  }, [next]);
 
   return (
-    <section
-      className="relative h-[52vh] md:h-[88vh] min-h-[380px] flex items-end overflow-hidden bg-foreground"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
+    <section className="relative h-[58vh] md:h-[92vh] min-h-[420px] flex items-end overflow-hidden bg-foreground">
       {slides.map((slide, i) => (
         <picture key={i}>
           <source media="(max-width: 767px)" srcSet={slide.mobile} />
@@ -44,29 +38,28 @@ export const Hero = () => {
             fetchPriority={i === 0 ? "high" : undefined}
             loading={i === 0 ? undefined : "lazy"}
             decoding={i === 0 ? "sync" : "async"}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-out ${
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1600ms] ease-out ${
               i === current ? "opacity-100" : "opacity-0"
             }`}
           />
         </picture>
       ))}
 
-      {/* Subtle bottom gradient for legibility only */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/55 to-transparent z-[1]" />
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/45 to-transparent z-[1]" />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-14 md:pb-24">
         <h1
           className="text-background max-w-3xl"
           style={{
-            fontSize: "clamp(2rem, 6vw, 5.25rem)",
-            lineHeight: 1.05,
-            letterSpacing: "-0.035em",
-            fontWeight: 600,
+            fontSize: "clamp(2rem, 6vw, 5rem)",
+            lineHeight: 1.04,
+            letterSpacing: "-0.04em",
+            fontWeight: 500,
           }}
         >
           Premium Furniture.<br className="hidden md:block" /> Delivered Nationwide.
         </h1>
-        <div className="mt-8 md:mt-10">
+        <div className="mt-7 md:mt-10">
           <Link
             to="/shop"
             className="inline-flex items-center justify-center bg-background text-foreground h-12 px-9 rounded-full text-sm font-medium tracking-tight hover:bg-background/90 transition-colors"
@@ -76,15 +69,15 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Minimal line indicators */}
-      <div className="absolute bottom-6 right-6 md:right-12 z-10 flex gap-2">
+      {/* Two thin static indicators */}
+      <div className="absolute bottom-5 right-6 md:right-12 z-10 flex gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
             aria-label={`Go to slide ${i + 1}`}
-            className={`h-[2px] transition-all duration-300 ${
-              i === current ? "w-10 bg-background" : "w-6 bg-background/40 hover:bg-background/70"
+            className={`h-px w-8 transition-colors duration-500 ${
+              i === current ? "bg-background" : "bg-background/35 hover:bg-background/60"
             }`}
           />
         ))}

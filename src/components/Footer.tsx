@@ -1,63 +1,72 @@
 import { Link } from "react-router-dom";
 
+const FOOTER_COLS = [
+  {
+    heading: "Shop",
+    links: [
+      { label: "All Products", to: "/shop" },
+      { label: "New Arrivals", to: "/shop" },
+      { label: "Best Sellers", to: "/shop" },
+    ],
+  },
+  {
+    heading: "Help",
+    links: [
+      { label: "Delivery", to: "/delivery" },
+      { label: "Returns", to: "/returns" },
+      { label: "Contact", to: "/contact" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { label: "About", to: "/about" },
+      { label: "Privacy", to: "/privacy" },
+      { label: "Terms", to: "/terms" },
+    ],
+  },
+  {
+    heading: "Contact",
+    links: [
+      { label: "hello@furniture100.co.uk", to: "/contact" },
+      { label: "Mon – Fri, 9am – 5pm", to: "/contact" },
+    ],
+  },
+];
+
 export const Footer = () => {
   return (
     <footer className="bg-background border-t border-border text-foreground">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Brand */}
-          <div>
-            <Link to="/" className="inline-block mb-5 tracking-tight">
-              <span className="text-lg font-bold text-foreground">FURNITURE100</span>
-            </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-5 max-w-xs">
-              Premium furniture delivered nationwide. Curated pieces for modern British living.
-            </p>
-            <div className="flex gap-5 text-xs text-muted-foreground">
-              <span className="hover:text-foreground cursor-pointer transition-colors">Instagram</span>
-              <span className="hover:text-foreground cursor-pointer transition-colors">Facebook</span>
-              <span className="hover:text-foreground cursor-pointer transition-colors">Pinterest</span>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-20 md:py-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
+          {FOOTER_COLS.map((col) => (
+            <div key={col.heading}>
+              <p className="text-[10px] tracking-[0.22em] uppercase font-medium mb-5 text-foreground">
+                {col.heading}
+              </p>
+              <ul className="space-y-3">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      to={link.to}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-5 text-foreground tracking-[0.15em] uppercase">Shop</p>
-            <div className="space-y-3">
-              <Link to="/" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-              <Link to="/shop" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Shop All</Link>
-              <Link to="/about" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">About</Link>
-              <Link to="/contact" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</Link>
-            </div>
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-5 text-foreground tracking-[0.15em] uppercase">Support</p>
-            <div className="space-y-3">
-              <Link to="/delivery" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Delivery</Link>
-              <Link to="/returns" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Returns</Link>
-              <Link to="/contact" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">FAQs</Link>
-              <Link to="/contact" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Track Order</Link>
-            </div>
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold mb-5 text-foreground tracking-[0.15em] uppercase">Contact</p>
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">hello@furniture100.co.uk</p>
-              <p className="text-sm text-muted-foreground">Mon – Fri, 9am – 5pm</p>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Furniture100. All rights reserved.</p>
-          <div className="flex items-center gap-5 text-xs text-muted-foreground">
-            <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
-            <Link to="/terms" className="hover:text-foreground transition-colors">Terms</Link>
-          </div>
-          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <span>Visa</span><span>Mastercard</span><span>PayPal</span><span>Klarna</span><span>Apple Pay</span>
-          </div>
+        <div className="mt-20 pt-8 border-t border-border flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <p className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Furniture100. All rights reserved.
+          </p>
+          <p className="text-[10px] tracking-[0.25em] uppercase text-foreground/70 font-medium">
+            Furniture100
+          </p>
         </div>
       </div>
     </footer>
