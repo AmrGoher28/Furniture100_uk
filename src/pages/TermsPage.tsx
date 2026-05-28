@@ -1,8 +1,10 @@
 import { Layout } from "@/components/Layout";
+import { Seo } from "@/components/Seo";
 
 const TermsPage = () => {
   return (
     <Layout>
+      <Seo title="Terms & Conditions | Furniture100" description="Terms and conditions for shopping with Furniture100." path="/terms" />
       <section className="bg-secondary py-16 md:py-24 px-6 text-center">
         <h1 className="text-4xl md:text-5xl mb-4">Terms & Conditions</h1>
         <p className="text-muted-foreground max-w-xl mx-auto">Please read these terms carefully before using our website.</p>

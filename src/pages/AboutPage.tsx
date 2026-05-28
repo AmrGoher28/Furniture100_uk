@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import { Seo } from "@/components/Seo";
 import { Link } from "react-router-dom";
 
 const AboutPage = () => {
@@ -10,6 +11,7 @@ const AboutPage = () => {
 
   return (
     <Layout>
+      <Seo title="About Furniture100 | Premium UK Furniture" description="Learn about Furniture100 — a UK furniture retailer delivering premium mid-century, vintage and contemporary pieces nationwide." path="/about" />
       {/* Hero */}
       <section className="bg-secondary py-16 md:py-24 px-6 text-center">
         <h1 className="text-4xl md:text-5xl mb-4">About Furniture100</h1>

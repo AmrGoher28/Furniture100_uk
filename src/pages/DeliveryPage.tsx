@@ -1,8 +1,10 @@
 import { Layout } from "@/components/Layout";
+import { Seo } from "@/components/Seo";
 
 const DeliveryPage = () => {
   return (
     <Layout>
+      <Seo title="Delivery Information | Furniture100" description="Free standard UK delivery on every order. Find out about delivery times, tracking and our nationwide service." path="/delivery" />
       <section className="bg-secondary py-16 md:py-24 px-6 text-center">
         <h1 className="text-4xl md:text-5xl mb-4">Delivery Information</h1>
         <p className="text-muted-foreground max-w-xl mx-auto">Everything you need to know about our delivery service.</p>

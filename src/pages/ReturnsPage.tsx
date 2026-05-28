@@ -1,8 +1,10 @@
 import { Layout } from "@/components/Layout";
+import { Seo } from "@/components/Seo";
 
 const ReturnsPage = () => {
   return (
     <Layout>
+      <Seo title="Returns Policy | Furniture100" description="Easy 30-day returns on every order. Read our hassle-free returns policy and how to start a return." path="/returns" />
       <section className="bg-secondary py-16 md:py-24 px-6 text-center">
         <h1 className="text-4xl md:text-5xl mb-4">Returns Policy</h1>
         <p className="text-muted-foreground max-w-xl mx-auto">We want you to love your purchase. If not, returns are easy.</p>
