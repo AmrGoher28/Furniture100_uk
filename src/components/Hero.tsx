@@ -58,13 +58,13 @@ export const Hero = () => {
         <h1
           className="text-background max-w-3xl"
           style={{
-            fontSize: "clamp(2.25rem, 6vw, 5.25rem)",
-            lineHeight: 1.02,
-            letterSpacing: "-0.04em",
+            fontSize: "clamp(2rem, 6vw, 5.25rem)",
+            lineHeight: 1.05,
+            letterSpacing: "-0.035em",
             fontWeight: 600,
           }}
         >
-          Premium Furniture.<br />Delivered Nationwide.
+          Premium Furniture.<br className="hidden md:block" /> Delivered Nationwide.
         </h1>
         <div className="mt-8 md:mt-10">
           <Link
