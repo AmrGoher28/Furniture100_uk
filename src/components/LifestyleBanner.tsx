@@ -2,30 +2,28 @@ import { Link } from "react-router-dom";
 
 export const LifestyleBanner = () => {
   return (
-    <section className="relative min-h-[400px] md:min-h-[500px] flex items-center justify-center">
+    <section className="relative h-[60vh] md:h-[80vh] min-h-[420px] flex items-end overflow-hidden">
       <img
-        src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=60&fm=webp"
+        src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&q=70&fm=webp"
         alt="Beautifully styled living space"
         className="absolute inset-0 w-full h-full object-cover"
         loading="lazy"
         decoding="async"
       />
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/60 to-transparent" />
 
-      <div className="absolute inset-0 bg-black/35" />
-
-      <div className="relative z-10 text-center px-6 max-w-2xl">
-        <h2 className="text-3xl md:text-5xl text-primary-foreground mb-4">
-          Furniture That Transforms Your Space
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24">
+        <h2 className="text-background max-w-2xl" style={{ fontSize: "clamp(1.875rem, 4.5vw, 4rem)", letterSpacing: "-0.03em", lineHeight: 1.05 }}>
+          Furniture that transforms your space.
         </h2>
-        <p className="text-primary-foreground/75 text-lg mb-8 font-light">
-          Handpicked pieces for modern living
-        </p>
-        <Link
-          to="/shop"
-          className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-full text-sm font-medium tracking-wide hover:opacity-90 transition-opacity"
-        >
-          Explore The Collection
-        </Link>
+        <div className="mt-8">
+          <Link
+            to="/shop"
+            className="inline-flex items-center justify-center bg-background text-foreground h-12 px-9 rounded-full text-sm font-medium hover:bg-background/90 transition-colors"
+          >
+            Explore the Collection
+          </Link>
+        </div>
       </div>
     </section>
   );

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { fetchProductsPage, ShopifyProduct, fetchProductsByHandles } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { fetchBestSellerHandles } from "@/lib/productCategories";
-import { Loader2, ShoppingBag } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import ProductImageCarousel from "@/components/ProductImageCarousel";
 import { useProductReviews } from "@/hooks/useProductReviews";
 import ProductStars from "@/components/ProductStars";
@@ -18,16 +18,13 @@ export const BestSellers = () => {
     const loadBestSellers = async () => {
       try {
         const bestHandles = await fetchBestSellerHandles();
-
         if (bestHandles.length > 0) {
           const mappedProducts = await fetchProductsByHandles(bestHandles);
-
           if (mappedProducts.length > 0) {
             setProducts(mappedProducts);
             return;
           }
         }
-
         const { products: firstPage } = await fetchProductsPage(4);
         setProducts(firstPage);
       } catch (e) {
@@ -55,54 +52,57 @@ export const BestSellers = () => {
   };
 
   return (
-    <section id="best-sellers" className="py-16 md:py-24 px-6 md:px-12 bg-background">
+    <section id="best-sellers" className="py-24 md:py-32 px-6 md:px-12 bg-background">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl mb-3">Our Best Sellers</h2>
-          <p className="text-muted-foreground font-light">The pieces everyone is talking about</p>
+        <div className="flex items-end justify-between gap-6 flex-wrap mb-12 md:mb-16">
+          <div>
+            <p className="text-xs tracking-[0.25em] uppercase text-muted-foreground mb-5 font-medium">Best Sellers</p>
+            <h2 style={{ fontSize: "clamp(1.875rem, 4vw, 3.25rem)", letterSpacing: "-0.03em" }}>
+              The pieces everyone's talking about.
+            </h2>
+          </div>
+          <Link to="/shop" className="text-sm font-medium text-foreground underline underline-offset-4 hover:opacity-70 transition-opacity">
+            View all
+          </Link>
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-16">
+          <div className="flex justify-center py-24">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-lg text-muted-foreground font-light">No products found</p>
+          <div className="text-center py-24">
+            <p className="text-lg text-muted-foreground">No products found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 md:gap-x-10 gap-y-12 md:gap-y-16">
             {products.map((product) => {
-              const image = product.node.images.edges[0]?.node;
               const price = product.node.priceRange.minVariantPrice;
               return (
-                <Link
-                  key={product.node.id}
-                  to={`/product/${product.node.handle}`}
-                  className="group flex flex-col h-full"
-                >
-                  <ProductImageCarousel
-                    images={product.node.images.edges.map((e) => e.node)}
-                    title={product.node.title}
-                    className="aspect-square bg-card rounded-xl mb-4 warm-shadow group-hover:warm-shadow-lg transition-shadow duration-300"
-                  />
-                  <div className="flex flex-col flex-1">
-                    <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors">
-                      {product.node.title}
-                    </h3>
-                    {summaries[product.node.handle] && (
-                      <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
-                    )}
-                    <p className="text-base font-medium mb-3">
-                      £{parseFloat(price.amount).toFixed(2)}
-                    </p>
+                <Link key={product.node.id} to={`/product/${product.node.handle}`} className="group flex flex-col">
+                  <div className="relative overflow-hidden bg-card aspect-square mb-4">
+                    <ProductImageCarousel
+                      images={product.node.images.edges.map((e) => e.node)}
+                      title={product.node.title}
+                      className="absolute inset-0 w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    />
                   </div>
+                  <h3 className="text-sm font-medium tracking-tight text-foreground mb-1 line-clamp-2">
+                    {product.node.title}
+                  </h3>
+                  {summaries[product.node.handle] && (
+                    <div className="mb-1">
+                      <ProductStars rating={summaries[product.node.handle].avgRating} count={summaries[product.node.handle].count} />
+                    </div>
+                  )}
+                  <p className="text-sm text-foreground font-semibold">
+                    £{parseFloat(price.amount).toFixed(2)}
+                  </p>
                   <button
                     onClick={(e) => handleAddToCart(e, product)}
-                    className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-opacity mt-auto"
+                    className="mt-4 self-start text-xs font-medium tracking-tight text-foreground underline underline-offset-4 hover:opacity-70 transition-opacity"
                   >
-                    <ShoppingBag className="w-4 h-4" />
-                    Add to Basket
+                    Add to basket
                   </button>
                 </Link>
               );

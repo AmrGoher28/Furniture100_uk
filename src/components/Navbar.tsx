@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Search, User, Heart, Menu, ShoppingBag, ChevronDown, X, Shield } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Search, User, Heart, Menu, ChevronDown, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminMode } from "@/hooks/useAdminMode";
 import { SearchResults } from "./SearchResults";
@@ -29,11 +29,16 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const { isAdmin, setShowLogin } = useAdminMode();
 
+  const isHome = location.pathname === "/";
+  const transparent = isHome && !scrolled && !searchOpen && !megaOpen;
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -42,47 +47,36 @@ export const Navbar = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setMegaOpen(true);
   };
-
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => setMegaOpen(false), 150);
   };
-
   const handleDropdownEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
 
-  const handleAdminClick = () => {
-    if (isAdmin) {
-      navigate("/admin/products");
-    } else {
-      setShowLogin(true);
-    }
-  };
+  const linkColor = transparent ? "text-background/85 hover:text-background" : "text-foreground/70 hover:text-foreground";
+  const iconColor = transparent ? "text-background hover:text-background/80" : "text-foreground hover:text-foreground/70";
 
   return (
     <nav
-      className={`sticky top-0 z-50 border-b border-border transition-all duration-300 ${
-        scrolled
-          ? "bg-background/85 backdrop-blur-md"
-          : "bg-background"
+      className={`sticky top-0 z-50 transition-colors duration-300 ${
+        transparent ? "bg-transparent border-b border-transparent" : "bg-background border-b border-border"
       }`}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Main nav row */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-[72px]">
-        {/* Left: Logo */}
-        <Link to="/" className="tracking-[0.15em] flex items-baseline shrink-0" style={{ fontFamily: "'Playfair Display', serif" }}>
-          <span className="text-xl md:text-2xl font-medium text-foreground">FURNITURE</span>
-          <span className="text-gold ml-0.5 md:text-lg text-base font-medium">100</span>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-20">
+        {/* Logo */}
+        <Link to="/" className={`tracking-tight shrink-0 transition-colors ${transparent ? "text-background" : "text-foreground"}`}>
+          <span className="text-base md:text-lg font-bold">FURNITURE100</span>
         </Link>
 
-        {/* Centre: Navigation (desktop) */}
-        <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.filter(l => l.label !== "Shop").map((link) => (
+        {/* Center nav */}
+        <div className="hidden md:flex items-center gap-10">
+          {NAV_LINKS.filter((l) => l.label !== "Shop").map((link) => (
             <Link
               key={link.label}
               to={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+              className={`text-sm font-medium tracking-tight transition-colors ${linkColor}`}
             >
               {link.label}
             </Link>
@@ -90,66 +84,65 @@ export const Navbar = () => {
           <button
             onMouseEnter={handleMouseEnterCategories}
             onClick={() => setMegaOpen(!megaOpen)}
-            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+            className={`flex items-center gap-1 text-sm font-medium tracking-tight transition-colors ${linkColor}`}
           >
             Shop
-            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} />
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${megaOpen ? "rotate-180" : ""}`} strokeWidth={2} />
           </button>
         </div>
 
-        {/* Right: Icons */}
-        <div className="flex items-center gap-4">
-          <button onClick={() => setSearchOpen(!searchOpen)} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
-            <Search className="w-5 h-5" />
+        {/* Right icons */}
+        <div className="flex items-center gap-5">
+          <button onClick={() => setSearchOpen(!searchOpen)} className={`transition-colors ${iconColor}`} aria-label="Search">
+            <Search className="w-5 h-5" strokeWidth={1.75} />
           </button>
-          <Link to="/account" className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Wishlist">
-            <Heart className="w-5 h-5" />
+          <Link to="/account" className={`hidden md:block transition-colors ${iconColor}`} aria-label="Wishlist">
+            <Heart className="w-5 h-5" strokeWidth={1.75} />
           </Link>
-          <Link to="/account" className="hidden md:block text-muted-foreground hover:text-foreground transition-colors" aria-label="Account">
-            <User className="w-5 h-5" />
+          <Link to="/account" className={`hidden md:block transition-colors ${iconColor}`} aria-label="Account">
+            <User className="w-5 h-5" strokeWidth={1.75} />
           </Link>
-          <CartDrawer />
+          <div className={transparent ? "[&_*]:text-background" : ""}>
+            <CartDrawer />
+          </div>
 
-          {/* Mobile hamburger */}
+          {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <button className="md:hidden text-muted-foreground hover:text-foreground transition-colors" aria-label="Menu">
-                <Menu className="w-5 h-5" />
+              <button className={`md:hidden transition-colors ${iconColor}`} aria-label="Menu">
+                <Menu className="w-5 h-5" strokeWidth={1.75} />
               </button>
             </SheetTrigger>
             <SheetContent side="left" className="w-80 bg-background p-0 overflow-y-auto">
-              <div className="px-6 py-4 border-b border-border">
-                <Link to="/" onClick={() => setMobileOpen(false)} className="tracking-[0.15em]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  <span className="text-xl font-medium text-foreground">FURNITURE</span>
-                  <span className="text-xs font-normal text-gold ml-0.5">100</span>
+              <div className="px-6 py-5 border-b border-border">
+                <Link to="/" onClick={() => setMobileOpen(false)} className="tracking-tight">
+                  <span className="text-base font-bold text-foreground">FURNITURE100</span>
                 </Link>
               </div>
 
               <div className="px-6 py-4">
-                {NAV_LINKS.filter(l => l.label !== "Shop").map((link) => (
+                {NAV_LINKS.filter((l) => l.label !== "Shop").map((link) => (
                   <Link
                     key={link.label}
                     to={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block py-3 text-sm font-light text-muted-foreground hover:text-foreground border-b border-border/30"
+                    className="block py-3.5 text-sm font-medium text-foreground border-b border-border"
                   >
                     {link.label}
                   </Link>
                 ))}
 
                 <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="shop" className="border-border/30">
-                    <AccordionTrigger className="text-sm font-light text-muted-foreground hover:text-foreground py-3 hover:no-underline">
-                      Shop
-                    </AccordionTrigger>
+                  <AccordionItem value="shop" className="border-border">
+                    <AccordionTrigger className="text-sm font-medium text-foreground py-3.5 hover:no-underline">Shop</AccordionTrigger>
                     <AccordionContent>
-                      <div className="flex flex-col gap-2 pl-4 pb-2">
+                      <div className="flex flex-col gap-2 pl-2 pb-2">
                         {SHOP_CHILDREN.map((item) => (
                           <Link
                             key={item.href}
                             to={item.href}
                             onClick={() => setMobileOpen(false)}
-                            className="text-sm text-muted-foreground hover:text-foreground font-light"
+                            className="text-sm text-muted-foreground hover:text-foreground py-1"
                           >
                             {item.label}
                           </Link>
@@ -159,12 +152,12 @@ export const Navbar = () => {
                   </AccordionItem>
                 </Accordion>
 
-                <div className="border-t border-border/30 mt-4 pt-4 flex flex-col gap-3">
-                  <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
-                    <User className="w-4 h-4" /> Account
+                <div className="border-t border-border mt-4 pt-4 flex flex-col gap-2">
+                  <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-foreground py-2.5">
+                    <User className="w-4 h-4" strokeWidth={1.75} /> Account
                   </Link>
-                  <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2 font-light">
-                    <Heart className="w-4 h-4" /> Wishlist
+                  <Link to="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-sm text-foreground py-2.5">
+                    <Heart className="w-4 h-4" strokeWidth={1.75} /> Wishlist
                   </Link>
                 </div>
               </div>
@@ -173,51 +166,51 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Search bar dropdown */}
+      {/* Search dropdown */}
       {searchOpen && (
         <div className="border-t border-border bg-background animate-fade-in">
-          <div className="max-w-xl mx-auto flex items-center gap-3 px-6 md:px-12 py-4">
-            <Search className="w-4 h-4 text-muted-foreground shrink-0" />
+          <div className="max-w-xl mx-auto flex items-center gap-3 px-6 md:px-12 py-5">
+            <Search className="w-4 h-4 text-muted-foreground shrink-0" strokeWidth={1.75} />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="What are you looking for?"
+              placeholder="Search products"
               autoFocus
-              className="flex-1 bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground font-light"
+              className="flex-1 bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground"
             />
             <button onClick={() => { setSearchOpen(false); setSearchQuery(""); }} className="text-muted-foreground hover:text-foreground shrink-0">
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4" strokeWidth={1.75} />
             </button>
           </div>
           <SearchResults query={searchQuery} onClose={() => { setSearchOpen(false); setSearchQuery(""); }} />
         </div>
       )}
 
-      {/* Mega menu dropdown */}
+      {/* Mega menu */}
       {megaOpen && (
         <div
-          className="absolute left-0 right-0 bg-background border-t border-border warm-shadow-lg animate-fade-in"
+          className="absolute left-0 right-0 bg-background border-t border-border animate-fade-in"
           onMouseEnter={handleDropdownEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="max-w-7xl mx-auto px-6 md:px-12 py-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8">
             {CATEGORIES.map((cat) => (
               <div key={cat.slug}>
                 <Link
                   to={`/category/${cat.slug}`}
                   onClick={() => setMegaOpen(false)}
-                  className="text-sm font-medium text-foreground hover:text-primary transition-colors mb-3 block"
+                  className="text-sm font-semibold text-foreground hover:text-foreground/70 transition-colors mb-3 block tracking-tight"
                 >
                   {cat.name}
                 </Link>
-                <ul className="space-y-1.5">
+                <ul className="space-y-2">
                   {cat.subcategories.map((sub) => (
                     <li key={sub.slug}>
                       <Link
                         to={`/category/${cat.slug}`}
                         onClick={() => setMegaOpen(false)}
-                        className="text-xs text-muted-foreground hover:text-foreground transition-colors font-light"
+                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {sub.name}
                       </Link>
