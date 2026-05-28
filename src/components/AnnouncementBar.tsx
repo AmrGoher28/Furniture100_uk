@@ -34,12 +34,12 @@ export const AnnouncementBar = () => {
   const items = [...MESSAGES, ...MESSAGES];
 
   return (
-    <div className="bg-walnut-dark text-primary-foreground py-1.5 overflow-hidden">
+    <div className="bg-foreground text-background py-2 overflow-hidden">
       <div ref={trackRef} className="flex items-center whitespace-nowrap will-change-transform">
         {items.map((msg, i) => (
-          <span key={i} className="flex items-center text-[10px] sm:text-xs tracking-widest uppercase font-light">
-            <span className="px-4 sm:px-6">{msg}</span>
-            <span className="text-gold/60">·</span>
+          <span key={i} className="flex items-center text-[10px] sm:text-[11px] tracking-[0.18em] uppercase font-medium">
+            <span className="px-5 sm:px-8">{msg}</span>
+            <span className="text-background/40">·</span>
           </span>
         ))}
       </div>

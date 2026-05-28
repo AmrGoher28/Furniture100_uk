@@ -39,15 +39,15 @@ export const TrustBar = () => {
 
   return (
     <section
-      className="bg-card py-3 overflow-hidden"
+      className="bg-background border-b border-border py-4 overflow-hidden"
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
     >
       <div ref={trackRef} className="flex items-center whitespace-nowrap will-change-transform">
         {items.map((item, i) => (
-          <span key={i} className="flex items-center gap-2 px-6 md:px-8">
-            <item.icon className="w-4 h-4 text-primary flex-shrink-0" />
-            <span className="text-xs md:text-sm font-light tracking-wide text-foreground">
+          <span key={i} className="flex items-center gap-2.5 px-8 md:px-12">
+            <item.icon className="w-4 h-4 text-foreground flex-shrink-0" strokeWidth={1.5} />
+            <span className="text-xs tracking-tight text-foreground font-medium">
               {item.label}
             </span>
           </span>

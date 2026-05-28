@@ -12,22 +12,21 @@ export const Newsletter = () => {
   };
 
   return (
-    <section className="bg-walnut-dark py-16 md:py-24 px-6">
-      <div className="max-w-2xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl text-primary-foreground mb-4">
-          Get 10% Off Your First Order
+    <section className="bg-foreground py-24 md:py-32 px-6">
+      <div className="max-w-3xl mx-auto text-center">
+        <p className="text-xs tracking-[0.25em] uppercase text-background/50 mb-5 font-medium">Newsletter</p>
+        <h2 className="text-background mb-5" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)", letterSpacing: "-0.03em" }}>
+          Get 10% off your first order.
         </h2>
-        <p className="text-primary-foreground/60 mb-8 leading-relaxed font-light">
-          Join thousands of happy customers and be first to hear about new arrivals and exclusive deals
+        <p className="text-background/65 mb-10 max-w-lg mx-auto">
+          Be first to hear about new arrivals and exclusive offers.
         </p>
 
         {submitted ? (
-          <div className="bg-primary-foreground/10 border border-primary-foreground/20 rounded-lg p-6 max-w-md mx-auto">
-            <p className="text-primary-foreground/60 text-sm font-light mb-2">Your discount code:</p>
-            <p className="text-2xl font-medium text-gold tracking-widest mb-2">WELCOME10</p>
-            <p className="text-primary-foreground/40 text-xs font-light">
-              Use this at checkout for 10% off your order
-            </p>
+          <div className="border border-background/20 rounded-2xl p-8 max-w-md mx-auto">
+            <p className="text-background/60 text-xs uppercase tracking-widest mb-3">Your code</p>
+            <p className="text-3xl font-semibold text-background tracking-[0.15em] mb-3">WELCOME10</p>
+            <p className="text-background/50 text-xs">Use at checkout for 10% off.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -37,13 +36,13 @@ export const Newsletter = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
-              className="flex-1 px-5 py-3 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 text-sm font-light focus:outline-none focus:ring-2 focus:ring-gold"
+              className="flex-1 px-6 h-12 rounded-full bg-transparent border border-background/25 text-background placeholder:text-background/40 text-sm focus:outline-none focus:border-background transition-colors"
             />
             <button
               type="submit"
-              className="bg-gold text-primary-foreground px-6 py-3 rounded-full text-sm font-medium tracking-wide hover:opacity-90 transition-opacity"
+              className="bg-background text-foreground px-8 h-12 rounded-full text-sm font-medium hover:bg-background/90 transition-colors"
             >
-              Get 10% Off
+              Subscribe
             </button>
           </form>
         )}
