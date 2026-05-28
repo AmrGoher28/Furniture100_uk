@@ -45,9 +45,9 @@ export const TrustBar = () => {
     >
       <div ref={trackRef} className="flex items-center whitespace-nowrap will-change-transform">
         {items.map((item, i) => (
-          <span key={i} className="flex items-center gap-2.5 px-8 md:px-12">
-            <item.icon className="w-4 h-4 text-foreground flex-shrink-0" strokeWidth={1.5} />
-            <span className="text-xs tracking-tight text-foreground font-medium">
+          <span key={i} className="flex items-center gap-2 px-4 sm:px-8 md:px-12">
+            <item.icon className="w-3.5 h-3.5 md:w-4 md:h-4 text-foreground flex-shrink-0" strokeWidth={1.5} />
+            <span className="text-[11px] md:text-xs tracking-tight text-foreground font-medium">
               {item.label}
             </span>
           </span>
