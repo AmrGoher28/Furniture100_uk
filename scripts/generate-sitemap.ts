@@ -2,9 +2,8 @@
 // Fetches all Shopify product handles via the Storefront API so every
 // product has a crawlable URL in the sitemap.
 
-import { writeFileSync } from "fs";
+import { writeFileSync, readFileSync } from "fs";
 import { resolve } from "path";
-import { CATEGORIES } from "../src/lib/categories";
 
 const BASE_URL = "https://furniture100.co.uk";
 const SHOPIFY_DOMAIN = "swifliving-showroom-build-xw1vp.myshopify.com";
@@ -65,11 +64,23 @@ async function fetchAllProductHandles(): Promise<{ handle: string; updatedAt?: s
 }
 
 function categoryEntries(): Entry[] {
-  const entries: Entry[] = [];
-  for (const cat of CATEGORIES) {
-    entries.push({ path: `/category/${cat.slug}`, changefreq: "weekly", priority: "0.8" });
+  // Parse top-level category slugs from src/lib/categories.ts to avoid
+  // importing the module (which pulls in non-JS assets like .webp).
+  try {
+    const src = readFileSync(resolve("src/lib/categories.ts"), "utf-8");
+    const slugs = new Set<string>();
+    // Match top-level entries: indented 4 spaces (subcategories use deeper indentation)
+    const re = /\n {4}slug:\s*"([^"]+)"/g;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(src)) !== null) slugs.add(m[1]);
+    return Array.from(slugs).map((slug) => ({
+      path: `/category/${slug}`,
+      changefreq: "weekly" as const,
+      priority: "0.8",
+    }));
+  } catch {
+    return [];
   }
-  return entries;
 }
 
 function generate(entries: Entry[]) {
