@@ -1,86 +1,47 @@
-import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-
-const slides = [
-  {
-    desktop: "/hero-slide-1.webp",
-    mobile: "/hero-slide-1-mobile.webp",
-    alt: "Stylish lounge chairs in a modern living room",
-  },
-  {
-    desktop: "/hero-slide-2.webp",
-    mobile: "/hero-slide-2-mobile.webp",
-    alt: "Contemporary furniture in a beautifully styled space",
-  },
-];
+import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
-  const [current, setCurrent] = useState(0);
-
-  const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % slides.length);
-  }, []);
-
-  useEffect(() => {
-    const id = setInterval(next, 8000);
-    return () => clearInterval(id);
-  }, [next]);
-
   return (
-    <section className="relative h-[58vh] md:h-[92vh] min-h-[420px] flex items-end overflow-hidden bg-foreground">
-      {slides.map((slide, i) => (
-        <picture key={i}>
-          <source media="(max-width: 767px)" srcSet={slide.mobile} />
-          <source media="(min-width: 768px)" srcSet={slide.desktop} />
-          <img
-            src={slide.desktop}
-            alt={slide.alt}
-            fetchPriority={i === 0 ? "high" : undefined}
-            loading={i === 0 ? undefined : "lazy"}
-            decoding={i === 0 ? "sync" : "async"}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1600ms] ease-out ${
-              i === current ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        </picture>
-      ))}
+    <section className="bg-[#FAFAFA] text-foreground">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-10 md:pb-16">
+        <div className="w-full h-px bg-border mb-12 md:mb-16" />
 
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/45 to-transparent z-[1]" />
-
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-14 md:pb-24">
-        <h1
-          className="text-background max-w-3xl"
-          style={{
-            fontSize: "clamp(2rem, 6vw, 5rem)",
-            lineHeight: 1.04,
-            letterSpacing: "-0.04em",
-            fontWeight: 500,
-          }}
-        >
-          Premium Furniture.<br className="hidden md:block" /> Delivered Nationwide.
-        </h1>
-        <div className="mt-7 md:mt-10">
-          <Link
-            to="/shop"
-            className="inline-flex items-center justify-center bg-background text-foreground h-12 px-9 rounded-full text-sm font-medium tracking-tight hover:bg-background/90 transition-colors"
+        <div className="flex flex-col space-y-8 animate-fade-in">
+          <h1
+            className="font-semibold tracking-tighter leading-[0.9]"
+            style={{ fontSize: "clamp(2.75rem, 9vw, 7.5rem)", letterSpacing: "-0.04em" }}
           >
-            Shop Now
-          </Link>
-        </div>
-      </div>
+            Premium Furniture.<br />
+            Delivered Nationwide.
+          </h1>
 
-      {/* Two thin static indicators */}
-      <div className="absolute bottom-5 right-6 md:right-12 z-10 flex gap-2">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            aria-label={`Go to slide ${i + 1}`}
-            className={`h-px w-8 transition-colors duration-500 ${
-              i === current ? "bg-background" : "bg-background/35 hover:bg-background/60"
-            }`}
-          />
-        ))}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between pt-8 md:pt-20 gap-10 md:gap-12">
+            <p className="max-w-xs text-sm md:text-base text-foreground/60 leading-relaxed font-light">
+              Curated collections of timeless design, crafted for the modern home. Sourced
+              globally, shipped directly to your door.
+            </p>
+
+            <Link to="/shop" className="group flex items-center gap-4 self-start md:self-end">
+              <span className="text-xs font-bold tracking-[0.2em] uppercase">Shop Now</span>
+              <span className="w-12 h-12 rounded-full border border-border flex items-center justify-center transition-colors duration-300 group-hover:bg-foreground group-hover:border-foreground">
+                <ArrowRight className="w-4 h-4 transition-colors group-hover:text-background" />
+              </span>
+            </Link>
+          </div>
+        </div>
+
+        <div className="w-full h-px bg-border mt-16 md:mt-24" />
+
+        <div className="flex justify-between items-center py-5 text-[10px] tracking-[0.2em] uppercase font-semibold text-foreground/40">
+          <span>Collection 2026</span>
+          <div className="hidden sm:flex gap-4">
+            <span className="text-foreground">01</span>
+            <span>02</span>
+            <span>03</span>
+          </div>
+          <span>Scroll to explore</span>
+        </div>
       </div>
     </section>
   );
