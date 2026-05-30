@@ -7,6 +7,7 @@ import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
 import { Loader2, ChevronDown, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
+import shopAllHero from "@/assets/shop-all-hero.png";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
@@ -163,7 +164,7 @@ const CategoryPage = () => {
 
   const title = category?.name || "Shop All";
   const count = sortedProducts.length;
-  const heroImage = category?.image;
+  const heroImage = category?.image ?? shopAllHero;
   const subcategories = category?.subcategories ?? [];
 
   const seoPath = slug ? `/category/${slug}` : "/shop";
