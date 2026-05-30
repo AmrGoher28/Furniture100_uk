@@ -149,6 +149,36 @@ const ProductDetail = () => {
               { "@type": "ListItem", position: 3, name: product.title, item: `https://furniture100.co.uk/product/${product.handle}` },
             ],
           },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Is assembly required?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Assembly requirements vary by product. Please refer to the product details above or contact our support team for specific information.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What is the return process?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "We offer a 30-day return policy. Simply contact our team and we'll arrange collection of the item. Full refunds are issued once the item is received in its original condition.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Can I see this in person?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "We currently operate online only, but we offer free fabric samples and a 30-day return policy so you can experience the quality risk-free.",
+                },
+              },
+            ],
+          },
         ]}
       />
 
