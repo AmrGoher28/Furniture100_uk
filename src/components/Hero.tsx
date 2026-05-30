@@ -27,7 +27,6 @@ export const Hero = () => {
         src="/videos/hero-bg.mp4"
         autoPlay
         muted
-        defaultMuted
         loop
         playsInline
         preload="auto"
