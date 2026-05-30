@@ -7,6 +7,7 @@ interface ProductCardProps {
   priority?: boolean;
   badge?: "NEW" | "SALE" | null;
   status?: string | null;
+  statusVariant?: "in-stock" | "pre-order" | "default";
   subtitle?: string;
 }
 
@@ -19,6 +20,7 @@ export const ProductCard = ({
   priority = false,
   badge,
   status,
+  statusVariant = "default",
   subtitle,
 }: ProductCardProps) => {
   const images = product.node.images.edges;
