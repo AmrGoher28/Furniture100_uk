@@ -46,32 +46,17 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://furniture100.co.uk/category/sofas</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://furniture100.co.uk/category/office-chairs</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://furniture100.co.uk/category/dining</loc>
+    <loc>https://furniture100.co.uk/category/dining-chairs</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://furniture100.co.uk/category/mirrors</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://furniture100.co.uk/category/lighting</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://furniture100.co.uk/category/accessories</loc>
+    <loc>https://furniture100.co.uk/category/bar-stools</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
