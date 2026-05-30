@@ -4,8 +4,26 @@ import { useEffect, useRef, useState } from "react";
 export const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
+  // Defer video load until after first paint + idle, and skip on slow connections / data saver
+  useEffect(() => {
+    const conn = (navigator as any).connection;
+    if (conn?.saveData) return;
+    if (conn?.effectiveType && /(^|-)2g$/.test(conn.effectiveType)) return;
+
+    const schedule = (cb: () => void) => {
+      if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(cb, { timeout: 2500 });
+      } else {
+        setTimeout(cb, 1200);
+      }
+    };
+    schedule(() => setShouldLoadVideo(true));
+  }, []);
 
   useEffect(() => {
+    if (!shouldLoadVideo) return;
     const v = videoRef.current;
     if (!v) return;
     v.muted = true;
@@ -29,7 +47,7 @@ export const Hero = () => {
       document.removeEventListener("touchstart", tryPlay);
       document.removeEventListener("click", tryPlay);
     };
-  }, []);
+  }, [shouldLoadVideo]);
 
   return (
     <section className="relative bg-cream text-foreground overflow-hidden">
