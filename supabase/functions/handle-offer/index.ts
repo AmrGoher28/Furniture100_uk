@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { requireAdmin } from "../_shared/admin-auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -170,6 +171,10 @@ Deno.serve(async (req) => {
     }
 
     if (action === "accept" || action === "decline" || action === "counter") {
+      const auth = await requireAdmin(req);
+      if (!auth.ok) {
+        return jsonResponse({ error: auth.error }, auth.status);
+      }
       const { offerId, counterAmount } = body;
 
       const { data: offer, error: fetchErr } = await supabase

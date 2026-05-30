@@ -44,7 +44,7 @@ const AdminOffers = () => {
   const fetchOffers = async () => {
     try {
       const { data, error } = await supabase.functions.invoke("admin-list-offers", {
-        body: { adminPassword: "Furniture100Admin" },
+        body: {},
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);

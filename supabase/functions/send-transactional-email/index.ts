@@ -30,9 +30,9 @@ function generateToken(): string {
     .join('')
 }
 
-// Auth note: this function uses verify_jwt = true in config.toml, so Supabase's
-// gateway validates the caller's JWT (anon or service_role) before the request
-// reaches this code. No in-function auth check is needed.
+// Auth: this function only accepts authenticated users or the service role.
+// Anonymous (anon-JWT) callers are rejected to prevent email-spam abuse from
+// the public anon key being usable directly against this endpoint.
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -52,6 +52,36 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
     )
+  }
+
+  // Reject anonymous callers. Allowed: signed-in users (any role) or the
+  // service role JWT (used by other edge functions invoking this one).
+  const authHeader = req.headers.get('Authorization') || ''
+  const token = authHeader.toLowerCase().startsWith('bearer ')
+    ? authHeader.slice(7)
+    : ''
+  if (!token) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+  }
+  try {
+    const [, payloadB64] = token.split('.')
+    const payloadJson = atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/'))
+    const payload = JSON.parse(payloadJson) as { role?: string; sub?: string }
+    const role = payload.role
+    if (role !== 'service_role' && role !== 'authenticated') {
+      return new Response(JSON.stringify({ error: 'Forbidden' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+  } catch {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
   }
 
   // Parse request body
