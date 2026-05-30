@@ -35,7 +35,7 @@ export const ProductCard = ({
 
   return (
     <Link to={`/product/${product.node.handle}`} className="group flex flex-col">
-      <div className="relative overflow-hidden bg-[#F4EFE6] aspect-square mb-4">
+      <div className="relative overflow-hidden bg-[#F4EFE6] aspect-[4/5] md:aspect-square mb-4">
         {firstImg && (
           <img
             src={firstImg.url}
