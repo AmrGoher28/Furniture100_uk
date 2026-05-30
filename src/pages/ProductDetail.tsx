@@ -4,7 +4,7 @@ import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY, createShopifyCart } from
 import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
 import { Seo } from "@/components/Seo";
-import { Loader2, Heart, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
+import { Loader2, Heart, ChevronLeft, ChevronRight, Minus, Plus, Package, ShoppingBag, Leaf, Briefcase } from "lucide-react";
 import MakeOfferModal from "@/components/MakeOfferModal";
 import ProductReviews from "@/components/ProductReviews";
 import SimilarProducts from "@/components/SimilarProducts";
@@ -243,138 +243,19 @@ const ProductDetail = () => {
 
             {/* Details — 40% */}
             <div className="md:col-span-2">
-              <h1
-                className="text-foreground mb-3"
-                style={{
-                  fontSize: "clamp(1.375rem, 2.4vw, 1.875rem)",
-                  letterSpacing: "-0.025em",
-                  lineHeight: 1.15,
-                  fontWeight: 500,
-                }}
-              >
-                {product.title}
-              </h1>
-              <p className="text-xl text-foreground font-normal tabular-nums">
-                £{price.toFixed(2)}
-              </p>
-              <div className="mt-2 text-xs text-muted-foreground">
-                <KlarnaInfo price={price * quantity} />
-              </div>
-
-              {/* Variant selectors */}
-              {meaningfulOptions.length > 0 && (
-                <div className="mt-8 space-y-6">
-                  {meaningfulOptions.map((option) => {
-                    const showAsPills = option.values.length > 4;
-                    return (
-                      <div key={option.name}>
-                        <p className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground mb-3 font-medium">
-                          {option.name}
-                        </p>
-                        {showAsPills ? (
-                          <div className="flex flex-wrap gap-2">
-                            {option.values.map((value) => {
-                              const matchingIdx = product.variants.edges.findIndex((v) =>
-                                v.node.selectedOptions.some((o) => o.name === option.name && o.value === value)
-                              );
-                              const isSelected = matchingIdx === selectedVariantIdx;
-                              return (
-                                <button
-                                  key={value}
-                                  onClick={() => setSelectedVariantIdx(matchingIdx >= 0 ? matchingIdx : 0)}
-                                  className={`px-4 h-9 text-xs tracking-tight rounded-full border transition-colors ${
-                                    isSelected
-                                      ? "border-foreground bg-foreground text-background"
-                                      : "border-border text-foreground/70 hover:border-foreground hover:text-foreground"
-                                  }`}
-                                >
-                                  {value}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          <div className="flex flex-wrap gap-x-5 gap-y-2">
-                            {option.values.map((value) => {
-                              const matchingIdx = product.variants.edges.findIndex((v) =>
-                                v.node.selectedOptions.some((o) => o.name === option.name && o.value === value)
-                              );
-                              const isSelected = matchingIdx === selectedVariantIdx;
-                              return (
-                                <button
-                                  key={value}
-                                  onClick={() => setSelectedVariantIdx(matchingIdx >= 0 ? matchingIdx : 0)}
-                                  className={`text-sm pb-1 border-b transition-colors ${
-                                    isSelected
-                                      ? "border-foreground text-foreground"
-                                      : "border-transparent text-muted-foreground hover:text-foreground"
-                                  }`}
-                                >
-                                  {value}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Add to basket — full width pill, desktop only */}
-              <div className="mt-10 hidden md:block">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isLoading || !variant?.availableForSale}
-                  className="w-full bg-foreground text-background h-14 rounded-full text-sm font-medium tracking-tight hover:bg-foreground/90 transition-colors disabled:opacity-50"
+              {/* Title row with wishlist */}
+              <div className="flex items-start justify-between gap-4">
+                <h1
+                  className="text-foreground uppercase"
+                  style={{
+                    fontSize: "clamp(1.5rem, 2.6vw, 2.125rem)",
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1.1,
+                    fontWeight: 500,
+                  }}
                 >
-                  {isLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin mx-auto" />
-                  ) : !variant?.availableForSale ? (
-                    "Sold Out"
-                  ) : (
-                    "Add to Basket"
-                  )}
-                </button>
-
-                {/* Quantity stepper below */}
-                <div className="flex items-center justify-center gap-4 mt-5">
-                  <span className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground">Quantity</span>
-                  <button
-                    type="button"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    disabled={quantity <= 1}
-                    className="w-7 h-7 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30"
-                  >
-                    <Minus className="w-3 h-3" />
-                  </button>
-                  <span className="w-5 text-center text-sm tabular-nums">{quantity}</span>
-                  <button
-                    type="button"
-                    onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-                    disabled={quantity >= 10}
-                    className="w-7 h-7 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30"
-                  >
-                    <Plus className="w-3 h-3" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Calm trust block */}
-              <ProductTrustBadges />
-              <DeliveryBanner />
-
-              {/* Wishlist + Offer — desktop */}
-              <div className="hidden md:flex flex-col items-center gap-4 mt-8 mb-10">
-                <MakeOfferModal
-                  productTitle={product.title}
-                  productHandle={product.handle}
-                  productImage={images[0]?.node.url}
-                  variantId={variant?.id}
-                  variantTitle={variant?.title}
-                  originalPrice={price}
-                />
+                  {product.title}
+                </h1>
                 <button
                   onClick={() => {
                     if (!product) return;
@@ -390,29 +271,180 @@ const ProductDetail = () => {
                       });
                     }
                   }}
-                  className={`flex items-center gap-2 text-xs tracking-tight transition-colors ${
-                    isInWishlist(product.handle)
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  aria-label="Add to wishlist"
+                  className="shrink-0 w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
                 >
-                  <Heart className={`w-3.5 h-3.5 ${isInWishlist(product.handle) ? "fill-foreground" : ""}`} strokeWidth={1.5} />
-                  {isInWishlist(product.handle) ? "Saved to Wishlist" : "Add to Wishlist"}
+                  <Heart className={`w-4 h-4 ${isInWishlist(product.handle) ? "fill-foreground text-foreground" : ""}`} strokeWidth={1.5} />
                 </button>
               </div>
 
-              {/* Description — no eyebrow */}
-              <div className="mt-10 mb-2">
+              {/* Subtitle (variant) */}
+              {variant?.title && variant.title !== "Default Title" && (
+                <p className="mt-2 text-sm text-muted-foreground">{variant.title}</p>
+              )}
+
+              {/* Price */}
+              <p className="mt-4 text-2xl text-foreground font-normal tabular-nums">
+                £{price.toFixed(2)}
+              </p>
+
+              {/* Dispatch badge */}
+              <div className="mt-5 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
+                  <Package className="w-4 h-4 text-foreground/70" strokeWidth={1.5} />
+                </div>
+                <span className="text-sm text-foreground/80">Dispatched within 24hrs</span>
+              </div>
+
+              {/* Divider */}
+              <div className="my-7 h-px bg-border" />
+
+              {/* Description (clamped) */}
+              <p className="text-[15px] leading-[1.7] text-foreground/80 line-clamp-3">
+                {description}
+                <InlineEditor
+                  value={description}
+                  onSave={(v) => saveOverride("description", v)}
+                  isAdmin={isAdmin}
+                  label="Description"
+                />
+              </p>
+              <a
+                href="#full-description"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("full-description")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="inline-block mt-2 text-sm text-foreground underline underline-offset-4 hover:text-foreground/70"
+              >
+                Read more
+              </a>
+
+              {/* Variant selectors */}
+              {meaningfulOptions.length > 0 && (
+                <div className="mt-7 space-y-6">
+                  {meaningfulOptions.map((option) => {
+                    const currentValue = variant?.selectedOptions.find((o) => o.name === option.name)?.value;
+                    return (
+                      <div key={option.name}>
+                        <p className="text-sm text-foreground mb-3">
+                          <span className="font-medium">{option.name}:</span>{" "}
+                          <span className="text-muted-foreground">{currentValue}</span>
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {option.values.map((value) => {
+                            const matchingIdx = product.variants.edges.findIndex((v) =>
+                              v.node.selectedOptions.some((o) => o.name === option.name && o.value === value)
+                            );
+                            const isSelected = matchingIdx === selectedVariantIdx;
+                            return (
+                              <button
+                                key={value}
+                                onClick={() => setSelectedVariantIdx(matchingIdx >= 0 ? matchingIdx : 0)}
+                                className={`px-4 h-9 text-xs tracking-tight rounded-full border transition-colors ${
+                                  isSelected
+                                    ? "border-foreground bg-foreground text-background"
+                                    : "border-border text-foreground/70 hover:border-foreground hover:text-foreground"
+                                }`}
+                              >
+                                {value}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Quantity + Add to basket — desktop */}
+              <div className="mt-8 hidden md:flex items-stretch gap-3">
+                <div className="flex items-center gap-1 px-3 h-14 rounded-full border border-border">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    disabled={quantity <= 1}
+                    className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30"
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="w-6 text-center text-sm tabular-nums">{quantity}</span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                    disabled={quantity >= 10}
+                    className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30"
+                    aria-label="Increase quantity"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+                <button
+                  onClick={handleAddToCart}
+                  disabled={isLoading || !variant?.availableForSale}
+                  className="flex-1 bg-foreground text-background h-14 rounded-full text-sm font-medium tracking-tight hover:bg-foreground/90 transition-colors disabled:opacity-50 inline-flex items-center justify-center gap-2"
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : !variant?.availableForSale ? (
+                    "Sold Out"
+                  ) : (
+                    <>
+                      Add to Basket
+                      <ShoppingBag className="w-4 h-4" strokeWidth={1.5} />
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Klarna / payment info */}
+              <div className="mt-4 text-xs text-muted-foreground">
+                <KlarnaInfo price={price * quantity} />
+              </div>
+
+              {/* Divider */}
+              <div className="my-7 h-px bg-border" />
+
+              {/* Info rows */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
+                    <Leaf className="w-4 h-4 text-foreground/70" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-sm text-foreground/80">Sustainable Item</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
+                    <Briefcase className="w-4 h-4 text-foreground/70" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-sm text-foreground/80">
+                    <a href="/contact" className="underline underline-offset-4 hover:text-foreground">Trade enquiries</a> for commercial &amp; hospitality customers
+                  </span>
+                </div>
+              </div>
+
+              {/* Make an offer */}
+              <div className="mt-7">
+                <MakeOfferModal
+                  productTitle={product.title}
+                  productHandle={product.handle}
+                  productImage={images[0]?.node.url}
+                  variantId={variant?.id}
+                  variantTitle={variant?.title}
+                  originalPrice={price}
+                />
+              </div>
+
+              {/* Full description anchor */}
+              <div id="full-description" className="mt-10 scroll-mt-20">
+                <h2 className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground mb-3 font-medium">Description</h2>
                 <p className="text-[15px] leading-[1.75] text-foreground/80 max-w-prose">
                   {description}
-                  <InlineEditor
-                    value={description}
-                    onSave={(v) => saveOverride("description", v)}
-                    isAdmin={isAdmin}
-                    label="Description"
-                  />
                 </p>
               </div>
+
 
               {/* Consolidated accordion */}
               <div className="mt-8">
