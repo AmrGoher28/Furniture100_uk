@@ -196,85 +196,27 @@ const ProductDetail = () => {
           {/* 60/40 split */}
           <div className="grid md:grid-cols-5 gap-10 md:gap-16 lg:gap-24">
             {/* Images — 60% */}
-            <div className="md:col-span-3">
-              <div
-                className="relative aspect-[4/5] bg-[#FAFAFA] overflow-hidden mb-4 group touch-pan-y"
-                onTouchStart={(e) => {
-                  const touch = e.touches[0];
-                  (e.currentTarget as any)._touchStartX = touch.clientX;
-                  (e.currentTarget as any)._touchStartY = touch.clientY;
-                }}
-                onTouchEnd={(e) => {
-                  const startX = (e.currentTarget as any)._touchStartX;
-                  const startY = (e.currentTarget as any)._touchStartY;
-                  if (startX == null) return;
-                  const endX = e.changedTouches[0].clientX;
-                  const endY = e.changedTouches[0].clientY;
-                  const dx = endX - startX;
-                  const dy = endY - startY;
-                  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-                    if (dx < 0) setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-                    else setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-                  }
-                }}
-              >
-                {images[selectedImage] ? (
-                  <img
-                    src={images[selectedImage].node.url}
-                    alt={images[selectedImage].node.altText || product.title}
-                    className="w-full h-full object-cover"
-                    decoding="async"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
-                )}
-                {images.length > 1 && (
-                  <>
-                    <button
-                      onClick={() => setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/70 hover:text-foreground p-1 hidden md:block opacity-0 group-hover:opacity-100 transition-opacity"
-                      aria-label="Previous image"
-                    >
-                      <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
-                    </button>
-                    <button
-                      onClick={() => setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/70 hover:text-foreground p-1 hidden md:block opacity-0 group-hover:opacity-100 transition-opacity"
-                      aria-label="Next image"
-                    >
-                      <ChevronRight className="w-5 h-5" strokeWidth={1.5} />
-                    </button>
-                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 md:hidden">
-                      {images.map((_, idx) => (
-                        <span
-                          key={idx}
-                          className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                            idx === selectedImage ? "bg-foreground" : "bg-foreground/30"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-              {/* Thumbnails — desktop only */}
-              {images.length > 1 && (
-                <div className="hidden md:flex gap-2 overflow-x-auto">
+            <div className="md:col-span-3 -mx-6 md:mx-0">
+              {images.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
                   {images.map((img, idx) => (
-                    <button
+                    <div
                       key={idx}
-                      onClick={() => setSelectedImage(idx)}
-                      className={`relative w-16 h-16 bg-[#FAFAFA] overflow-hidden shrink-0 transition-opacity ${
-                        idx === selectedImage ? "opacity-100" : "opacity-60 hover:opacity-100"
-                      }`}
-                      aria-label={`View image ${idx + 1}`}
+                      className="relative aspect-square bg-[#FAFAFA] overflow-hidden"
                     >
-                      <img src={img.node.url} alt="" className="w-full h-full object-cover" />
-                      {idx === selectedImage && (
-                        <span className="absolute inset-x-0 bottom-0 h-px bg-foreground" />
-                      )}
-                    </button>
+                      <img
+                        src={img.node.url}
+                        alt={img.node.altText || `${product.title} — image ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                        loading={idx === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                      />
+                    </div>
                   ))}
+                </div>
+              ) : (
+                <div className="aspect-square bg-[#FAFAFA] flex items-center justify-center text-muted-foreground text-sm">
+                  No image
                 </div>
               )}
             </div>
