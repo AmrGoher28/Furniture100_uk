@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { Truck, Leaf, RotateCcw, ShieldCheck, Facebook, Instagram, Twitter } from "lucide-react";
+import { PackageCheck, Sprout, Undo2, Lock } from "lucide-react";
 
 const PROMISES = [
-  { icon: Truck, title: "Free UK delivery", desc: "On thousands of pieces" },
-  { icon: RotateCcw, title: "30 day returns", desc: "Hassle-free exchanges" },
-  { icon: Leaf, title: "Sustainably sourced", desc: "Responsible materials" },
-  { icon: ShieldCheck, title: "Secure checkout", desc: "Klarna & PayPal available" },
+  { icon: PackageCheck, title: "Free UK delivery", desc: "On thousands of pieces" },
+  { icon: Undo2, title: "30 day returns", desc: "Hassle-free exchanges" },
+  { icon: Sprout, title: "Sustainably sourced", desc: "Responsible materials" },
+  { icon: Lock, title: "Secure checkout", desc: "Klarna & PayPal available" },
 ];
 
 const FOOTER_COLS = [
