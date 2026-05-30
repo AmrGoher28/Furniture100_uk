@@ -2,23 +2,19 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { CATEGORIES } from "@/lib/categories";
 
-// Bento mosaic — 3 cols on row 1, 2 cols on row 2, 3 cols on row 3
+// Bento mosaic — 4 hero categories
 const TILES = [
-  { ...CATEGORIES[0], span: "md:col-span-4 md:row-span-1" },
-  { ...CATEGORIES[1], span: "md:col-span-4 md:row-span-1" },
-  { ...CATEGORIES[5], span: "md:col-span-4 md:row-span-1" },
-  { ...CATEGORIES[3], span: "md:col-span-6" },
-  { ...CATEGORIES[2], span: "md:col-span-6" },
-  { ...CATEGORIES[4], span: "md:col-span-4" },
-  { ...CATEGORIES[6], span: "md:col-span-4" },
-  { ...CATEGORIES[0], span: "md:col-span-4", name: "New Arrivals", slug: "shop" },
+  { ...CATEGORIES[0], span: "md:col-span-7 md:row-span-2" },
+  { ...CATEGORIES[1], span: "md:col-span-5" },
+  { ...CATEGORIES[2], span: "md:col-span-5" },
+  { ...CATEGORIES[3], span: "md:col-span-12" },
 ];
 
 export const FeaturedCategories = () => {
   return (
     <section className="py-20 md:py-28 bg-background">
       <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-2 md:gap-3 auto-rows-[200px] md:auto-rows-[300px]">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-2 md:gap-3 auto-rows-[220px] md:auto-rows-[280px]">
           {TILES.map((cat, i) => (
             <Link
               key={`${cat.slug}-${i}`}
