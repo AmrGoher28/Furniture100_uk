@@ -349,21 +349,14 @@ const CategoryPage = () => {
             <>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 md:gap-x-5 gap-y-12 md:gap-y-14">
                 {paginatedProducts.map((product, idx) => {
-                  // Pseudo-deterministic badge/status using id hash for variety without fake data
-                  const seed = product.node.id.length + idx;
-                  const badge = seed % 5 === 0 ? "NEW" : seed % 7 === 0 ? "SALE" : null;
-                  const status =
-                    seed % 4 === 0
-                      ? "In Stock"
-                      : seed % 4 === 1
-                      ? "Pre-order — Reserve Now"
-                      : null;
+                  const available = product.node.availableForSale;
+                  const status = available ? "In Stock" : "Pre-order";
                   return (
                     <ProductCard
                       key={product.node.id}
                       product={product}
-                      badge={badge}
                       status={status}
+                      statusVariant={available ? "in-stock" : "pre-order"}
                       priority={idx < 4}
                     />
                   );
