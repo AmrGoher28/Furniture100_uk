@@ -16,6 +16,6 @@ export function productRating(key: string): { rating: number; count: number } {
   // 0..2 => 4.0, 4.5, 5.0
   const step = h % 3;
   const rating = 4 + step * 0.5;
-  const count = 12 + ((h >>> 4) % 229);
+  const count = 12 + ((h >>> 4) % 39); // 12..50
   return { rating, count };
 }
