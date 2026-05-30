@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import lifestyleImage from "@/assets/lifestyle-banner.webp";
+import lifestyleImage from "@/assets/lifestyle-banner.png";
 
 export const LifestyleBanner = () => {
   return (
