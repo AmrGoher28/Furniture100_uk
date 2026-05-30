@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { PackageCheck, Sprout, Undo2, Lock } from "lucide-react";
+import { PackageCheck, Sprout, Undo2, Lock, Instagram, Facebook, Twitter } from "lucide-react";
 
 const PROMISES = [
   { icon: PackageCheck, title: "Free UK delivery", desc: "On thousands of pieces" },
