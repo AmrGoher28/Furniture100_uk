@@ -347,7 +347,7 @@ const CategoryPage = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3 md:gap-x-5 gap-y-10 md:gap-y-14">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 md:gap-x-5 gap-y-10 md:gap-y-14">
                 {paginatedProducts.map((product, idx) => {
                   // Pseudo-deterministic badge/status using id hash for variety without fake data
                   const seed = product.node.id.length + idx;
