@@ -1,27 +1,41 @@
 import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
 import type { ShopifyProduct } from "@/lib/shopify";
 
 interface ProductCardProps {
   product: ShopifyProduct;
   priority?: boolean;
+  badge?: "NEW" | "SALE" | null;
+  status?: string | null;
+  subtitle?: string;
 }
 
 /**
- * Editorial product card — borderless, portrait, calm.
- * Used on homepage best sellers, category grid, and similar products.
+ * Cult-style editorial product card — soft cream tile, top badge,
+ * wishlist heart, status strip at bottom of image, title, subtitle, price.
  */
-export const ProductCard = ({ product, priority = false }: ProductCardProps) => {
+export const ProductCard = ({
+  product,
+  priority = false,
+  badge,
+  status,
+  subtitle,
+}: ProductCardProps) => {
   const images = product.node.images.edges;
   const firstImg = images[0]?.node;
   const secondImg = images[1]?.node;
   const price = product.node.priceRange.minVariantPrice;
+  const variant = product.node.variants.edges[0]?.node;
+  const computedSubtitle =
+    subtitle ??
+    variant?.selectedOptions
+      ?.filter((o) => o.name.toLowerCase() !== "title")
+      .map((o) => o.value)
+      .join(" & ");
 
   return (
-    <Link
-      to={`/product/${product.node.handle}`}
-      className="group flex flex-col"
-    >
-      <div className="relative overflow-hidden bg-[#FAFAFA] aspect-square sm:aspect-[4/5] mb-4">
+    <Link to={`/product/${product.node.handle}`} className="group flex flex-col">
+      <div className="relative overflow-hidden bg-[#F4EFE6] aspect-[4/5] mb-4">
         {firstImg && (
           <img
             src={firstImg.url}
@@ -43,11 +57,38 @@ export const ProductCard = ({ product, priority = false }: ProductCardProps) => 
             className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-[900ms] ease-out group-hover:opacity-100"
           />
         )}
+
+        {badge && (
+          <span className="absolute top-0 left-0 bg-[#A8967A] text-white text-[10px] tracking-[0.18em] uppercase font-medium px-3 py-1.5">
+            {badge}
+          </span>
+        )}
+
+        <button
+          type="button"
+          aria-label="Add to wishlist"
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center hover:bg-white transition-colors shadow-sm"
+        >
+          <Heart className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+        </button>
+
+        {status && (
+          <div className="absolute bottom-0 inset-x-0 bg-[#A8967A] text-white text-[10px] tracking-[0.2em] uppercase font-medium text-center py-2">
+            {status}
+          </div>
+        )}
       </div>
-      <p className="text-sm font-normal tracking-tight text-foreground truncate">
+
+      <p className="text-sm font-medium tracking-tight text-foreground truncate">
         {product.node.title}
       </p>
-      <p className="text-sm text-muted-foreground mt-1 tabular-nums">
+      {computedSubtitle && (
+        <p className="text-xs text-muted-foreground mt-0.5 truncate">{computedSubtitle}</p>
+      )}
+      <p className="text-sm text-foreground mt-2 tabular-nums">
         £{parseFloat(price.amount).toFixed(0)}
       </p>
     </Link>
