@@ -35,7 +35,7 @@ export const ProductCard = ({
 
   return (
     <Link to={`/product/${product.node.handle}`} className="group flex flex-col">
-      <div className="relative overflow-hidden bg-[#F4EFE6] aspect-[4/5] md:aspect-square mb-4">
+      <div className="relative overflow-hidden bg-cream aspect-[3/4] md:aspect-square mb-3 md:mb-4">
         {firstImg && (
           <img
             src={firstImg.url}
@@ -43,7 +43,7 @@ export const ProductCard = ({
             loading={priority ? undefined : "lazy"}
             decoding={priority ? "sync" : "async"}
             fetchPriority={priority ? "high" : undefined}
-            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04] ${
+            className={`absolute inset-0 w-full h-full object-contain transition-transform duration-[900ms] ease-out group-hover:scale-[1.04] ${
               secondImg ? "group-hover:opacity-0" : ""
             }`}
           />
@@ -54,7 +54,7 @@ export const ProductCard = ({
             alt=""
             loading="lazy"
             decoding="async"
-            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-[900ms] ease-out group-hover:opacity-100"
+            className="absolute inset-0 w-full h-full object-contain opacity-0 transition-opacity duration-[900ms] ease-out group-hover:opacity-100"
           />
         )}
 

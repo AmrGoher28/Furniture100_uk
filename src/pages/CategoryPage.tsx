@@ -334,7 +334,7 @@ const CategoryPage = () => {
       )}
 
       {/* Product grid */}
-      <section className="py-10 md:py-14 px-6 md:px-12">
+      <section className="py-10 md:py-14 px-2.5 md:px-12">
         <div className="max-w-7xl mx-auto">
           {loading && products.length === 0 ? (
             <div className="flex justify-center py-24">
@@ -347,7 +347,7 @@ const CategoryPage = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3 md:gap-x-5 gap-y-12 md:gap-y-14">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 md:gap-x-5 gap-y-12 md:gap-y-14">
                 {paginatedProducts.map((product, idx) => {
                   // Pseudo-deterministic badge/status using id hash for variety without fake data
                   const seed = product.node.id.length + idx;
