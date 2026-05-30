@@ -22,24 +22,10 @@ export const CATEGORIES: Category[] = [
     slug: "lounge-chairs",
     image: categoryLoungeChairs,
     subcategories: [
-      { name: "Lounge Chair and Ottoman Sets", slug: "lounge-chair-ottoman-sets" },
       { name: "Swivel Lounge Chairs", slug: "swivel-lounge-chairs" },
       { name: "Club Chairs", slug: "club-chairs" },
       { name: "Accent Chairs", slug: "accent-chairs" },
       { name: "Recliner Chairs", slug: "recliner-chairs" },
-      { name: "Rocking Chairs", slug: "rocking-chairs" },
-      { name: "Egg Chairs", slug: "egg-chairs" },
-    ],
-  },
-  {
-    name: "Sofas",
-    slug: "sofas",
-    image: categorySofas,
-    subcategories: [
-      { name: "2 Seater Sofas", slug: "2-seater-sofas" },
-      { name: "3 Seater Sofas", slug: "3-seater-sofas" },
-      { name: "Sofa Beds", slug: "sofa-beds" },
-      { name: "Loveseats", slug: "loveseats" },
     ],
   },
   {
@@ -49,45 +35,27 @@ export const CATEGORIES: Category[] = [
     subcategories: [
       { name: "Leather Office Chairs", slug: "leather-office-chairs" },
       { name: "Fabric Office Chairs", slug: "fabric-office-chairs" },
-      { name: "Vintage Style Office Chairs", slug: "vintage-office-chairs" },
       { name: "Executive Chairs", slug: "executive-chairs" },
     ],
   },
   {
-    name: "Dining",
-    slug: "dining",
+    name: "Dining Chairs",
+    slug: "dining-chairs",
     image: categoryDining,
     subcategories: [
-      { name: "Dining Chairs", slug: "dining-chairs" },
-      { name: "Bar Stools", slug: "bar-stools" },
+      { name: "Wooden Dining Chairs", slug: "wooden-dining-chairs" },
+      { name: "Velvet Dining Chairs", slug: "velvet-dining-chairs" },
+      { name: "Boucle Dining Chairs", slug: "boucle-dining-chairs" },
     ],
   },
   {
-    name: "Mirrors",
-    slug: "mirrors",
-    image: categoryMirrors,
+    name: "Bar Stools",
+    slug: "bar-stools",
+    image: "https://images.unsplash.com/photo-1611464908623-07f19927264e?w=800&q=75&fm=webp",
     subcategories: [
-      { name: "Full Length Mirrors", slug: "full-length-mirrors" },
-      { name: "Wall Mirrors", slug: "wall-mirrors" },
-      { name: "Arched Mirrors", slug: "arched-mirrors" },
-    ],
-  },
-  {
-    name: "Lighting",
-    slug: "lighting",
-    image: "https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=400&q=75&fm=webp",
-    subcategories: [
-      { name: "Floor Lamps", slug: "floor-lamps" },
-      { name: "Desk Lamps", slug: "desk-lamps" },
-    ],
-  },
-  {
-    name: "Accessories",
-    slug: "accessories",
-    image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&q=75&fm=webp",
-    subcategories: [
-      { name: "Drinks Trolleys", slug: "drinks-trolleys" },
-      { name: "Coffee Tables", slug: "coffee-tables" },
+      { name: "Counter Stools", slug: "counter-stools" },
+      { name: "Swivel Bar Stools", slug: "swivel-bar-stools" },
+      { name: "Velvet Bar Stools", slug: "velvet-bar-stools" },
     ],
   },
 ];
