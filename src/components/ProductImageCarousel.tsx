@@ -107,7 +107,7 @@ const ProductImageCarousel = ({ images, title, className = "" }: ProductImageCar
 
       {count > 1 && (
         <>
-          {/* Arrows – visible on hover (desktop) */}
+          {/* Arrows - visible on hover (desktop) */}
           <button
             onClick={prev}
             className="absolute left-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity"

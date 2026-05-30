@@ -85,7 +85,7 @@ const ContactPage = () => {
                 </div>
                 <div>
                   <p className="text-sm font-semibold mb-1">Hours</p>
-                  <p className="text-sm text-muted-foreground">Monday – Friday, 9am – 5pm</p>
+                  <p className="text-sm text-muted-foreground">Monday - Friday, 9am - 5pm</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">

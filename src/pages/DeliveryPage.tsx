@@ -20,10 +20,10 @@ const DeliveryPage = () => {
           <h2 className="text-2xl mb-4">Delivery Timeframes</h2>
           <div className="bg-secondary rounded-lg p-6 mb-6">
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div><strong className="text-foreground">Standard Delivery</strong><p className="text-muted-foreground mt-1">3–5 working days</p></div>
-              <div><strong className="text-foreground">Express Delivery</strong><p className="text-muted-foreground mt-1">1–2 working days (£14.99)</p></div>
-              <div><strong className="text-foreground">Large Items</strong><p className="text-muted-foreground mt-1">5–10 working days</p></div>
-              <div><strong className="text-foreground">Scottish Highlands & Islands</strong><p className="text-muted-foreground mt-1">7–14 working days</p></div>
+              <div><strong className="text-foreground">Standard Delivery</strong><p className="text-muted-foreground mt-1">3-5 working days</p></div>
+              <div><strong className="text-foreground">Express Delivery</strong><p className="text-muted-foreground mt-1">1-2 working days (£14.99)</p></div>
+              <div><strong className="text-foreground">Large Items</strong><p className="text-muted-foreground mt-1">5-10 working days</p></div>
+              <div><strong className="text-foreground">Scottish Highlands & Islands</strong><p className="text-muted-foreground mt-1">7-14 working days</p></div>
             </div>
           </div>
 

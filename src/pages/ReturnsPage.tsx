@@ -22,7 +22,7 @@ const ReturnsPage = () => {
             <li>Contact our team at <a href="mailto:hello@furniture100.co.uk" className="text-gold hover:underline">hello@furniture100.co.uk</a> to arrange your return.</li>
             <li>We'll provide a prepaid returns label or arrange collection for larger items.</li>
             <li>Pack the item securely in its original packaging where possible.</li>
-            <li>Once we receive the item and confirm its condition, your refund will be processed within 5–7 working days.</li>
+            <li>Once we receive the item and confirm its condition, your refund will be processed within 5-7 working days.</li>
           </ol>
 
           <h2 className="text-2xl mb-4">Conditions</h2>
