@@ -320,13 +320,8 @@ const ProductDetail = () => {
                 £{price.toFixed(2)}
               </p>
 
-              {/* Dispatch badge */}
-              <div className="mt-5 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
-                  <Package className="w-4 h-4 text-foreground/70" strokeWidth={1.5} />
-                </div>
-                <span className="text-sm text-foreground/80">Dispatched within 24hrs</span>
-              </div>
+
+
 
               {/* Divider */}
               <div className="my-7 h-px bg-border" />
