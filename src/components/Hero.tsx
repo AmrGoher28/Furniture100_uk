@@ -10,17 +10,13 @@ export const Hero = () => {
         <h1
           className="font-serif-display text-foreground"
           style={{
-            fontSize: "clamp(2.25rem, 6vw, 5rem)",
-            lineHeight: 1.05,
-            letterSpacing: "-0.01em",
+            fontSize: "clamp(3rem, 10vw, 8rem)",
+            lineHeight: 0.95,
+            letterSpacing: "-0.02em",
             fontWeight: 500,
           }}
         >
-          FURNITURE100 CURATES <em className="italic font-normal">timeless</em> COLLECTIONS
-          <br className="hidden md:block" />
-          OF <em className="italic font-normal">premium design;</em> CRAFTED FOR
-          <br className="hidden md:block" />
-          THE <em className="italic font-normal">modern</em> HOME.
+          <em className="italic font-normal">Timeless</em> Design.
         </h1>
 
         <div className="mt-12 flex items-center justify-center gap-4">
