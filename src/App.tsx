@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -34,6 +34,13 @@ const AdminOverlay = () => {
   return <>{isAdmin && <AdminBadge onExit={logout} />}</>;
 };
 
+const RequireAdmin = ({ children }: { children: JSX.Element }) => {
+  const { isAdmin, loading } = useAdminMode();
+  if (loading) return null;
+  if (!isAdmin) return <Navigate to="/auth" replace />;
+  return children;
+};
+
 const AppContent = () => {
   useCartSync();
   return (
@@ -53,9 +60,9 @@ const AppContent = () => {
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/account" element={<AccountPage />} />
-          <Route path="/admin/offers" element={<AdminOffers />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/admin/categories" element={<AdminCategories />} />
+          <Route path="/admin/offers" element={<RequireAdmin><AdminOffers /></RequireAdmin>} />
+          <Route path="/admin/products" element={<RequireAdmin><AdminProducts /></RequireAdmin>} />
+          <Route path="/admin/categories" element={<RequireAdmin><AdminCategories /></RequireAdmin>} />
           <Route path="/unsubscribe" element={<UnsubscribePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
