@@ -9,6 +9,7 @@ interface ProductCardProps {
   status?: string | null;
   statusVariant?: "in-stock" | "pre-order" | "default";
   subtitle?: string;
+  largeImage?: boolean;
 }
 
 /**
@@ -22,6 +23,7 @@ export const ProductCard = ({
   status,
   statusVariant = "default",
   subtitle,
+  largeImage = false,
 }: ProductCardProps) => {
   const images = product.node.images.edges;
   const firstImg = images[0]?.node;
@@ -37,7 +39,7 @@ export const ProductCard = ({
 
   return (
     <Link to={`/product/${product.node.handle}`} className="group flex flex-col">
-      <div className="relative overflow-hidden bg-cream aspect-[3/4] md:aspect-square mb-3 md:mb-4">
+      <div className={`relative overflow-hidden bg-cream mb-3 md:mb-4 ${largeImage ? "aspect-[4/5]" : "aspect-[3/4] md:aspect-square"}`}>
         {firstImg && (
           <img
             src={firstImg.url}
