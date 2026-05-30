@@ -108,7 +108,7 @@ const AccountPage = () => {
                 Orders placed through checkout will appear here
               </p>
               <p className="text-xs text-muted-foreground/60 mt-1 font-light">
-                Coming soon — orders sync from Shopify
+                Coming soon - orders sync from Shopify
               </p>
             </div>
           </div>

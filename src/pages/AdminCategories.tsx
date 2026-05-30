@@ -186,7 +186,7 @@ const AdminCategories = () => {
                             />
                           ) : (
                             <div className="w-10 h-10 rounded bg-secondary flex items-center justify-center text-xs text-muted-foreground">
-                              —
+                              -
                             </div>
                           )}
                           <span className="font-medium truncate max-w-[200px]">{product.node.title}</span>
@@ -198,7 +198,7 @@ const AdminCategories = () => {
                           onChange={(e) => updateRow(handle, { category_slug: e.target.value, subcategory_slug: "" })}
                           className="w-full bg-background border border-border rounded-md px-2 py-1.5 text-sm"
                         >
-                          <option value="">— Select —</option>
+                          <option value="">- Select -</option>
                           {CATEGORIES.map((cat) => (
                             <option key={cat.slug} value={cat.slug}>{cat.name}</option>
                           ))}
@@ -211,7 +211,7 @@ const AdminCategories = () => {
                           disabled={subs.length === 0}
                           className="w-full bg-background border border-border rounded-md px-2 py-1.5 text-sm disabled:opacity-50"
                         >
-                          <option value="">— None —</option>
+                          <option value="">- None -</option>
                           {subs.map((sub) => (
                             <option key={sub.slug} value={sub.slug}>{sub.name}</option>
                           ))}

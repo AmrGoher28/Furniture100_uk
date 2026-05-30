@@ -11,7 +11,7 @@ const AboutPage = () => {
 
   return (
     <Layout>
-      <Seo title="About Furniture100 | Premium UK Furniture" description="Learn about Furniture100 — a UK furniture retailer delivering premium mid-century, vintage and contemporary pieces nationwide." path="/about" />
+      <Seo title="About Furniture100 | Premium UK Furniture" description="Learn about Furniture100 - a UK furniture retailer delivering premium mid-century, vintage and contemporary pieces nationwide." path="/about" />
       {/* Hero */}
       <section className="bg-secondary py-16 md:py-24 px-6 text-center">
         <h1 className="text-4xl md:text-5xl mb-4">About Furniture100</h1>
@@ -28,7 +28,7 @@ const AboutPage = () => {
             Furniture100 was founded with a simple mission: to make premium, design-led furniture accessible to everyone across the UK. We believe that your home deserves beautiful pieces that don't compromise on quality or style.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-4">
-            We curate a carefully selected collection of mid-century modern, vintage-inspired and contemporary furniture — each piece chosen for its craftsmanship, design integrity and lasting appeal. From statement lounge chairs to elegant dining sets, everything in our collection is built to transform your space.
+            We curate a carefully selected collection of mid-century modern, vintage-inspired and contemporary furniture - each piece chosen for its craftsmanship, design integrity and lasting appeal. From statement lounge chairs to elegant dining sets, everything in our collection is built to transform your space.
           </p>
           <p className="text-muted-foreground leading-relaxed">
             With free nationwide delivery, 30-day hassle-free returns and a UK-based support team, we make buying furniture online easy, trustworthy and enjoyable.

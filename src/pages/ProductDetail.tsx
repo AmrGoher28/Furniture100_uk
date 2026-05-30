@@ -195,7 +195,7 @@ const ProductDetail = () => {
 
           {/* 60/40 split */}
           <div className="grid md:grid-cols-5 gap-10 md:gap-16 lg:gap-24">
-            {/* Images — 60% */}
+            {/* Images - 60% */}
             <div className="md:col-span-3 -mx-6 md:mx-0">
               {images.length > 0 ? (
                 <>
@@ -208,7 +208,7 @@ const ProductDetail = () => {
                       >
                         <img
                           src={img.node.url}
-                          alt={img.node.altText || `${product.title} — image ${idx + 1}`}
+                          alt={img.node.altText || `${product.title} - image ${idx + 1}`}
                           className="w-full h-full object-cover"
                           loading={idx === 0 ? "eager" : "lazy"}
                           decoding="async"
@@ -225,7 +225,7 @@ const ProductDetail = () => {
                       >
                         <img
                           src={img.node.url}
-                          alt={img.node.altText || `${product.title} — image ${idx + 1}`}
+                          alt={img.node.altText || `${product.title} - image ${idx + 1}`}
                           className="w-full h-full object-cover"
                           loading={idx === 0 ? "eager" : "lazy"}
                           decoding="async"
@@ -241,7 +241,7 @@ const ProductDetail = () => {
               )}
             </div>
 
-            {/* Details — 40% */}
+            {/* Details - 40% */}
             <div className="md:col-span-2">
               {/* Title row with wishlist */}
               <div className="flex items-start justify-between gap-4">
@@ -347,7 +347,7 @@ const ProductDetail = () => {
                 </div>
               )}
 
-              {/* Quantity + Add to basket — desktop */}
+              {/* Quantity + Add to basket - desktop */}
               <div className="mt-8 hidden md:flex items-stretch gap-3">
                 <div className="flex items-center gap-1 px-3 h-14 rounded-full border border-border">
                   <button
@@ -469,7 +469,7 @@ const ProductDetail = () => {
         </div>
       </main>
 
-      {/* Mobile sticky bar — price left, CTA right */}
+      {/* Mobile sticky bar - price left, CTA right */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border px-4 py-3 md:hidden">
         <div className="flex items-center gap-3">
           <div className="shrink-0">

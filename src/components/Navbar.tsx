@@ -173,7 +173,7 @@ export const Navbar = () => {
         </div>
       )}
 
-      {/* Mega menu — type-only, calm */}
+      {/* Mega menu - type-only, calm */}
       {megaOpen && (
         <div
           className="absolute left-0 right-0 bg-background border-t border-border animate-fade-in"

@@ -5,7 +5,7 @@ const FEATURED = {
 };
 
 const SECONDARY = [
-  { text: "Gorgeous chair, exactly as described. Fast delivery — would definitely order again.", name: "Becky C." },
+  { text: "Gorgeous chair, exactly as described. Fast delivery - would definitely order again.", name: "Becky C." },
   { text: "Beautiful piece of furniture. The colour is spot on and it's incredibly comfortable.", name: "Karen T." },
   { text: "Absolutely love this sofa. A real statement piece and brilliant quality for the price.", name: "Samantha C." },
 ];

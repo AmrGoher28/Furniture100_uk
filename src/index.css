@@ -9,12 +9,12 @@
     /* Near-black foreground #111 */
     --foreground: 0 0% 7%;
 
-    /* Warm cream surfaces — editorial backgrounds */
+    /* Warm cream surfaces - editorial backgrounds */
     --cream: 40 30% 94%;
     --cream-deep: 38 28% 90%;
     --olive: 75 18% 35%;
 
-    /* Cool neutral surfaces — zero hue, no warmth */
+    /* Cool neutral surfaces - zero hue, no warmth */
     --card: 240 5% 96%;
     --card-foreground: 0 0% 7%;
 
@@ -99,7 +99,7 @@
 }
 
 @layer utilities {
-  /* Legacy shadow utilities flattened — keep names so existing classNames still compile */
+  /* Legacy shadow utilities flattened - keep names so existing classNames still compile */
   .warm-shadow { box-shadow: none; }
   .warm-shadow-lg { box-shadow: none; }
 

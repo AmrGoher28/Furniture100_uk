@@ -72,7 +72,7 @@ export const ProductAITools = ({
         <DialogHeader>
           <DialogTitle className="font-serif flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-primary" />
-            AI Tools — {product.title}
+            AI Tools - {product.title}
           </DialogTitle>
         </DialogHeader>
 
@@ -109,7 +109,7 @@ export const ProductAITools = ({
                   size="sm"
                   onClick={() => {
                     onApplyDescription(textResult);
-                    toast.success("Description applied — save the product to confirm");
+                    toast.success("Description applied - save the product to confirm");
                   }}
                 >
                   Apply as Description

@@ -14,7 +14,7 @@ const Index = () => {
   return (
     <Layout>
       <Seo
-        title="Furniture100 — Premium Furniture. Delivered Nationwide."
+        title="Furniture100 - Premium Furniture. Delivered Nationwide."
         description="Premium UK furniture: mid-century, vintage style and contemporary sofas, lounge chairs, dining, lighting and more. Free nationwide delivery."
         path="/"
         jsonLd={{
