@@ -200,10 +200,14 @@ const ProductDetail = () => {
               {images.length > 0 ? (
                 <>
                   {/* Mobile: horizontal scroll, full-bleed */}
-                  <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+                  <div
+                    id="pd-mobile-scroller"
+                    className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                  >
                     {images.map((img, idx) => (
                       <div
                         key={idx}
+                        data-pd-slide={idx}
                         className="relative w-full shrink-0 snap-center aspect-square bg-[#FAFAFA] overflow-hidden"
                       >
                         <img
@@ -216,6 +220,32 @@ const ProductDetail = () => {
                       </div>
                     ))}
                   </div>
+                  {/* Mobile: preview thumbnails strip */}
+                  {images.length > 1 && (
+                    <div className="md:hidden flex gap-2 overflow-x-auto scrollbar-hide px-6 mt-3">
+                      {images.map((img, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => {
+                            const scroller = document.getElementById("pd-mobile-scroller");
+                            const slide = scroller?.querySelector(`[data-pd-slide="${idx}"]`) as HTMLElement | null;
+                            slide?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+                          }}
+                          className="shrink-0 w-16 h-16 bg-[#FAFAFA] overflow-hidden border border-border/60"
+                          aria-label={`View image ${idx + 1}`}
+                        >
+                          <img
+                            src={img.node.url}
+                            alt=""
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  )}
                   {/* Desktop: 2-column grid */}
                   <div className="hidden md:grid grid-cols-2 gap-0.5">
                     {images.map((img, idx) => (
@@ -240,6 +270,7 @@ const ProductDetail = () => {
                 </div>
               )}
             </div>
+
 
             {/* Details - 40% */}
             <div className="md:col-span-2">
