@@ -9,6 +9,11 @@
     /* Near-black foreground #111 */
     --foreground: 0 0% 7%;
 
+    /* Warm cream surfaces — editorial backgrounds */
+    --cream: 40 30% 94%;
+    --cream-deep: 38 28% 90%;
+    --olive: 75 18% 35%;
+
     /* Cool neutral surfaces — zero hue, no warmth */
     --card: 240 5% 96%;
     --card-foreground: 0 0% 7%;
@@ -85,6 +90,12 @@
   }
 
   h1 { letter-spacing: -0.035em; }
+
+  .font-serif-display {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
 }
 
 @layer utilities {

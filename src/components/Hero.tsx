@@ -1,73 +1,41 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
   return (
-    <section className="bg-background text-foreground">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-8 md:py-12 animate-fade-in">
-        <div className="grid grid-cols-12 border-t border-border">
-          {/* Headline */}
-          <div className="col-span-12 py-10 md:py-24 border-b border-border">
-            <h1
-              className="font-semibold tracking-tighter leading-[0.9]"
-              style={{ fontSize: "clamp(2.5rem, 9vw, 7.5rem)", letterSpacing: "-0.04em" }}
-            >
-              Premium Furniture.<br />
-              Delivered Nationwide.
-            </h1>
-          </div>
+    <section className="bg-cream text-foreground">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 py-20 md:py-32 text-center animate-fade-in">
+        <p className="text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-foreground/60 font-medium mb-8">
+          Furniture100 · Collection 2026
+        </p>
+        <h1
+          className="font-serif-display text-foreground"
+          style={{
+            fontSize: "clamp(2.25rem, 6vw, 5rem)",
+            lineHeight: 1.05,
+            letterSpacing: "-0.01em",
+            fontWeight: 500,
+          }}
+        >
+          FURNITURE100 CURATES <em className="italic font-normal">timeless</em> COLLECTIONS
+          <br className="hidden md:block" />
+          OF <em className="italic font-normal">premium design;</em> CRAFTED FOR
+          <br className="hidden md:block" />
+          THE <em className="italic font-normal">modern</em> HOME.
+        </h1>
 
-          {/* Main image placeholder */}
-          <div className="col-span-12 md:col-span-8 md:border-r border-b border-border bg-[#FAFAFA] aspect-[16/10] md:aspect-[16/9] flex items-center justify-center relative">
-            <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.2em] text-foreground/30">
-              Feature 01
-            </span>
-            <div className="w-full h-full bg-[#ECECEC] flex items-center justify-center">
-              <span className="text-xs uppercase tracking-[0.2em] text-foreground/40">
-                Main Image
-              </span>
-            </div>
-          </div>
-
-          {/* Right column: copy + detail + CTA */}
-          <div className="col-span-12 md:col-span-4 border-b border-border p-6 md:p-8 flex flex-col justify-between bg-background gap-8">
-            <div className="space-y-6">
-              <p className="text-sm leading-relaxed text-foreground/60 max-w-[280px] font-light">
-                Curated collections of timeless design, crafted for the modern home. Sourced
-                globally, shipped directly to your door.
-              </p>
-              <div className="w-full aspect-square bg-[#FAFAFA] border border-border flex items-center justify-center">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-foreground/40">
-                  Detail 02
-                </span>
-              </div>
-            </div>
-
-            <Link
-              to="/shop"
-              className="group flex items-center justify-between border border-foreground px-6 py-4 transition-colors duration-300 hover:bg-foreground hover:text-background"
-            >
-              <span className="text-xs font-bold uppercase tracking-[0.2em]">Shop Now</span>
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" strokeWidth={1.5} />
-            </Link>
-          </div>
-
-          {/* Meta footer */}
-          <div className="col-span-12 flex justify-between items-center py-5 text-[10px] uppercase tracking-[0.25em] text-foreground/50 border-b border-border">
-            <div className="flex gap-6 md:gap-12 items-center">
-              <span className="text-foreground font-semibold">Collection 2026</span>
-              <div className="hidden sm:flex gap-4">
-                <span className="text-foreground">01</span>
-                <span>02</span>
-                <span>03</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span>Scroll</span>
-              <div className="w-px h-6 bg-border" />
-              <div className="w-px h-10 bg-foreground" />
-            </div>
-          </div>
+        <div className="mt-12 flex items-center justify-center gap-4">
+          <Link
+            to="/shop"
+            className="inline-flex items-center justify-center rounded-full bg-foreground text-background px-8 py-3.5 text-xs tracking-[0.18em] uppercase font-medium hover:bg-foreground/85 transition-colors"
+          >
+            Shop Collection
+          </Link>
+          <Link
+            to="/about"
+            className="inline-flex items-center justify-center rounded-full border border-foreground/30 text-foreground px-8 py-3.5 text-xs tracking-[0.18em] uppercase font-medium hover:border-foreground transition-colors"
+          >
+            Our Story
+          </Link>
         </div>
       </div>
     </section>
