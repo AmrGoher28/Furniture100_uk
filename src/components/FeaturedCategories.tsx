@@ -27,7 +27,7 @@ export const FeaturedCategories = () => {
                 alt={cat.name}
                 loading="lazy"
                 decoding="async"
-                className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04] ${i === 0 ? 'object-[75%_center]' : i === 2 ? 'object-[center_20%]' : ''}`}
+                className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04] ${i === 0 ? 'object-[75%_center]' : i === 2 ? 'object-[center_60%]' : ''}`}
               />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center text-[10px] uppercase tracking-[0.2em] text-foreground/30">
