@@ -19,7 +19,7 @@ export interface Category {
 
 export const CATEGORIES: Category[] = [
   {
-    name: "Lounge Chairs",
+    name: "Accent & Lounge Chairs",
     slug: "lounge-chairs",
     image: categoryLoungeChairs,
     subcategories: [
