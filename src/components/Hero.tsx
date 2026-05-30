@@ -51,7 +51,6 @@ export const Hero = () => {
         muted
         loop
         playsInline
-        webkit-playsinline="true"
         preload="auto"
         controls={false}
         controlsList="nodownload nofullscreen noremoteplayback"
