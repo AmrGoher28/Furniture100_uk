@@ -217,7 +217,7 @@ const ProductDetail = () => {
                     ))}
                   </div>
                   {/* Desktop: 2-column grid */}
-                  <div className="hidden md:grid grid-cols-2 gap-0">
+                  <div className="hidden md:grid grid-cols-2 gap-0.5">
                     {images.map((img, idx) => (
                       <div
                         key={idx}
