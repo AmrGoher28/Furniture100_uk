@@ -1,5 +1,5 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { requireAdmin } from "../_shared/admin-auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -25,20 +25,6 @@ type ShopifyTokenCandidate = {
   name: string;
   value: string;
 };
-
-function createAuthClient(req: Request) {
-  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-  const supabasePublishableKey = Deno.env.get("SUPABASE_PUBLISHABLE_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "";
-  const authHeader = req.headers.get("Authorization");
-
-  if (!authHeader || !supabasePublishableKey) {
-    return null;
-  }
-
-  return createClient(supabaseUrl, supabasePublishableKey, {
-    global: { headers: { Authorization: authHeader } },
-  });
-}
 
 function getShopifyTokenCandidates(): ShopifyTokenCandidate[] {
   const env = Deno.env.toObject();
@@ -98,18 +84,10 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabase = createAuthClient(req);
-    if (!supabase) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
+    const auth = await requireAdmin(req);
+    if (!auth.ok) {
+      return new Response(JSON.stringify({ error: auth.error }), {
+        status: auth.status,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
