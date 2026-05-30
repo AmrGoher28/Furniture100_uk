@@ -18,6 +18,9 @@ import { useAdminMode } from "@/hooks/useAdminMode";
 import { useProductOverrides } from "@/hooks/useProductOverrides";
 import InlineEditor from "@/components/admin/InlineEditor";
 import { toast } from "sonner";
+import ProductStars from "@/components/ProductStars";
+import { productRating } from "@/lib/productRating";
+
 
 interface ProductNode {
   id: string;
