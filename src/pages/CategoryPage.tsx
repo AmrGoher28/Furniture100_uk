@@ -101,6 +101,13 @@ const CategoryPage = () => {
     return () => observerRef.current?.disconnect();
   }, [loadMore]);
 
+  // When user picks a non-default sort, eagerly load remaining pages so the sort applies to the full catalogue.
+  useEffect(() => {
+    if (sort !== "featured" && pageInfo.hasNextPage && !loadingMore && !usedDbMapping) {
+      loadMore();
+    }
+  }, [sort, pageInfo.hasNextPage, loadingMore, usedDbMapping, loadMore]);
+
   const baseProducts = category && !usedDbMapping
     ? products.filter((p) => {
         const t = p.node.title.toLowerCase();
