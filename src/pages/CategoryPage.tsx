@@ -349,7 +349,7 @@ const CategoryPage = () => {
             <>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 md:gap-x-5 gap-y-12 md:gap-y-14">
                 {paginatedProducts.map((product, idx) => {
-                  const available = product.node.availableForSale;
+                  const available = product.node.variants.edges.some((v) => v.node.availableForSale);
                   const status = available ? "In Stock" : "Pre-order";
                   return (
                     <ProductCard
