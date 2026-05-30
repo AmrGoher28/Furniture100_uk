@@ -29,7 +29,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const { isAdmin, setShowLogin } = useAdminMode();
+  const { isAdmin } = useAdminMode();
 
   const handleMouseEnterShop = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);

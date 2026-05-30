@@ -6,7 +6,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useCartSync } from "@/hooks/useCartSync";
 import { AdminProvider, useAdminMode } from "@/hooks/useAdminMode";
-import AdminLoginModal from "@/components/admin/AdminLoginModal";
 import AdminBadge from "@/components/admin/AdminBadge";
 import Index from "./pages/Index";
 
@@ -31,13 +30,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const queryClient = new QueryClient();
 
 const AdminOverlay = () => {
-  const { isAdmin, showLogin, setShowLogin, login, logout } = useAdminMode();
-  return (
-    <>
-      <AdminLoginModal open={showLogin} onClose={() => setShowLogin(false)} onLogin={login} />
-      {isAdmin && <AdminBadge onExit={logout} />}
-    </>
-  );
+  const { isAdmin, logout } = useAdminMode();
+  return <>{isAdmin && <AdminBadge onExit={logout} />}</>;
 };
 
 const AppContent = () => {
