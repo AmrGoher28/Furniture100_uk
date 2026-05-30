@@ -449,6 +449,14 @@ const ProductDetail = () => {
                   </div>
                   <span className="text-sm text-foreground/80">Dispatched within 24hrs</span>
                 </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
+                    <Leaf className="w-4 h-4 text-foreground/70" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-sm text-foreground/80">Sustainable Item</span>
+                </div>
+
+
 
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
