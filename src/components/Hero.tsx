@@ -1,19 +1,31 @@
 import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     v.muted = true;
     v.defaultMuted = true;
+    v.controls = false;
+
+    const markPlaying = () => setIsVideoPlaying(true);
+    const markStopped = () => setIsVideoPlaying(false);
     const tryPlay = () => v.play().catch(() => {});
+
+    v.addEventListener("playing", markPlaying);
+    v.addEventListener("pause", markStopped);
+    v.addEventListener("stalled", markStopped);
     tryPlay();
     document.addEventListener("touchstart", tryPlay, { once: true });
     document.addEventListener("click", tryPlay, { once: true });
     return () => {
+      v.removeEventListener("playing", markPlaying);
+      v.removeEventListener("pause", markStopped);
+      v.removeEventListener("stalled", markStopped);
       document.removeEventListener("touchstart", tryPlay);
       document.removeEventListener("click", tryPlay);
     };
@@ -21,16 +33,26 @@ export const Hero = () => {
 
   return (
     <section className="relative bg-cream text-foreground overflow-hidden">
+      <img
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        src="/videos/hero-bg-poster.webp"
+        alt=""
+        aria-hidden="true"
+      />
       <video
         ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300 ${
+          isVideoPlaying ? "opacity-100" : "opacity-0"
+        }`}
         src="/videos/hero-bg.mp4"
+        poster="/videos/hero-bg-poster.webp"
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
         controls={false}
+        controlsList="nodownload nofullscreen noremoteplayback"
         disablePictureInPicture
         aria-hidden="true"
       />
