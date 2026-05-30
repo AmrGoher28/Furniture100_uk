@@ -38,6 +38,10 @@ export const Hero = () => {
         src="/videos/hero-bg-poster.webp"
         alt=""
         aria-hidden="true"
+        fetchPriority="high"
+        decoding="async"
+        width={1920}
+        height={1080}
       />
       <video
         ref={videoRef}

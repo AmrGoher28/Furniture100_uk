@@ -1,0 +1,24 @@
+# Furniture100
+
+> Furniture100 is a UK online furniture boutique offering lounge chairs, dining furniture, bar stools, office chairs and accent pieces with free UK delivery and 30-day returns.
+
+## Pages
+
+- [Home](/): Curated collections and featured furniture.
+- [Shop](/shop): Browse the full Furniture100 catalogue.
+- [About](/about): Our story, values, and design philosophy.
+- [Delivery](/delivery): Free UK delivery info, lead times and tracking.
+- [Returns](/returns): 30-day return policy and how to arrange collection.
+- [Contact](/contact): Get in touch with our team.
+
+## Categories
+
+- [Accent & Lounge Chairs](/category/lounge-chairs): Statement seating and accent chairs.
+- [Dining](/category/dining): Dining tables, chairs and sets.
+- [Bar Stools](/category/bar-stools): Counter and bar height stools.
+- [Office Chairs](/category/office-chairs): Ergonomic and design-led office seating.
+
+## Optional
+
+- [Privacy](/privacy): Privacy policy.
+- [Terms](/terms): Terms of service.

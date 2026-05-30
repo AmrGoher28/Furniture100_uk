@@ -33,10 +33,13 @@ export const CartDrawer = () => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <button className="relative p-2">
-          <ShoppingBag className="h-5 w-5" strokeWidth={1.5} />
+        <button
+          className="relative p-2"
+          aria-label={totalItems > 0 ? `Open shopping bag, ${totalItems} item${totalItems !== 1 ? "s" : ""}` : "Open shopping bag"}
+        >
+          <ShoppingBag className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
           {totalItems > 0 && (
-            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
+            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center" aria-hidden="true">
               {totalItems}
             </span>
           )}
@@ -71,8 +74,8 @@ export const CartDrawer = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start">
                         <h4 className="text-sm font-normal">{item.product.node.title}</h4>
-                        <button onClick={() => removeItem(item.variantId)} className="p-1 text-muted-foreground hover:text-foreground">
-                          <X className="h-3.5 w-3.5" />
+                        <button onClick={() => removeItem(item.variantId)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Remove ${item.product.node.title} from bag`}>
+                          <X className="h-3.5 w-3.5" aria-hidden="true" />
                         </button>
                       </div>
                       {item.selectedOptions.length > 0 && item.selectedOptions[0].value !== "Default Title" && (
@@ -80,12 +83,12 @@ export const CartDrawer = () => {
                       )}
                       <p className="text-sm mt-1">{item.price.currencyCode} {parseFloat(item.price.amount).toFixed(2)}</p>
                       <div className="flex items-center gap-3 mt-3">
-                        <button onClick={() => updateQuantity(item.variantId, item.quantity - 1)} className="w-7 h-7 border border-border rounded-md flex items-center justify-center hover:bg-card transition-colors">
-                          <Minus className="h-3 w-3" />
+                        <button onClick={() => updateQuantity(item.variantId, item.quantity - 1)} className="w-7 h-7 border border-border rounded-md flex items-center justify-center hover:bg-card transition-colors" aria-label="Decrease quantity">
+                          <Minus className="h-3 w-3" aria-hidden="true" />
                         </button>
-                        <span className="text-xs w-4 text-center">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.variantId, item.quantity + 1)} className="w-7 h-7 border border-border rounded-md flex items-center justify-center hover:bg-card transition-colors">
-                          <Plus className="h-3 w-3" />
+                        <span className="text-xs w-4 text-center" aria-label={`Quantity ${item.quantity}`}>{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.variantId, item.quantity + 1)} className="w-7 h-7 border border-border rounded-md flex items-center justify-center hover:bg-card transition-colors" aria-label="Increase quantity">
+                          <Plus className="h-3 w-3" aria-hidden="true" />
                         </button>
                       </div>
                     </div>

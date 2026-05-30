@@ -259,8 +259,11 @@ const MakeOfferModal = (props: MakeOfferModalProps) => {
   const isMobile = useIsMobile();
 
   const trigger = (
-    <button className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4">
-      <Tag className="w-3.5 h-3.5" />
+    <button
+      className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
+      aria-label={`Make an offer on ${props.productTitle}`}
+    >
+      <Tag className="w-3.5 h-3.5" aria-hidden="true" />
       Make an Offer
     </button>
   );
