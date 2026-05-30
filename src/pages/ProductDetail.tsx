@@ -4,7 +4,7 @@ import { storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY, createShopifyCart } from
 import { useCartStore } from "@/stores/cartStore";
 import { Layout } from "@/components/Layout";
 import { Seo } from "@/components/Seo";
-import { Loader2, Heart, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
+import { Loader2, Heart, ChevronLeft, ChevronRight, Minus, Plus, Package, ShoppingBag, Leaf, Briefcase } from "lucide-react";
 import MakeOfferModal from "@/components/MakeOfferModal";
 import ProductReviews from "@/components/ProductReviews";
 import SimilarProducts from "@/components/SimilarProducts";
