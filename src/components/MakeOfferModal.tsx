@@ -248,7 +248,7 @@ const OfferForm = ({
         )}
       </Button>
       <p className="text-[11px] text-muted-foreground text-center -mt-2">
-        No obligation — we'll respond within 24 hours
+        No obligation - we'll respond within 24 hours
       </p>
     </form>
   );

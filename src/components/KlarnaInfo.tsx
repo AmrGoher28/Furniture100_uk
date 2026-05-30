@@ -69,9 +69,9 @@ const KlarnaInfo = ({ price }: KlarnaInfoProps) => {
             </div>
             <div className="divide-y divide-border/30">
               {[
-                { label: "1st payment — today", amount: monthly },
-                { label: "2nd payment — 30 days", amount: monthly },
-                { label: "3rd payment — 60 days", amount: monthly },
+                { label: "1st payment - today", amount: monthly },
+                { label: "2nd payment - 30 days", amount: monthly },
+                { label: "3rd payment - 60 days", amount: monthly },
               ].map((item, i) => (
                 <div
                   key={i}

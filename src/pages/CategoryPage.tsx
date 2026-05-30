@@ -171,7 +171,7 @@ const CategoryPage = () => {
   const seoTitle = slug ? `${title} | Furniture100` : "Shop All Furniture | Furniture100";
   const seoDesc = slug
     ? `Shop premium ${title.toLowerCase()} at Furniture100. Free UK delivery and 30-day returns on every order.`
-    : "Browse our full collection of premium furniture — sofas, lounge chairs, dining, lighting and more. Free UK delivery.";
+    : "Browse our full collection of premium furniture - sofas, lounge chairs, dining, lighting and more. Free UK delivery.";
 
   return (
     <Layout>

@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { CATEGORIES } from "@/lib/categories";
 
-// Bento mosaic — bar stools gets a large feature tile
+// Bento mosaic - bar stools gets a large feature tile
 const TILES = [
-  { ...CATEGORIES[0], span: "md:col-span-5 md:row-span-2" }, // Lounge Chairs — tall
-  { ...CATEGORIES[3], span: "md:col-span-7 md:row-span-2" }, // Bar Stools — large feature
-  { ...CATEGORIES[1], span: "md:col-span-6" },               // Office Chairs — wide
-  { ...CATEGORIES[2], span: "md:col-span-6" },               // Dining Chairs — wide
+  { ...CATEGORIES[0], span: "md:col-span-5 md:row-span-2" }, // Lounge Chairs - tall
+  { ...CATEGORIES[3], span: "md:col-span-7 md:row-span-2" }, // Bar Stools - large feature
+  { ...CATEGORIES[1], span: "md:col-span-6" },               // Office Chairs - wide
+  { ...CATEGORIES[2], span: "md:col-span-6" },               // Dining Chairs - wide
 ];
 
 export const FeaturedCategories = () => {

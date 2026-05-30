@@ -14,7 +14,7 @@ interface ProductCardProps {
 }
 
 /**
- * Cult-style editorial product card — soft cream tile, top badge,
+ * Cult-style editorial product card - soft cream tile, top badge,
  * wishlist heart, status strip at bottom of image, title, subtitle, price.
  */
 export const ProductCard = ({
@@ -65,7 +65,7 @@ export const ProductCard = ({
       setBgColor(`rgb(${Math.round(avg.r / n)}, ${Math.round(avg.g / n)}, ${Math.round(avg.b / n)})`);
       detectedRef.current = true;
     } catch {
-      // CORS-tainted canvas — keep fallback
+      // CORS-tainted canvas - keep fallback
     }
   };
 
