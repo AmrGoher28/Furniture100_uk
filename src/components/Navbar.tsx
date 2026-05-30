@@ -98,7 +98,7 @@ export const Navbar = () => {
             <SheetContent side="left" className="w-80 bg-background p-0 overflow-y-auto">
               <div className="px-6 py-5 border-b border-border">
                 <Link to="/" onClick={() => setMobileOpen(false)}>
-                  <span className="text-[13px] font-medium tracking-[0.22em] uppercase text-foreground">
+                  <span className="text-[15px] font-bold tracking-[0.22em] uppercase text-foreground">
                     Furniture100
                   </span>
                 </Link>
