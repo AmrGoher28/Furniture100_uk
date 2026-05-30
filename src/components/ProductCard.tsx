@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
+import { useState, useRef } from "react";
 import type { ShopifyProduct } from "@/lib/shopify";
 
 interface ProductCardProps {
