@@ -1,8 +1,6 @@
 import categoryLoungeChairs from "@/assets/category-lounge-chairs.webp";
-import categorySofas from "@/assets/category-sofas.webp";
 import categoryOfficeChairs from "@/assets/category-office-chairs.webp";
 import categoryDining from "@/assets/category-dining.webp";
-import categoryMirrors from "@/assets/category-mirrors.webp";
 import categoryBarStools from "@/assets/category-bar-stools.webp";
 
 export interface SubCategory {
