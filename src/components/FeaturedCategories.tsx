@@ -34,9 +34,9 @@ export const FeaturedCategories = () => {
                   Placeholder
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20" />
-              <div className="absolute top-5 left-5 md:top-7 md:left-7">
-                <h3 className="text-white text-base md:text-xl font-medium tracking-tight uppercase">
+              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/15 to-black/45" />
+              <div className="absolute top-5 left-5 md:top-7 md:left-7 pr-6">
+                <h3 className="text-white text-base md:text-xl font-medium tracking-tight uppercase [text-shadow:0_2px_12px_rgba(0,0,0,0.55)]">
                   {cat.name}
                 </h3>
               </div>
