@@ -17,7 +17,7 @@ export const Hero = () => {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(200,160,70,0.45) 0%, rgba(225,190,100,0.38) 40%, rgba(160,120,50,0.48) 100%)",
+            "linear-gradient(135deg, rgba(180,140,70,0.18) 0%, rgba(212,178,110,0.14) 50%, rgba(120,85,40,0.20) 100%)",
         }}
         aria-hidden="true"
       />
