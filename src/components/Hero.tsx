@@ -61,23 +61,25 @@ export const Hero = () => {
         width={1920}
         height={1080}
       />
-      <video
-        ref={videoRef}
-        className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300 ${
-          isVideoPlaying ? "opacity-100" : "opacity-0"
-        }`}
-        src="/videos/hero-bg.mp4"
-        poster="/videos/hero-bg-poster.webp"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        controls={false}
-        controlsList="nodownload nofullscreen noremoteplayback"
-        disablePictureInPicture
-        aria-hidden="true"
-      />
+      {shouldLoadVideo && (
+        <video
+          ref={videoRef}
+          className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500 ${
+            isVideoPlaying ? "opacity-100" : "opacity-0"
+          }`}
+          src="/videos/hero-bg.mp4"
+          poster="/videos/hero-bg-poster.webp"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          controls={false}
+          controlsList="nodownload nofullscreen noremoteplayback"
+          disablePictureInPicture
+          aria-hidden="true"
+        />
+      )}
       <div
         className="absolute inset-0"
         style={{
