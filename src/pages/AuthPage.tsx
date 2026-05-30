@@ -27,7 +27,7 @@ const AuthPage = () => {
         navigate("/account");
       }
     } else {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: { emailRedirectTo: window.location.origin },
@@ -35,8 +35,17 @@ const AuthPage = () => {
       if (error) {
         toast.error(error.message);
       } else {
-        toast.success("Check your email to verify your account");
-        toast.success("Your 10% discount code: WELCOME10", { duration: 10000 });
+        toast.success("Welcome! Your 10% code: WELCOME10", { duration: 10000 });
+        if (data.session) {
+          navigate("/account");
+        } else {
+          const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+          if (signInError) {
+            toast.info("Check your email to verify your account");
+          } else {
+            navigate("/account");
+          }
+        }
       }
     }
     setLoading(false);
