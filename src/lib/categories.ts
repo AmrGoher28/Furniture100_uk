@@ -3,6 +3,7 @@ import categorySofas from "@/assets/category-sofas.webp";
 import categoryOfficeChairs from "@/assets/category-office-chairs.webp";
 import categoryDining from "@/assets/category-dining.webp";
 import categoryMirrors from "@/assets/category-mirrors.webp";
+import categoryBarStools from "@/assets/category-bar-stools.webp";
 
 export interface SubCategory {
   name: string;
@@ -51,7 +52,7 @@ export const CATEGORIES: Category[] = [
   {
     name: "Bar Stools",
     slug: "bar-stools",
-    image: "https://images.unsplash.com/photo-1611464908623-07f19927264e?w=800&q=75&fm=webp",
+    image: categoryBarStools,
     subcategories: [
       { name: "Counter Stools", slug: "counter-stools" },
       { name: "Swivel Bar Stools", slug: "swivel-bar-stools" },
