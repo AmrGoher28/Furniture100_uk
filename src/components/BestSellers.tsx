@@ -32,8 +32,8 @@ export const BestSellers = () => {
   }, []);
 
   return (
-    <section id="best-sellers" className="py-24 md:py-32 px-6 md:px-12 bg-background">
-      <div className="max-w-7xl mx-auto">
+    <section id="best-sellers" className="py-24 md:py-32 px-3 md:px-6 bg-background">
+      <div className="max-w-[1800px] mx-auto">
         <SectionHeader
           eyebrow="Trending"
           title="Products"
@@ -51,9 +51,9 @@ export const BestSellers = () => {
             <p className="text-sm text-muted-foreground">No products found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 md:gap-x-8 gap-y-14 md:gap-y-20">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-3 md:gap-x-4 gap-y-14 md:gap-y-20">
             {products.map((product) => (
-              <ProductCard key={product.node.id} product={product} />
+              <ProductCard key={product.node.id} product={product} largeImage />
             ))}
           </div>
         )}
