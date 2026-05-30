@@ -1,0 +1,3 @@
+CREATE POLICY "Admins can insert product categories" ON public.product_categories FOR INSERT TO authenticated WITH CHECK (has_role(auth.uid(), 'admin'::app_role));
+CREATE POLICY "Admins can update product categories" ON public.product_categories FOR UPDATE TO authenticated USING (has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (has_role(auth.uid(), 'admin'::app_role));
+CREATE POLICY "Admins can delete product categories" ON public.product_categories FOR DELETE TO authenticated USING (has_role(auth.uid(), 'admin'::app_role));
