@@ -33,6 +33,7 @@ const Index = () => {
 
       <Hero />
       <TrustBar />
+      <CategoryNav />
       <FeaturedCategories />
       <div id="best-sellers">
         <BestSellers />
