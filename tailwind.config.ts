@@ -53,6 +53,11 @@ export default {
           DEFAULT: "hsl(var(--walnut))",
           dark: "hsl(var(--walnut-dark))",
         },
+        cream: {
+          DEFAULT: "hsl(var(--cream))",
+          deep: "hsl(var(--cream-deep))",
+        },
+        olive: "hsl(var(--olive))",
         sale: "hsl(var(--sale))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

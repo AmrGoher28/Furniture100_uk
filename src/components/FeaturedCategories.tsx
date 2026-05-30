@@ -1,29 +1,31 @@
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import { CATEGORIES } from "@/lib/categories";
-import { SectionHeader } from "./SectionHeader";
 
-const FEATURED = [CATEGORIES[0], CATEGORIES[1], CATEGORIES[2]];
+// Bento mosaic — 3 cols on row 1, 2 cols on row 2, 3 cols on row 3
+const TILES = [
+  { ...CATEGORIES[0], span: "md:col-span-4 md:row-span-1" },
+  { ...CATEGORIES[1], span: "md:col-span-4 md:row-span-1" },
+  { ...CATEGORIES[5], span: "md:col-span-4 md:row-span-1" },
+  { ...CATEGORIES[3], span: "md:col-span-6" },
+  { ...CATEGORIES[2], span: "md:col-span-6" },
+  { ...CATEGORIES[4], span: "md:col-span-4" },
+  { ...CATEGORIES[6], span: "md:col-span-4" },
+  { ...CATEGORIES[0], span: "md:col-span-4", name: "New Arrivals", slug: "shop" },
+];
 
 export const FeaturedCategories = () => {
   return (
-    <section className="py-24 md:py-32 bg-background">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-14 md:mb-20">
-        <SectionHeader eyebrow="Categories" title="Shop by category." linkLabel="View all" linkHref="/shop" />
-      </div>
-
-      {/* Mobile: horizontal scroll */}
-      <div className="md:hidden">
-        <div
-          className="flex gap-4 overflow-x-auto px-6 snap-x snap-mandatory"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
-        >
-          {CATEGORIES.slice(0, 6).map((cat) => (
+    <section className="py-20 md:py-28 bg-background">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-2 md:gap-3 auto-rows-[200px] md:auto-rows-[300px]">
+          {TILES.map((cat, i) => (
             <Link
-              key={cat.slug}
-              to={`/category/${cat.slug}`}
-              className="group flex-shrink-0 w-[180px] snap-start"
+              key={`${cat.slug}-${i}`}
+              to={cat.slug === "shop" ? "/shop" : `/category/${cat.slug}`}
+              className={`group relative overflow-hidden bg-cream-deep ${cat.span}`}
             >
-              <div className="relative overflow-hidden bg-[#FAFAFA] aspect-square mb-3">
+              {cat.image ? (
                 <img
                   src={cat.image}
                   alt={cat.name}
@@ -31,28 +33,22 @@ export const FeaturedCategories = () => {
                   decoding="async"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                 />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center text-[10px] uppercase tracking-[0.2em] text-foreground/30">
+                  Placeholder
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20" />
+              <div className="absolute top-5 left-5 md:top-7 md:left-7">
+                <h3 className="text-white text-base md:text-xl font-medium tracking-tight uppercase">
+                  {cat.name}
+                </h3>
               </div>
-              <p className="text-[11px] tracking-[0.15em] uppercase text-foreground font-medium">{cat.name}</p>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Desktop: 3-up editorial grid */}
-      <div className="hidden md:block max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-3 gap-6 lg:gap-10">
-          {FEATURED.map((cat) => (
-            <Link key={cat.slug} to={`/category/${cat.slug}`} className="group flex flex-col">
-              <div className="relative overflow-hidden bg-[#FAFAFA] aspect-square mb-5">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  loading="lazy"
-                  decoding="async"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-                />
+              <div className="absolute bottom-5 right-5 md:bottom-7 md:right-7 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <span className="w-10 h-10 rounded-full bg-white text-foreground flex items-center justify-center">
+                  <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+                </span>
               </div>
-              <p className="text-xs tracking-[0.18em] uppercase text-foreground font-medium">{cat.name}</p>
             </Link>
           ))}
         </div>
