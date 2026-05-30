@@ -7,7 +7,7 @@ import { getCategoryBySlug, CATEGORIES } from "@/lib/categories";
 import { fetchMappingsByCategory } from "@/lib/productCategories";
 import { Loader2, ChevronDown, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
-import shopAllHero from "@/assets/shop-all-hero.png";
+import shopAllHero from "@/assets/shop-all-hero.webp";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
