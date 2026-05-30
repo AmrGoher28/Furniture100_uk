@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
+import lifestyleImage from "@/assets/lifestyle-banner.webp";
 
 export const LifestyleBanner = () => {
   return (
     <section className="relative h-[70vh] md:h-[90vh] min-h-[500px] flex items-end overflow-hidden bg-cream-deep">
-      {/* Placeholder gradient — replace with uploaded image */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cream-deep via-cream to-cream-deep" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-[11px] uppercase tracking-[0.3em] text-foreground/30">
-          Lifestyle Image Placeholder
-        </span>
-      </div>
+      <img
+        src={lifestyleImage}
+        alt="Accent chair in a warm modern living space"
+        className="absolute inset-0 w-full h-full object-cover"
+        loading="lazy"
+      />
+
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/40 to-transparent" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-14 md:pb-20">
