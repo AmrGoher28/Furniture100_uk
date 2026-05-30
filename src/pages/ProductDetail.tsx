@@ -220,10 +220,10 @@ const ProductDetail = () => {
                       </div>
                     ))}
                   </div>
-                  {/* Mobile: preview thumbnails strip */}
+                  {/* Mobile: preview thumbnails strip (limited to fit viewport) */}
                   {images.length > 1 && (
-                    <div className="md:hidden flex gap-2 overflow-x-auto scrollbar-hide px-6 mt-3">
-                      {images.map((img, idx) => (
+                    <div className="md:hidden flex gap-2 px-6 mt-3">
+                      {images.slice(0, 4).map((img, idx) => (
                         <button
                           key={idx}
                           type="button"
@@ -232,7 +232,7 @@ const ProductDetail = () => {
                             const slide = scroller?.querySelector(`[data-pd-slide="${idx}"]`) as HTMLElement | null;
                             slide?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
                           }}
-                          className="shrink-0 w-16 h-16 bg-[#FAFAFA] overflow-hidden border border-border/60"
+                          className="flex-1 aspect-square bg-[#FAFAFA] overflow-hidden border border-border/60"
                           aria-label={`View image ${idx + 1}`}
                         >
                           <img
@@ -246,6 +246,7 @@ const ProductDetail = () => {
                       ))}
                     </div>
                   )}
+
                   {/* Desktop: 2-column grid */}
                   <div className="hidden md:grid grid-cols-2 gap-0.5">
                     {images.map((img, idx) => (
