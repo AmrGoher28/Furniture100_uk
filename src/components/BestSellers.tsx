@@ -35,11 +35,11 @@ export const BestSellers = () => {
     <section id="best-sellers" className="py-24 md:py-32 px-6 md:px-12 bg-background">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
-          eyebrow="Best Sellers"
-          title="The pieces everyone's talking about."
+          eyebrow="Trending"
+          title="Products"
           linkLabel="View all"
           linkHref="/shop"
-          className="mb-14 md:mb-20"
+          className="mb-14 md:mb-16"
         />
 
         {loading ? (
