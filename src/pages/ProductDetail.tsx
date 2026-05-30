@@ -196,7 +196,7 @@ const ProductDetail = () => {
           {/* 60/40 split */}
           <div className="grid md:grid-cols-5 gap-10 md:gap-16 lg:gap-24">
             {/* Images — 60% */}
-            <div className="md:col-span-3 -mx-6 md:ml-[calc(50%-50vw)] md:mr-0">
+            <div className="md:col-span-3 -mx-6 md:mx-0">
               {images.length > 0 ? (
                 <>
                   {/* Mobile: horizontal scroll, full-bleed */}
