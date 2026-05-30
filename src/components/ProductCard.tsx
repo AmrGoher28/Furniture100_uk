@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
+import { useState, useRef } from "react";
 import type { ShopifyProduct } from "@/lib/shopify";
 
 interface ProductCardProps {
@@ -37,13 +38,49 @@ export const ProductCard = ({
       .map((o) => o.value)
       .join(" & ");
 
+  const [bgColor, setBgColor] = useState<string>("#F2F0ED");
+  const detectedRef = useRef(false);
+
+  const handleImgLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    if (detectedRef.current) return;
+    const img = e.currentTarget;
+    try {
+      const canvas = document.createElement("canvas");
+      const w = (canvas.width = 8);
+      const h = (canvas.height = 8);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0, w, h);
+      const samples = [
+        ctx.getImageData(0, 0, 1, 1).data,
+        ctx.getImageData(w - 1, 0, 1, 1).data,
+        ctx.getImageData(0, h - 1, 1, 1).data,
+        ctx.getImageData(w - 1, h - 1, 1, 1).data,
+      ];
+      const avg = samples.reduce(
+        (acc, d) => ({ r: acc.r + d[0], g: acc.g + d[1], b: acc.b + d[2] }),
+        { r: 0, g: 0, b: 0 }
+      );
+      const n = samples.length;
+      setBgColor(`rgb(${Math.round(avg.r / n)}, ${Math.round(avg.g / n)}, ${Math.round(avg.b / n)})`);
+      detectedRef.current = true;
+    } catch {
+      // CORS-tainted canvas — keep fallback
+    }
+  };
+
   return (
     <Link to={`/product/${product.node.handle}`} className="group flex flex-col">
-      <div className={`relative overflow-hidden bg-[#F2F0ED] mb-3 md:mb-4 ${largeImage ? "aspect-[4/5]" : "aspect-[3/4] md:aspect-square"}`}>
+      <div
+        className={`relative overflow-hidden mb-3 md:mb-4 ${largeImage ? "aspect-[4/5]" : "aspect-[3/4] md:aspect-square"}`}
+        style={{ backgroundColor: bgColor }}
+      >
         {firstImg && (
           <img
             src={firstImg.url}
             alt={firstImg.altText || product.node.title}
+            crossOrigin="anonymous"
+            onLoad={handleImgLoad}
             loading={priority ? undefined : "lazy"}
             decoding={priority ? "sync" : "async"}
             fetchPriority={priority ? "high" : undefined}
