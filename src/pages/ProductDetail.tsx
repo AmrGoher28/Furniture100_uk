@@ -12,7 +12,7 @@ import ProductTrustBadges from "@/components/product/ProductTrustBadges";
 import DeliveryBanner from "@/components/product/DeliveryBanner";
 import ProductSpecs from "@/components/product/ProductSpecs";
 import ProductFAQ from "@/components/product/ProductFAQ";
-
+import KlarnaInfo from "@/components/KlarnaInfo";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useAdminMode } from "@/hooks/useAdminMode";
 import { useProductOverrides } from "@/hooks/useProductOverrides";
@@ -406,6 +406,10 @@ const ProductDetail = () => {
                 </p>
               </div>
 
+              {/* Klarna / payment info */}
+              <div className="mt-4 text-xs text-muted-foreground">
+                <KlarnaInfo price={price * quantity} />
+              </div>
 
               {/* Divider */}
               <div className="my-7 h-px bg-border" />
