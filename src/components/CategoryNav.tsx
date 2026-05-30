@@ -5,7 +5,7 @@ export const CategoryNav = () => {
   return (
     <nav
       aria-label="Shop categories"
-      className="border-y border-border bg-background"
+      className="border-b border-border bg-background"
     >
       <div className="container mx-auto px-4">
         <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 py-4 text-sm font-medium tracking-wide">

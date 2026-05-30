@@ -1,7 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { Hero } from "@/components/Hero";
 import { TrustBar } from "@/components/TrustBar";
-import { CategoryNav } from "@/components/CategoryNav";
 import { FeaturedCategories } from "@/components/FeaturedCategories";
 import { BestSellers } from "@/components/BestSellers";
 import { LifestyleBanner } from "@/components/LifestyleBanner";
@@ -33,7 +32,6 @@ const Index = () => {
 
       <Hero />
       <TrustBar />
-      <CategoryNav />
       <FeaturedCategories />
       <div id="best-sellers">
         <BestSellers />
