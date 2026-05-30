@@ -299,26 +299,15 @@ const ProductDetail = () => {
               {/* Divider */}
               <div className="my-7 h-px bg-border" />
 
-              {/* Description (clamped) */}
-              <p className="text-[15px] leading-[1.7] text-foreground/80 line-clamp-3">
-                {description}
+              {isAdmin && (
                 <InlineEditor
                   value={description}
                   onSave={(v) => saveOverride("description", v)}
                   isAdmin={isAdmin}
                   label="Description"
                 />
-              </p>
-              <a
-                href="#full-description"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("full-description")?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }}
-                className="inline-block mt-2 text-sm text-foreground underline underline-offset-4 hover:text-foreground/70"
-              >
-                Read more
-              </a>
+              )}
+
 
               {/* Variant selectors */}
               {meaningfulOptions.length > 0 && (
