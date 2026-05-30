@@ -2,9 +2,21 @@ import { Link } from "react-router-dom";
 
 export const Hero = () => {
   return (
-    <section className="bg-cream text-foreground">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 py-20 md:py-32 text-center animate-fade-in">
-        <p className="text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-foreground/60 font-medium mb-8">
+    <section className="relative bg-cream text-foreground overflow-hidden">
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/videos/hero-bg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      />
+      <div className="absolute inset-0 bg-cream/55" aria-hidden="true" />
+
+      <div className="relative max-w-6xl mx-auto px-6 md:px-12 py-20 md:py-32 text-center animate-fade-in">
+        <p className="text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-foreground/70 font-medium mb-8">
           Furniture100 · Collection 2026
         </p>
         <h1
@@ -28,7 +40,7 @@ export const Hero = () => {
           </Link>
           <Link
             to="/about"
-            className="inline-flex items-center justify-center rounded-full border border-foreground/30 text-foreground px-8 py-3.5 text-xs tracking-[0.18em] uppercase font-medium hover:border-foreground transition-colors"
+            className="inline-flex items-center justify-center rounded-full border border-foreground/40 text-foreground px-8 py-3.5 text-xs tracking-[0.18em] uppercase font-medium hover:border-foreground transition-colors bg-cream/40 backdrop-blur-sm"
           >
             Our Story
           </Link>
