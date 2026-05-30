@@ -1,16 +1,37 @@
 import { Link } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 export const Hero = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.defaultMuted = true;
+    const tryPlay = () => v.play().catch(() => {});
+    tryPlay();
+    document.addEventListener("touchstart", tryPlay, { once: true });
+    document.addEventListener("click", tryPlay, { once: true });
+    return () => {
+      document.removeEventListener("touchstart", tryPlay);
+      document.removeEventListener("click", tryPlay);
+    };
+  }, []);
+
   return (
     <section className="relative bg-cream text-foreground overflow-hidden">
       <video
-        className="absolute inset-0 w-full h-full object-cover"
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         src="/videos/hero-bg.mp4"
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
+        controls={false}
+        disablePictureInPicture
         aria-hidden="true"
       />
       <div
