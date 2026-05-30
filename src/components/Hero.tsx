@@ -13,7 +13,14 @@ export const Hero = () => {
         preload="auto"
         aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-cream/55" aria-hidden="true" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(180,140,70,0.18) 0%, rgba(212,178,110,0.14) 50%, rgba(120,85,40,0.20) 100%)",
+        }}
+        aria-hidden="true"
+      />
 
       <div className="relative max-w-6xl mx-auto px-6 md:px-12 py-20 md:py-32 text-center animate-fade-in">
         <p className="text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-foreground/70 font-medium mb-8">
