@@ -1,3 +1,5 @@
+import { requireAdmin } from "../_shared/admin-auth.ts";
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -16,6 +18,14 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const auth = await requireAdmin(req);
+    if (!auth.ok) {
+      return new Response(JSON.stringify({ error: auth.error }), {
+        status: auth.status,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const parsed = BodySchema.safeParse(await req.json())
     if (!parsed.success) {
       return new Response(JSON.stringify({ error: 'Invalid request' }), {
