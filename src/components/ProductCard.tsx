@@ -78,7 +78,15 @@ export const ProductCard = ({
         </button>
 
         {status && (
-          <div className="absolute bottom-0 inset-x-0 bg-[#A8967A] text-white text-[10px] tracking-[0.2em] uppercase font-medium text-center py-2">
+          <div
+            className={`absolute bottom-0 inset-x-0 text-white text-[10px] tracking-[0.2em] uppercase font-medium text-center py-2 ${
+              statusVariant === "in-stock"
+                ? "bg-[#5E6A45]"
+                : statusVariant === "pre-order"
+                ? "bg-[#A8967A]"
+                : "bg-[#A8967A]"
+            }`}
+          >
             {status}
           </div>
         )}
