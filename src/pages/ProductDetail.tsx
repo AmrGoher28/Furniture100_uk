@@ -198,22 +198,42 @@ const ProductDetail = () => {
             {/* Images — 60% */}
             <div className="md:col-span-3 -mx-6 md:mx-0">
               {images.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
-                  {images.map((img, idx) => (
-                    <div
-                      key={idx}
-                      className="relative aspect-square bg-[#FAFAFA] overflow-hidden"
-                    >
-                      <img
-                        src={img.node.url}
-                        alt={img.node.altText || `${product.title} — image ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                        loading={idx === 0 ? "eager" : "lazy"}
-                        decoding="async"
-                      />
-                    </div>
-                  ))}
-                </div>
+                <>
+                  {/* Mobile: horizontal scroll, full-bleed */}
+                  <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+                    {images.map((img, idx) => (
+                      <div
+                        key={idx}
+                        className="relative w-full shrink-0 snap-center aspect-square bg-[#FAFAFA] overflow-hidden"
+                      >
+                        <img
+                          src={img.node.url}
+                          alt={img.node.altText || `${product.title} — image ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                          loading={idx === 0 ? "eager" : "lazy"}
+                          decoding="async"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  {/* Desktop: 2-column grid */}
+                  <div className="hidden md:grid grid-cols-2 gap-2">
+                    {images.map((img, idx) => (
+                      <div
+                        key={idx}
+                        className="relative aspect-square bg-[#FAFAFA] overflow-hidden"
+                      >
+                        <img
+                          src={img.node.url}
+                          alt={img.node.altText || `${product.title} — image ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                          loading={idx === 0 ? "eager" : "lazy"}
+                          decoding="async"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </>
               ) : (
                 <div className="aspect-square bg-[#FAFAFA] flex items-center justify-center text-muted-foreground text-sm">
                   No image
