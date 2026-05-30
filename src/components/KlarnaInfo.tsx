@@ -18,8 +18,8 @@ const KlarnaInfo = ({ price }: KlarnaInfoProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-full group flex items-center justify-between bg-[#0B0B0B] rounded-xl px-5 py-4 hover:bg-[#1a1a1a] transition-colors text-left">
-          <div className="flex items-center gap-3">
+        <button className="w-full group flex items-center justify-between gap-3 bg-[#0B0B0B] rounded-xl px-5 py-4 hover:bg-[#1a1a1a] transition-colors text-left">
+          <div className="flex items-center gap-3 min-w-0 flex-wrap">
             <span className="text-[13px] text-white/90">
               3 interest-free payments of{" "}
               <span className="font-semibold text-white">£{monthly}</span>{" "}
@@ -32,7 +32,7 @@ const KlarnaInfo = ({ price }: KlarnaInfoProps) => {
               </span>
             </span>
           </div>
-          <Info className="h-[18px] w-[18px] text-white/40 group-hover:text-white/70 transition-colors flex-shrink-0" strokeWidth={1.5} />
+          <Info className="ml-3 h-[18px] w-[18px] text-white/40 group-hover:text-white/70 transition-colors flex-shrink-0" strokeWidth={1.5} />
         </button>
       </DialogTrigger>
 
