@@ -128,6 +128,11 @@ const CategoryPage = () => {
   const sortedProducts = [...displayProducts].sort((a, b) => {
     if (sort === "price-asc") return parseFloat(a.node.priceRange.minVariantPrice.amount) - parseFloat(b.node.priceRange.minVariantPrice.amount);
     if (sort === "price-desc") return parseFloat(b.node.priceRange.minVariantPrice.amount) - parseFloat(a.node.priceRange.minVariantPrice.amount);
+    if (sort === "newest") {
+      const ad = a.node.createdAt ? new Date(a.node.createdAt).getTime() : 0;
+      const bd = b.node.createdAt ? new Date(b.node.createdAt).getTime() : 0;
+      return bd - ad;
+    }
     return 0;
   });
 
