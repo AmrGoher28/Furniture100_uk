@@ -18,23 +18,24 @@ const KlarnaInfo = ({ price }: KlarnaInfoProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-full group flex items-center justify-between gap-3 bg-[#0B0B0B] rounded-xl px-5 py-4 hover:bg-[#1a1a1a] transition-colors text-left">
-          <div className="flex items-center gap-3 min-w-0 flex-wrap">
-            <span className="text-[13px] text-white/90">
-              3 interest-free payments of{" "}
-              <span className="font-semibold text-white">£{monthly}</span>{" "}
-              with
-            </span>
-            {/* Klarna pink pill */}
-            <span className="flex-shrink-0 inline-flex items-center bg-[#FFB3C7] rounded-md px-2 py-0.5">
-              <span className="text-[#0B0B0B] font-bold text-[12px] tracking-tight leading-none">
+        <button className="w-full group flex items-center justify-between gap-4 border border-border/60 rounded-xl px-4 py-3.5 hover:bg-muted/40 transition-colors text-left">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="flex-shrink-0 inline-flex items-center bg-[#FFB3C7] rounded px-1.5 py-0.5">
+              <span className="text-[#0B0B0B] font-bold text-[11px] tracking-tight leading-none">
                 Klarna.
               </span>
             </span>
+            <span className="text-[13px] text-foreground/80 truncate">
+              Or 3 payments of{" "}
+              <span className="font-medium text-foreground">£{monthly}</span>
+            </span>
           </div>
-          <Info className="ml-3 h-[18px] w-[18px] text-white/40 group-hover:text-white/70 transition-colors flex-shrink-0" strokeWidth={1.5} />
+          <span className="flex-shrink-0 text-[11px] uppercase tracking-[0.12em] text-muted-foreground group-hover:text-foreground transition-colors">
+            Learn more
+          </span>
         </button>
       </DialogTrigger>
+
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
