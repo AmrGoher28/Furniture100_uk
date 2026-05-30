@@ -205,7 +205,7 @@ const ProductDetail = () => {
                       <img
                         src={images[selectedImage]?.node.url}
                         alt={images[selectedImage]?.node.altText || `${product.title} - image ${selectedImage + 1}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         loading="eager"
                         decoding="async"
                       />
