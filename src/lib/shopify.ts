@@ -159,6 +159,7 @@ export const PRODUCT_BY_HANDLE_QUERY = `
       title
       description
       handle
+      createdAt
       priceRange {
         minVariantPrice {
           amount
