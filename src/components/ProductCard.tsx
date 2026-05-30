@@ -118,7 +118,7 @@ export const ProductCard = ({
 
         {status && (
           <div
-            className={`absolute bottom-0 inset-x-0 text-white text-[10px] tracking-[0.2em] uppercase font-medium text-center py-2 ${
+            className={`absolute bottom-0 inset-x-0 text-white text-[10px] tracking-[0.2em] uppercase font-medium text-center py-1 ${
               statusVariant === "in-stock"
                 ? "bg-[#5E6A45]"
                 : statusVariant === "pre-order"
