@@ -196,7 +196,7 @@ const ProductDetail = () => {
           {/* 60/40 split */}
           <div className="grid md:grid-cols-5 gap-10 md:gap-16 lg:gap-24">
             {/* Images — 60% */}
-            <div className="md:col-span-3 -mx-6 md:mx-0">
+            <div className="md:col-span-3 -mx-6 md:ml-[calc(50%-50vw)] md:mr-0">
               {images.length > 0 ? (
                 <>
                   {/* Mobile: horizontal scroll, full-bleed */}
@@ -217,7 +217,7 @@ const ProductDetail = () => {
                     ))}
                   </div>
                   {/* Desktop: 2-column grid */}
-                  <div className="hidden md:grid grid-cols-2 gap-2">
+                  <div className="hidden md:grid grid-cols-2 gap-0">
                     {images.map((img, idx) => (
                       <div
                         key={idx}
