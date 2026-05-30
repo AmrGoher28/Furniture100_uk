@@ -101,6 +101,13 @@ const CategoryPage = () => {
     return () => observerRef.current?.disconnect();
   }, [loadMore]);
 
+  // When user picks a non-default sort, eagerly load remaining pages so the sort applies to the full catalogue.
+  useEffect(() => {
+    if (sort !== "featured" && pageInfo.hasNextPage && !loadingMore && !usedDbMapping) {
+      loadMore();
+    }
+  }, [sort, pageInfo.hasNextPage, loadingMore, usedDbMapping, loadMore]);
+
   const baseProducts = category && !usedDbMapping
     ? products.filter((p) => {
         const t = p.node.title.toLowerCase();
@@ -128,6 +135,11 @@ const CategoryPage = () => {
   const sortedProducts = [...displayProducts].sort((a, b) => {
     if (sort === "price-asc") return parseFloat(a.node.priceRange.minVariantPrice.amount) - parseFloat(b.node.priceRange.minVariantPrice.amount);
     if (sort === "price-desc") return parseFloat(b.node.priceRange.minVariantPrice.amount) - parseFloat(a.node.priceRange.minVariantPrice.amount);
+    if (sort === "newest") {
+      const ad = a.node.createdAt ? new Date(a.node.createdAt).getTime() : 0;
+      const bd = b.node.createdAt ? new Date(b.node.createdAt).getTime() : 0;
+      return bd - ad;
+    }
     return 0;
   });
 
