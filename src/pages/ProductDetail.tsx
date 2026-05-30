@@ -18,6 +18,9 @@ import { useAdminMode } from "@/hooks/useAdminMode";
 import { useProductOverrides } from "@/hooks/useProductOverrides";
 import InlineEditor from "@/components/admin/InlineEditor";
 import { toast } from "sonner";
+import ProductStars from "@/components/ProductStars";
+import { productRating } from "@/lib/productRating";
+
 
 interface ProductNode {
   id: string;
@@ -310,10 +313,19 @@ const ProductDetail = () => {
                 </button>
               </div>
 
+              {/* Rating */}
+              <div className="mt-3">
+                {(() => {
+                  const { rating, count } = productRating(product.handle || product.id);
+                  return <ProductStars rating={rating} count={count} size="md" />;
+                })()}
+              </div>
+
               {/* Subtitle (variant) */}
               {variant?.title && variant.title !== "Default Title" && (
                 <p className="mt-2 text-sm text-muted-foreground">{variant.title}</p>
               )}
+
 
               {/* Price */}
               <p className="mt-4 text-2xl text-foreground font-normal tabular-nums">
