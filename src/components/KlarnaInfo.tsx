@@ -18,50 +18,38 @@ const KlarnaInfo = ({ price }: KlarnaInfoProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-full flex items-center justify-between border border-border/40 rounded-lg px-4 py-3 mb-4 hover:border-border/70 transition-colors text-left">
-          <div className="flex items-center gap-2.5">
-            {/* Klarna logo badge */}
-            <svg viewBox="0 0 45 25" className="h-[18px] w-auto flex-shrink-0" aria-label="Klarna">
-              <rect width="45" height="25" rx="4" fill="#17120F" />
-              <text
-                x="22.5"
-                y="17"
-                textAnchor="middle"
-                fill="#FFB3C7"
-                fontFamily="system-ui, -apple-system, sans-serif"
-                fontSize="11"
-                fontWeight="700"
-                letterSpacing="0.3"
-              >
+        <button className="w-full group flex items-center justify-between bg-cream rounded-xl px-5 py-4 hover:bg-cream/80 transition-colors text-left">
+          <div className="flex items-center gap-3.5">
+            {/* Klarna badge */}
+            <div className="flex-shrink-0 flex items-center gap-1.5 bg-[#0B0B0B] rounded-md px-2.5 py-1.5">
+              <span className="text-[#FFB3C7] font-bold text-[11px] tracking-wide leading-none">
                 Klarna
-              </text>
-            </svg>
+              </span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="text-[#FFB3C7]">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+                <path d="M8 12l3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
             <span className="text-[13px] text-foreground/80">
               3 interest-free payments of{" "}
-              <span className="font-medium text-foreground">£{monthly}</span>
+              <span className="font-semibold text-foreground">£{monthly}</span>
             </span>
           </div>
-          <Info className="h-4 w-4 text-muted-foreground/50 flex-shrink-0" />
+          <Info className="h-[18px] w-[18px] text-foreground/30 group-hover:text-foreground/50 transition-colors flex-shrink-0" strokeWidth={1.5} />
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2.5 text-xl">
-            <svg viewBox="0 0 45 25" className="h-5 w-auto" aria-label="Klarna">
-              <rect width="45" height="25" rx="4" fill="#17120F" />
-              <text
-                x="22.5"
-                y="17"
-                textAnchor="middle"
-                fill="#FFB3C7"
-                fontFamily="system-ui, -apple-system, sans-serif"
-                fontSize="11"
-                fontWeight="700"
-                letterSpacing="0.3"
-              >
+            <div className="flex-shrink-0 flex items-center gap-1.5 bg-[#0B0B0B] rounded-md px-2.5 py-1.5">
+              <span className="text-[#FFB3C7] font-bold text-[11px] tracking-wide leading-none">
                 Klarna
-              </text>
-            </svg>
+              </span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="text-[#FFB3C7]">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+                <path d="M8 12l3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
             Pay in 3
           </DialogTitle>
         </DialogHeader>
