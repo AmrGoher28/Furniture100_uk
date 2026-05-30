@@ -12,9 +12,9 @@ const TILES = [
 
 export const FeaturedCategories = () => {
   return (
-    <section className="py-20 md:py-28 bg-background">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-2 md:gap-3 auto-rows-[220px] md:auto-rows-[280px]">
+    <section className="bg-background">
+      <div className="w-full">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-0 auto-rows-[260px] md:auto-rows-[340px]">
           {TILES.map((cat, i) => (
             <Link
               key={`${cat.slug}-${i}`}
