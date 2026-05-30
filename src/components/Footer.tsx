@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { Truck, Leaf, RotateCcw, ShieldCheck, Facebook, Instagram, Twitter } from "lucide-react";
+import { PackageCheck, Sprout, Undo2, Lock, Instagram, Facebook, Twitter } from "lucide-react";
 
 const PROMISES = [
-  { icon: Truck, title: "Free UK delivery", desc: "On thousands of pieces" },
-  { icon: RotateCcw, title: "30 day returns", desc: "Hassle-free exchanges" },
-  { icon: Leaf, title: "Sustainably sourced", desc: "Responsible materials" },
-  { icon: ShieldCheck, title: "Secure checkout", desc: "Klarna & PayPal available" },
+  { icon: PackageCheck, title: "Free UK delivery", desc: "On thousands of pieces" },
+  { icon: Undo2, title: "30 day returns", desc: "Hassle-free exchanges" },
+  { icon: Sprout, title: "Sustainably sourced", desc: "Responsible materials" },
+  { icon: Lock, title: "Secure checkout", desc: "Klarna & PayPal available" },
 ];
 
 const FOOTER_COLS = [
@@ -77,12 +77,12 @@ export const Footer = () => {
               Furniture100
             </Link>
             <p className="text-sm text-muted-foreground mt-4 leading-relaxed max-w-xs">
-              A UK online furniture boutique. Editorial design pieces — lounge,
-              dining, bar and office — delivered to your door.
+              A UK online furniture boutique. Editorial design pieces - lounge,
+              dining, bar and office - delivered to your door.
             </p>
             <div className="mt-6 space-y-1">
               <p className="text-sm text-foreground">hello@furniture100.co.uk</p>
-              <p className="text-xs text-muted-foreground">Mon – Fri, 9am – 5pm</p>
+              <p className="text-xs text-muted-foreground">Mon - Fri, 9am - 5pm</p>
             </div>
             <div className="flex items-center gap-3 mt-6">
               {[Instagram, Facebook, Twitter].map((Icon, i) => (

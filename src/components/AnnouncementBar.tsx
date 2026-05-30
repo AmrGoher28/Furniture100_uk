@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 const MESSAGES = [
   "Free UK Delivery",
-  "2–5 Day Dispatch",
+  "2-5 Day Dispatch",
   "30 Day Returns",
   "Lincoln, UK",
   "Buy Now, Pay Later",

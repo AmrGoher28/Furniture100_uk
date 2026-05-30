@@ -56,7 +56,7 @@ const ProductSpecs = ({ isAdmin = false, overrides = {}, onSave }: Props) => (
       <AccordionTrigger className={triggerClass}>Delivery & Returns</AccordionTrigger>
       <AccordionContent>
         <div className="text-sm text-muted-foreground leading-relaxed space-y-3 pb-4">
-          <p>Free standard delivery to mainland UK. Most orders arrive in 3–5 working days.</p>
+          <p>Free standard delivery to mainland UK. Most orders arrive in 3-5 working days.</p>
           <p>Not the right fit? Return within 30 days for a full refund - no questions asked.</p>
         </div>
       </AccordionContent>
