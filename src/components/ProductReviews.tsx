@@ -45,7 +45,8 @@ const ProductReviews = ({ productHandle }: ProductReviewsProps) => {
           .from("reviews")
           .select("*")
           .eq("product_handle", productHandle)
-          .order("created_at", { ascending: false });
+          .order("created_at", { ascending: false })
+          .limit(20);
 
         if (error) throw error;
         setReviews(data || []);
