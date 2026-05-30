@@ -1,7 +1,7 @@
 import categoryLoungeChairs from "@/assets/category-lounge-chairs.png";
 import categorySofas from "@/assets/category-sofas.webp";
-import categoryOfficeChairs from "@/assets/category-office-chairs.webp";
-import categoryDining from "@/assets/category-dining.webp";
+import categoryOfficeChairs from "@/assets/category-office-chairs.png";
+import categoryDining from "@/assets/category-dining.png";
 import categoryMirrors from "@/assets/category-mirrors.webp";
 import categoryBarStools from "@/assets/category-bar-stools.png";
 
