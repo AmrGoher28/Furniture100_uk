@@ -199,53 +199,22 @@ const ProductDetail = () => {
             <div className="md:col-span-3 -mx-6 md:mx-0">
               {images.length > 0 ? (
                 <>
-                  {/* Mobile: original snap-scroll gallery + thumbnail preview strip */}
-                  <div className="md:hidden">
-                    <div
-                      id="mobile-gallery"
-                      className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-                    >
-                      {images.map((img, idx) => (
-                        <div
-                          key={idx}
-                          className="relative shrink-0 w-full snap-center aspect-square bg-[#FAFAFA] overflow-hidden"
-                        >
-                          <img
-                            src={img.node.url}
-                            alt={img.node.altText || `${product.title} - image ${idx + 1}`}
-                            className="w-full h-full object-cover"
-                            loading={idx === 0 ? "eager" : "lazy"}
-                            decoding="async"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                    {images.length > 1 && (
-                      <div className="flex gap-2 overflow-x-auto scrollbar-hide px-6 mt-3">
-                        {images.map((img, idx) => (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() => {
-                              const gallery = document.getElementById("mobile-gallery");
-                              if (gallery) {
-                                gallery.scrollTo({ left: gallery.clientWidth * idx, behavior: "smooth" });
-                              }
-                            }}
-                            className="relative shrink-0 w-16 h-16 bg-[#FAFAFA] overflow-hidden border border-border hover:border-foreground transition-colors"
-                            aria-label={`View image ${idx + 1}`}
-                          >
-                            <img
-                              src={img.node.url}
-                              alt={img.node.altText || `${product.title} - thumbnail ${idx + 1}`}
-                              className="w-full h-full object-cover"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </button>
-                        ))}
+                  {/* Mobile: horizontal scroll, full-bleed */}
+                  <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+                    {images.map((img, idx) => (
+                      <div
+                        key={idx}
+                        className="relative w-full shrink-0 snap-center aspect-square bg-[#FAFAFA] overflow-hidden"
+                      >
+                        <img
+                          src={img.node.url}
+                          alt={img.node.altText || `${product.title} - image ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                          loading={idx === 0 ? "eager" : "lazy"}
+                          decoding="async"
+                        />
                       </div>
-                    )}
+                    ))}
                   </div>
                   {/* Desktop: 2-column grid */}
                   <div className="hidden md:grid grid-cols-2 gap-0.5">
