@@ -104,7 +104,11 @@ const ProductDetail = () => {
   };
 
   const heroImage = images[0]?.node.url;
-  const seoTitle = `${product.title} | Furniture100`;
+  const priceAmount = variant?.price.amount ?? product.priceRange.minVariantPrice.amount;
+  const priceFormatted = priceAmount ? `£${Math.round(parseFloat(priceAmount))}` : "";
+  const seoTitle = priceFormatted
+    ? `${product.title} | ${priceFormatted} | Furniture100`
+    : `${product.title} | Furniture100`;
   const seoDesc = (description || `Shop ${product.title} at Furniture100. Free UK delivery, 30-day returns.`)
     .replace(/<[^>]+>/g, "")
     .slice(0, 155);
