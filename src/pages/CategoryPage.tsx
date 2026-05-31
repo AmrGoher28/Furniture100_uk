@@ -200,8 +200,8 @@ const CategoryPage = () => {
           itemListElement: sortedProducts.slice(0, 24).map((p, idx) => ({
             "@type": "ListItem",
             position: idx + 1,
-            url: `https://furniture100.co.uk/product/${p.handle}`,
-            name: p.title,
+            url: `https://furniture100.co.uk/product/${p.node.handle}`,
+            name: p.node.title,
           })),
         },
       }),
