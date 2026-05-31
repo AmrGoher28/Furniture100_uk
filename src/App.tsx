@@ -44,6 +44,7 @@ const RequireAdmin = ({ children }: { children: JSX.Element }) => {
 
 const AppContent = () => {
   useCartSync();
+  useAnalytics();
   return (
     <>
       <AdminOverlay />
