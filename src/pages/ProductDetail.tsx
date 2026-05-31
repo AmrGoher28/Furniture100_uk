@@ -397,8 +397,16 @@ const ProductDetail = () => {
                 </div>
               )}
 
+              {/* Dispatch info */}
+              <div className="mt-8 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                  <Package className="w-4 h-4" strokeWidth={1.5} />
+                </div>
+                <span className="text-sm text-foreground">Dispatched within 24hrs</span>
+              </div>
+
               {/* Quantity + Add to basket - desktop */}
-              <div className="mt-8 hidden md:flex items-stretch gap-3">
+              <div className="mt-4 hidden md:flex items-stretch gap-3">
                 <div className="flex items-center gap-1 px-3 h-14 rounded-full border border-border">
                   <button
                     type="button"
