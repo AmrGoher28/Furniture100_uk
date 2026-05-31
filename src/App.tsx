@@ -5,6 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useCartSync } from "@/hooks/useCartSync";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { AdminProvider, useAdminMode } from "@/hooks/useAdminMode";
 import AdminBadge from "@/components/admin/AdminBadge";
 import Index from "./pages/Index";
@@ -43,6 +44,7 @@ const RequireAdmin = ({ children }: { children: JSX.Element }) => {
 
 const AppContent = () => {
   useCartSync();
+  useAnalytics();
   return (
     <>
       <AdminOverlay />
