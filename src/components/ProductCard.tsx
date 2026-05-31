@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 import { useState, useRef } from "react";
 import type { ShopifyProduct } from "@/lib/shopify";
-import ProductStars from "./ProductStars";
-import { productRating } from "@/lib/productRating";
 
 
 interface ProductCardProps {
@@ -143,12 +141,6 @@ export const ProductCard = ({
       <p className="text-sm text-foreground mt-2 tabular-nums">
         £{parseFloat(price.amount).toFixed(0)}
       </p>
-      <div className="mt-1.5">
-        {(() => {
-          const { rating, count } = productRating(product.node.handle || product.node.id);
-          return <ProductStars rating={rating} count={count} />;
-        })()}
-      </div>
     </Link>
 
   );

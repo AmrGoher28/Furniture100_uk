@@ -6,7 +6,7 @@ import { Layout } from "@/components/Layout";
 import { Seo } from "@/components/Seo";
 import { Loader2, Heart, ChevronLeft, ChevronRight, Minus, Plus, Package, ShoppingBag, Leaf, Briefcase } from "lucide-react";
 import MakeOfferModal from "@/components/MakeOfferModal";
-import ProductReviews from "@/components/ProductReviews";
+
 import SimilarProducts from "@/components/SimilarProducts";
 import ProductTrustBadges from "@/components/product/ProductTrustBadges";
 import DeliveryBanner from "@/components/product/DeliveryBanner";
@@ -18,8 +18,6 @@ import { useAdminMode } from "@/hooks/useAdminMode";
 import { useProductOverrides } from "@/hooks/useProductOverrides";
 import InlineEditor from "@/components/admin/InlineEditor";
 import { toast } from "sonner";
-import ProductStars from "@/components/ProductStars";
-import { productRating } from "@/lib/productRating";
 
 
 interface ProductNode {
@@ -333,13 +331,6 @@ const ProductDetail = () => {
                 </button>
               </div>
 
-              {/* Rating */}
-              <div className="mt-3">
-                {(() => {
-                  const { rating, count } = productRating(product.handle || product.id);
-                  return <ProductStars rating={rating} count={count} size="md" />;
-                })()}
-              </div>
 
               {/* Subtitle (variant) */}
               {variant?.title && variant.title !== "Default Title" && (
@@ -532,8 +523,6 @@ const ProductDetail = () => {
           {/* Similar Products */}
           <SimilarProducts currentHandle={product.handle} productTitle={product.title} />
 
-          {/* Reviews */}
-          <ProductReviews productHandle={product.handle} />
         </div>
       </main>
 
