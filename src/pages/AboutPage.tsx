@@ -3,11 +3,6 @@ import { Seo } from "@/components/Seo";
 import { Link } from "react-router-dom";
 
 const AboutPage = () => {
-  const stats = [
-    { value: "10,000+", label: "Orders Delivered" },
-    { value: "9,500+", label: "Happy Customers" },
-    { value: "5+", label: "Years Experience" },
-  ];
 
   return (
     <Layout>
