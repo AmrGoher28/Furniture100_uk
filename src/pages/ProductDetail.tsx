@@ -438,23 +438,16 @@ const ProductDetail = () => {
                 </button>
               </div>
 
-              {/* Promo banner */}
-              <div className="mt-4 rounded-2xl bg-cream px-5 py-4 text-center">
+              {/* Dispatch badge */}
+              <div className="mt-4 rounded-2xl bg-cream px-5 py-4 flex items-center justify-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-background flex items-center justify-center shrink-0">
+                  <Package className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+                </div>
                 <p className="text-sm text-foreground/85 leading-relaxed">
-                  Spend <span className="font-medium">£500</span> and get an extra{" "}
-                  <span className="font-medium">15% off</span> with code{" "}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard?.writeText("EXTRA15");
-                      toast.success("Code EXTRA15 copied", { position: "top-center" });
-                    }}
-                    className="font-semibold tracking-wide underline underline-offset-4 hover:text-foreground"
-                  >
-                    EXTRA15
-                  </button>
+                  <span className="font-medium">Dispatched within 24hrs</span> · Free UK delivery
                 </p>
               </div>
+
 
               {/* Klarna / payment info */}
               <div className="mt-4 text-xs text-muted-foreground">
