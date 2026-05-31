@@ -185,9 +185,42 @@ const CategoryPage = () => {
     ? `Shop premium ${title.toLowerCase()} at Furniture100. Free UK delivery and 30-day returns on every order.`
     : "Browse our full collection of premium furniture - sofas, lounge chairs, dining, lighting and more. Free UK delivery.";
 
+  const categoryJsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: seoTitle,
+      description: seoDesc,
+      url: `https://furniture100.co.uk${seoPath}`,
+      isPartOf: { "@type": "WebSite", name: "Furniture100", url: "https://furniture100.co.uk" },
+      ...(sortedProducts.length > 0 && {
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: sortedProducts.length,
+          itemListElement: sortedProducts.slice(0, 24).map((p, idx) => ({
+            "@type": "ListItem",
+            position: idx + 1,
+            url: `https://furniture100.co.uk/product/${p.handle}`,
+            name: p.title,
+          })),
+        },
+      }),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://furniture100.co.uk/" },
+        { "@type": "ListItem", position: 2, name: "Shop", item: "https://furniture100.co.uk/shop" },
+        ...(slug ? [{ "@type": "ListItem", position: 3, name: title, item: `https://furniture100.co.uk${seoPath}` }] : []),
+      ],
+    },
+  ];
+
   return (
     <Layout>
-      <Seo title={seoTitle.slice(0, 60)} description={seoDesc.slice(0, 155)} path={seoPath} />
+      <Seo title={seoTitle.slice(0, 60)} description={seoDesc.slice(0, 155)} path={seoPath} jsonLd={categoryJsonLd} />
+
 
       {/* Editorial hero banner with overlaid title */}
       <section className="relative bg-[#F4EFE6]">
