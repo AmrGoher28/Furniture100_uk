@@ -94,7 +94,7 @@ const ContactPage = () => {
                 </div>
                 <div>
                   <p className="text-sm font-semibold mb-1">Location</p>
-                  <p className="text-sm text-muted-foreground">United Kingdom</p>
+                  <p className="text-sm text-muted-foreground">Brasnton, Lincoln, United Kingdom</p>
                 </div>
               </div>
             </div>
