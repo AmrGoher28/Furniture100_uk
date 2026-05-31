@@ -3,11 +3,6 @@ import { Seo } from "@/components/Seo";
 import { Link } from "react-router-dom";
 
 const AboutPage = () => {
-  const stats = [
-    { value: "10,000+", label: "Orders Delivered" },
-    { value: "9,500+", label: "Happy Customers" },
-    { value: "5+", label: "Years Experience" },
-  ];
 
   return (
     <Layout>
@@ -55,17 +50,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-16 md:py-24 px-6 md:px-12">
-        <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 text-center">
-          {stats.map((s) => (
-            <div key={s.label}>
-              <p className="text-3xl md:text-4xl font-semibold text-gold mb-2 font-serif">{s.value}</p>
-              <p className="text-xs md:text-sm text-muted-foreground tracking-wide">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* CTA */}
       <section className="bg-charcoal py-16 px-6 text-center">
