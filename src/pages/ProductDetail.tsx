@@ -132,15 +132,35 @@ const ProductDetail = () => {
             description: seoDesc,
             image: images.map((i) => i.node.url),
             sku: variant?.id,
+            mpn: product.id,
             brand: { "@type": "Brand", name: "Furniture100" },
             offers: {
               "@type": "Offer",
               url: `https://furniture100.co.uk/product/${product.handle}`,
               priceCurrency: variant?.price.currencyCode || "GBP",
               price: variant?.price.amount,
+              itemCondition: "https://schema.org/NewCondition",
               availability: variant?.availableForSale
                 ? "https://schema.org/InStock"
                 : "https://schema.org/OutOfStock",
+              hasMerchantReturnPolicy: {
+                "@type": "MerchantReturnPolicy",
+                applicableCountry: "GB",
+                returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+                merchantReturnDays: 30,
+                returnMethod: "https://schema.org/ReturnByMail",
+                returnFees: "https://schema.org/FreeReturn",
+              },
+              shippingDetails: {
+                "@type": "OfferShippingDetails",
+                shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "GBP" },
+                shippingDestination: { "@type": "DefinedRegion", addressCountry: "GB" },
+                deliveryTime: {
+                  "@type": "ShippingDeliveryTime",
+                  handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
+                  transitTime: { "@type": "QuantitativeValue", minValue: 2, maxValue: 7, unitCode: "DAY" },
+                },
+              },
             },
           },
           {
