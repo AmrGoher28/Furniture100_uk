@@ -5,7 +5,7 @@ import { FeaturedCategories } from "@/components/FeaturedCategories";
 import { BestSellers } from "@/components/BestSellers";
 import { LifestyleBanner } from "@/components/LifestyleBanner";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
-import { CustomerReviews } from "@/components/CustomerReviews";
+
 import { Newsletter } from "@/components/Newsletter";
 import LazySection from "@/components/LazySection";
 import { Seo } from "@/components/Seo";
@@ -41,9 +41,6 @@ const Index = () => {
       </LazySection>
       <LazySection minHeight="300px">
         <WhyChooseUs />
-      </LazySection>
-      <LazySection minHeight="300px">
-        <CustomerReviews />
       </LazySection>
       <LazySection minHeight="200px">
         <Newsletter />
