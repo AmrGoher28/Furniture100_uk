@@ -523,8 +523,6 @@ const ProductDetail = () => {
           {/* Similar Products */}
           <SimilarProducts currentHandle={product.handle} productTitle={product.title} />
 
-          {/* Reviews */}
-          <ProductReviews productHandle={product.handle} />
         </div>
       </main>
 
