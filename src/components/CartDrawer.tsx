@@ -95,10 +95,14 @@ export const CartDrawer = () => {
                   </div>
                 ))}
               </div>
-              <div className="flex-shrink-0 pt-6 border-t border-border space-y-5 pb-2">
+              <div className="flex-shrink-0 pt-6 border-t border-border space-y-4 pb-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs tracking-[0.2em] uppercase font-light">Total</span>
-                  <span className="text-lg">{items[0]?.price.currencyCode || "USD"} {totalPrice.toFixed(2)}</span>
+                  <span className="text-xs tracking-[0.2em] uppercase font-light">Subtotal</span>
+                  <span className="text-lg">{items[0]?.price.currencyCode || "GBP"} {totalPrice.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs text-muted-foreground">
+                  <span className="tracking-[0.15em] uppercase">Delivery</span>
+                  <span className="text-[#5E6A45] font-medium tracking-[0.1em] uppercase">Free · UK Nationwide</span>
                 </div>
                 <Button
                   onClick={handleCheckout}
@@ -110,10 +114,13 @@ export const CartDrawer = () => {
                   ) : (
                     <>
                       <ExternalLink className="w-3.5 h-3.5 mr-2" />
-                      Proceed to Checkout
+                      Secure Checkout
                     </>
                   )}
                 </Button>
+                <p className="text-[10px] text-center text-muted-foreground tracking-[0.12em] uppercase">
+                  Secure checkout · Klarna & PayPal available
+                </p>
               </div>
             </>
           )}

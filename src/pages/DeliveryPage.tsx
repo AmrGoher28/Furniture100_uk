@@ -4,17 +4,18 @@ import { Seo } from "@/components/Seo";
 const DeliveryPage = () => {
   return (
     <Layout>
-      <Seo title="Delivery Information | Furniture100" description="Free standard UK delivery on every order. Find out about delivery times, tracking and our nationwide service." path="/delivery" />
+      <Seo title="Free UK Delivery | Furniture100" description="Free nationwide delivery on every order, with no minimum spend. Standard delivery in 3-5 working days across mainland UK." path="/delivery" />
       <section className="bg-secondary py-16 md:py-24 px-6 text-center">
-        <h1 className="text-4xl md:text-5xl mb-4">Delivery Information</h1>
-        <p className="text-muted-foreground max-w-xl mx-auto">Everything you need to know about our delivery service.</p>
+        <p className="text-[10px] tracking-[0.32em] uppercase text-muted-foreground mb-4">Shipping</p>
+        <h1 className="text-4xl md:text-5xl mb-4">Free Nationwide Delivery</h1>
+        <p className="text-muted-foreground max-w-xl mx-auto">Free standard delivery on every order across the UK. No minimum spend, no hidden fees.</p>
       </section>
 
       <section className="py-16 md:py-24 px-6 md:px-12">
         <div className="max-w-3xl mx-auto prose prose-neutral">
-          <h2 className="text-2xl mb-4">Free UK Delivery</h2>
+          <h2 className="text-2xl mb-4">Free UK Delivery — Always</h2>
           <p className="text-muted-foreground leading-relaxed mb-6">
-            We offer <strong className="text-foreground">free standard delivery</strong> on all orders to mainland UK addresses. No minimum spend required.
+            Every order ships with <strong className="text-foreground">free standard delivery</strong> to mainland UK addresses. No minimum spend, no surprise charges at checkout.
           </p>
 
           <h2 className="text-2xl mb-4">Delivery Timeframes</h2>
