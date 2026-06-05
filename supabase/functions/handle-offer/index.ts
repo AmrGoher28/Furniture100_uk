@@ -222,6 +222,34 @@ Deno.serve(async (req) => {
         const agreedPrice = Number(offer.offer_amount);
         const discount = Number(offer.original_price) - agreedPrice;
 
+        // Normalise variant_id: Shopify REST draft_orders expects a numeric variant_id.
+        // Stored format is the Storefront GraphQL GID, e.g. "gid://shopify/ProductVariant/59769610699086".
+        const rawVariantId: string | null = offer.variant_id ?? null;
+        const numericVariantIdStr = rawVariantId
+          ? rawVariantId.replace(/^gid:\/\/shopify\/ProductVariant\//, "").trim()
+          : "";
+        const numericVariantId = /^\d+$/.test(numericVariantIdStr) ? Number(numericVariantIdStr) : NaN;
+
+        if (!Number.isFinite(numericVariantId)) {
+          console.error("[OFFER] Invalid or missing variant_id on offer", {
+            offerId,
+            rawVariantId,
+            numericVariantIdStr,
+          });
+          return jsonResponse({
+            error: "This offer has no valid Shopify variant ID, so a draft order can't be created.",
+            details: `variant_id=${rawVariantId ?? "null"}`,
+          }, 400);
+        }
+
+        console.log("[OFFER] Creating draft order", {
+          offerId,
+          variantId: numericVariantId,
+          quantity: offer.quantity || 1,
+          agreedPrice,
+          discount,
+        });
+
         try {
           const draftOrderResult = await shopifyAdminRequest("draft_orders.json", {
             method: "POST",
@@ -229,17 +257,15 @@ Deno.serve(async (req) => {
               draft_order: {
                 line_items: [
                   {
-                    variant_id: offer.variant_id
-                      ? offer.variant_id.replace("gid://shopify/ProductVariant/", "")
-                      : undefined,
+                    variant_id: numericVariantId,
                     quantity: offer.quantity || 1,
                   },
                 ],
                 applied_discount: {
                   description: "Accepted offer price",
                   value_type: "fixed_amount",
-                  value: discount.toString(),
-                  amount: discount.toString(),
+                  value: discount.toFixed(2),
+                  amount: discount.toFixed(2),
                   title: "Negotiated Price",
                 },
                 email: offer.buyer_email,
