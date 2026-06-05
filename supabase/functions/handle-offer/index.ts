@@ -52,6 +52,10 @@ function stringifyDetails(value: unknown) {
   }
 }
 
+function redactedTokenName(name: string) {
+  return name.startsWith("SHOPIFY_ONLINE_ACCESS_TOKEN") ? "SHOPIFY_ONLINE_ACCESS_TOKEN" : name;
+}
+
 async function shopifyAdminRequest(
   endpoint: string,
   options: {
@@ -102,7 +106,8 @@ async function shopifyAdminRequest(
       }
 
       if (response.status === 401 || response.status === 403) {
-        console.warn(`[OFFER] Token ${candidate.name} rejected (${response.status}), trying next...`);
+        const details = stringifyDetails(data);
+        console.warn(`[OFFER] Token ${redactedTokenName(candidate.name)} rejected (${response.status}): ${details || "no response body"}`);
         continue;
       }
 
@@ -117,7 +122,8 @@ async function shopifyAdminRequest(
 
   return {
     success: false,
-    error: "All Shopify tokens were rejected. Please reconnect your Shopify account.",
+    error: "Shopify Admin access is missing draft order permissions. The connected token can read products, but it cannot create draft orders.",
+    details: "Reconnect alone will not fix this unless the Shopify connection grants draft order/admin order scopes. Update the Shopify Admin token/connection permissions, then redeploy this function.",
     status: 401,
   };
 }
