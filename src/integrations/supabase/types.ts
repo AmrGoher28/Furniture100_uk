@@ -171,6 +171,7 @@ export type Database = {
           admin_notes: string | null
           buyer_email: string
           buyer_name: string | null
+          buyer_phone: string | null
           counter_amount: number | null
           created_at: string
           id: string
@@ -191,6 +192,7 @@ export type Database = {
           admin_notes?: string | null
           buyer_email: string
           buyer_name?: string | null
+          buyer_phone?: string | null
           counter_amount?: number | null
           created_at?: string
           id?: string
@@ -211,6 +213,7 @@ export type Database = {
           admin_notes?: string | null
           buyer_email?: string
           buyer_name?: string | null
+          buyer_phone?: string | null
           counter_amount?: number | null
           created_at?: string
           id?: string
