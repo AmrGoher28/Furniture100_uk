@@ -7,7 +7,7 @@ import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.23.0";
 
 // src/lib/mcp/tools/search-products.ts
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.23.0";
-import { z } from "npm:zod@^3.25.76";
+import { z } from "npm:zod@^4.4.3";
 var SHOPIFY_URL = "https://swifliving-showroom-build-xw1vp.myshopify.com/api/2025-07/graphql.json";
 var SHOPIFY_TOKEN = "73f85d3bdb6f0f9ac02b43a88c6edf8d";
 var QUERY = (
@@ -70,7 +70,7 @@ var search_products_default = defineTool({
 
 // src/lib/mcp/tools/get-product.ts
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.23.0";
-import { z as z2 } from "npm:zod@^3.25.76";
+import { z as z2 } from "npm:zod@^4.4.3";
 var SHOPIFY_URL2 = "https://swifliving-showroom-build-xw1vp.myshopify.com/api/2025-07/graphql.json";
 var SHOPIFY_TOKEN2 = "73f85d3bdb6f0f9ac02b43a88c6edf8d";
 var QUERY2 = (
@@ -148,7 +148,7 @@ var get_product_default = defineTool2({
 // src/lib/mcp/tools/list-my-offers.ts
 import { createClient } from "npm:@supabase/supabase-js@^2.101.1";
 import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.23.0";
-import { z as z3 } from "npm:zod@^3.25.76";
+import { z as z3 } from "npm:zod@^4.4.3";
 function supabaseForUser(ctx) {
   return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
     global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },

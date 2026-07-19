@@ -26,6 +26,7 @@
           "openWorldHint": false
         },
         "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
           "properties": {
             "query": {
@@ -34,17 +35,15 @@
               "description": "Search query, e.g. 'oak dining table'."
             },
             "limit": {
+              "description": "Max results (default 10).",
               "type": "integer",
               "minimum": 1,
-              "maximum": 20,
-              "description": "Max results (default 10)."
+              "maximum": 20
             }
           },
           "required": [
             "query"
-          ],
-          "additionalProperties": false,
-          "$schema": "http://json-schema.org/draft-07/schema#"
+          ]
         },
         "outputSchema": null
       },
@@ -58,6 +57,7 @@
           "openWorldHint": false
         },
         "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
           "properties": {
             "handle": {
@@ -68,9 +68,7 @@
           },
           "required": [
             "handle"
-          ],
-          "additionalProperties": false,
-          "$schema": "http://json-schema.org/draft-07/schema#"
+          ]
         },
         "outputSchema": null
       },
@@ -84,17 +82,16 @@
           "openWorldHint": false
         },
         "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
           "properties": {
             "limit": {
+              "description": "Max offers to return (default 20).",
               "type": "integer",
               "minimum": 1,
-              "maximum": 50,
-              "description": "Max offers to return (default 20)."
+              "maximum": 50
             }
-          },
-          "additionalProperties": false,
-          "$schema": "http://json-schema.org/draft-07/schema#"
+          }
         },
         "outputSchema": null
       },
