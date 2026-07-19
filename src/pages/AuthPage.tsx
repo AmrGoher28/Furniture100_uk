@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -13,6 +13,16 @@ const AuthPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const rawNext = searchParams.get("next");
+  const next = rawNext && rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : null;
+  const goNext = (fallback: string) => {
+    if (next) {
+      window.location.href = next;
+    } else {
+      navigate(fallback);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,26 +34,26 @@ const AuthPage = () => {
         toast.error(error.message);
       } else {
         toast.success("Welcome back!");
-        navigate("/account");
+        goNext("/account");
       }
     } else {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: window.location.origin },
+        options: { emailRedirectTo: next ? window.location.origin + next : window.location.origin },
       });
       if (error) {
         toast.error(error.message);
       } else {
         toast.success("Welcome! Your 10% code: WELCOME10", { duration: 10000 });
         if (data.session) {
-          navigate("/account");
+          goNext("/account");
         } else {
           const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
           if (signInError) {
             toast.info("Check your email to verify your account");
           } else {
-            navigate("/account");
+            goNext("/account");
           }
         }
       }
@@ -54,7 +64,7 @@ const AuthPage = () => {
   const handleAppleSignIn = async () => {
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("apple", {
-      redirect_uri: window.location.origin,
+      redirect_uri: next ? window.location.origin + next : window.location.origin,
     });
     if (result.error) {
       toast.error("Apple sign-in failed. Please try again.");
@@ -63,7 +73,7 @@ const AuthPage = () => {
     }
     if (result.redirected) return;
     toast.success("Welcome!");
-    navigate("/account");
+    goNext("/account");
   };
 
   return (

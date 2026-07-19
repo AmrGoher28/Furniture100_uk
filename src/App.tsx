@@ -27,6 +27,7 @@ const AuthPage = lazy(() => import("./pages/AuthPage"));
 const AccountPage = lazy(() => import("./pages/AccountPage"));
 const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const AppContent = () => {
           <Route path="/admin/products" element={<RequireAdmin><AdminProducts /></RequireAdmin>} />
           <Route path="/admin/categories" element={<RequireAdmin><AdminCategories /></RequireAdmin>} />
           <Route path="/unsubscribe" element={<UnsubscribePage />} />
+          <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
