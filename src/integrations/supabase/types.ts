@@ -376,6 +376,99 @@ export type Database = {
         }
         Relationships: []
       }
+      supplier_links: {
+        Row: {
+          check_enabled: boolean
+          cost: number | null
+          created_at: string
+          currency: string
+          id: string
+          is_primary: boolean
+          notes: string | null
+          product_handle: string
+          supplier_name: string | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          check_enabled?: boolean
+          cost?: number | null
+          created_at?: string
+          currency?: string
+          id?: string
+          is_primary?: boolean
+          notes?: string | null
+          product_handle: string
+          supplier_name?: string | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          check_enabled?: boolean
+          cost?: number | null
+          created_at?: string
+          currency?: string
+          id?: string
+          is_primary?: boolean
+          notes?: string | null
+          product_handle?: string
+          supplier_name?: string | null
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      supplier_stock_checks: {
+        Row: {
+          checked_at: string
+          confidence: string
+          created_at: string
+          error_detail: string | null
+          evidence: string | null
+          id: string
+          source: string
+          status: string
+          supplier_link_id: string
+        }
+        Insert: {
+          checked_at?: string
+          confidence?: string
+          created_at?: string
+          error_detail?: string | null
+          evidence?: string | null
+          id?: string
+          source?: string
+          status: string
+          supplier_link_id: string
+        }
+        Update: {
+          checked_at?: string
+          confidence?: string
+          created_at?: string
+          error_detail?: string | null
+          evidence?: string | null
+          id?: string
+          source?: string
+          status?: string
+          supplier_link_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_stock_checks_supplier_link_id_fkey"
+            columns: ["supplier_link_id"]
+            isOneToOne: false
+            referencedRelation: "supplier_links"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supplier_stock_checks_supplier_link_id_fkey"
+            columns: ["supplier_link_id"]
+            isOneToOne: false
+            referencedRelation: "supplier_links_with_status"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       suppressed_emails: {
         Row: {
           created_at: string
@@ -453,7 +546,28 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      supplier_links_with_status: {
+        Row: {
+          check_enabled: boolean | null
+          cost: number | null
+          created_at: string | null
+          currency: string | null
+          id: string | null
+          is_primary: boolean | null
+          last_checked_at: string | null
+          last_confidence: string | null
+          last_error_detail: string | null
+          last_evidence: string | null
+          last_source: string | null
+          last_status: string | null
+          notes: string | null
+          product_handle: string | null
+          supplier_name: string | null
+          updated_at: string | null
+          url: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       delete_email: {
