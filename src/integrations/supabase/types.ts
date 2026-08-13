@@ -172,63 +172,90 @@ export type Database = {
           buyer_email: string
           buyer_name: string | null
           buyer_phone: string | null
+          click_ts: string | null
           counter_amount: number | null
           created_at: string
+          gbraid: string | null
+          gclid: string | null
           id: string
+          landing_page: string | null
           offer_amount: number
           original_price: number
           product_handle: string
           product_image: string | null
           product_title: string
           quantity: number
+          referrer: string | null
           shopify_draft_order_id: string | null
           shopify_invoice_url: string | null
           status: string
           updated_at: string
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
           variant_id: string | null
           variant_title: string | null
+          wbraid: string | null
         }
         Insert: {
           admin_notes?: string | null
           buyer_email: string
           buyer_name?: string | null
           buyer_phone?: string | null
+          click_ts?: string | null
           counter_amount?: number | null
           created_at?: string
+          gbraid?: string | null
+          gclid?: string | null
           id?: string
+          landing_page?: string | null
           offer_amount: number
           original_price: number
           product_handle: string
           product_image?: string | null
           product_title: string
           quantity?: number
+          referrer?: string | null
           shopify_draft_order_id?: string | null
           shopify_invoice_url?: string | null
           status?: string
           updated_at?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
           variant_id?: string | null
           variant_title?: string | null
+          wbraid?: string | null
         }
         Update: {
           admin_notes?: string | null
           buyer_email?: string
           buyer_name?: string | null
           buyer_phone?: string | null
+          click_ts?: string | null
           counter_amount?: number | null
           created_at?: string
+          gbraid?: string | null
+          gclid?: string | null
           id?: string
+          landing_page?: string | null
           offer_amount?: number
           original_price?: number
           product_handle?: string
           product_image?: string | null
           product_title?: string
           quantity?: number
+          referrer?: string | null
           shopify_draft_order_id?: string | null
           shopify_invoice_url?: string | null
           status?: string
           updated_at?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
           variant_id?: string | null
           variant_title?: string | null
+          wbraid?: string | null
         }
         Relationships: []
       }
