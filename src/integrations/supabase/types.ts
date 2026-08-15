@@ -179,6 +179,7 @@ export type Database = {
           gclid: string | null
           id: string
           landing_page: string | null
+          marketing_consent: boolean | null
           offer_amount: number
           original_price: number
           product_handle: string
@@ -209,6 +210,7 @@ export type Database = {
           gclid?: string | null
           id?: string
           landing_page?: string | null
+          marketing_consent?: boolean | null
           offer_amount: number
           original_price: number
           product_handle: string
@@ -239,6 +241,7 @@ export type Database = {
           gclid?: string | null
           id?: string
           landing_page?: string | null
+          marketing_consent?: boolean | null
           offer_amount?: number
           original_price?: number
           product_handle?: string
