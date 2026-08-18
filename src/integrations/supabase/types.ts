@@ -367,6 +367,24 @@ export type Database = {
         }
         Relationships: []
       }
+      product_views: {
+        Row: {
+          handle: string
+          id: number
+          viewed_at: string
+        }
+        Insert: {
+          handle: string
+          id?: never
+          viewed_at?: string
+        }
+        Update: {
+          handle?: string
+          id?: never
+          viewed_at?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           created_at: string
@@ -625,6 +643,7 @@ export type Database = {
         }
         Returns: number
       }
+      product_views_last_24h: { Args: { p_handle: string }; Returns: number }
       read_email_batch: {
         Args: { batch_size: number; queue_name: string; vt: number }
         Returns: {
@@ -633,6 +652,7 @@ export type Database = {
           read_ct: number
         }[]
       }
+      record_product_view: { Args: { p_handle: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
