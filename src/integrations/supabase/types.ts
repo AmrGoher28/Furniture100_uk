@@ -79,6 +79,48 @@ export type Database = {
           },
         ]
       }
+      dropship_applications: {
+        Row: {
+          admin_notes: string | null
+          business: string
+          channel: string
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          status: string
+          updated_at: string
+          volume: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          business: string
+          channel: string
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          status?: string
+          updated_at?: string
+          volume?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          business?: string
+          channel?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          status?: string
+          updated_at?: string
+          volume?: string | null
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
