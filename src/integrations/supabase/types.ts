@@ -409,6 +409,63 @@ export type Database = {
         }
         Relationships: []
       }
+      product_reviews: {
+        Row: {
+          admin_notes: string | null
+          author_name: string
+          body: string
+          created_at: string
+          email: string | null
+          id: string
+          images: string[]
+          product_handle: string
+          rating: number
+          reviewed_at: string | null
+          source: string
+          source_label: string | null
+          status: string
+          title: string | null
+          variant_label: string | null
+          verified: boolean
+        }
+        Insert: {
+          admin_notes?: string | null
+          author_name: string
+          body: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          images?: string[]
+          product_handle: string
+          rating: number
+          reviewed_at?: string | null
+          source?: string
+          source_label?: string | null
+          status?: string
+          title?: string | null
+          variant_label?: string | null
+          verified?: boolean
+        }
+        Update: {
+          admin_notes?: string | null
+          author_name?: string
+          body?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          images?: string[]
+          product_handle?: string
+          rating?: number
+          reviewed_at?: string | null
+          source?: string
+          source_label?: string | null
+          status?: string
+          title?: string | null
+          variant_label?: string | null
+          verified?: boolean
+        }
+        Relationships: []
+      }
       product_views: {
         Row: {
           handle: string
@@ -636,6 +693,62 @@ export type Database = {
       }
     }
     Views: {
+      product_review_stats: {
+        Row: {
+          average_rating: number | null
+          product_handle: string | null
+          review_count: number | null
+        }
+        Relationships: []
+      }
+      product_reviews_public: {
+        Row: {
+          author_name: string | null
+          body: string | null
+          created_at: string | null
+          id: string | null
+          images: string[] | null
+          product_handle: string | null
+          rating: number | null
+          reviewed_at: string | null
+          source: string | null
+          source_label: string | null
+          title: string | null
+          variant_label: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          author_name?: string | null
+          body?: string | null
+          created_at?: string | null
+          id?: string | null
+          images?: string[] | null
+          product_handle?: string | null
+          rating?: number | null
+          reviewed_at?: string | null
+          source?: string | null
+          source_label?: string | null
+          title?: string | null
+          variant_label?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          author_name?: string | null
+          body?: string | null
+          created_at?: string | null
+          id?: string | null
+          images?: string[] | null
+          product_handle?: string | null
+          rating?: number | null
+          reviewed_at?: string | null
+          source?: string | null
+          source_label?: string | null
+          title?: string | null
+          variant_label?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
       supplier_links_with_status: {
         Row: {
           check_enabled: boolean | null
