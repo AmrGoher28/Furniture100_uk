@@ -190,10 +190,13 @@ export function ProductReviews({ productHandle, reviewPhotos }: ProductReviewsPr
               <h3 className="text-sm font-medium text-foreground">{review.title}</h3>
             )}
 
-            <p className="text-sm leading-relaxed text-foreground/80">{review.body}</p>
+            <p className="text-sm leading-relaxed text-foreground/80 whitespace-pre-line">{review.body}</p>
 
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <span className="text-xs text-muted-foreground">
+                {countryFlag(review.country) && (
+                  <span className="mr-1" aria-hidden="true">{countryFlag(review.country)}</span>
+                )}
                 {review.author_name || "Anonymous"}
                 {review.variant_label ? ` · ${review.variant_label}` : ""}
               </span>
