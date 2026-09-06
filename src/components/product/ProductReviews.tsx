@@ -212,6 +212,12 @@ export function ProductReviews({ productHandle, reviewPhotos }: ProductReviewsPr
                 Via {review.source_label || review.source}
               </p>
             )}
+
+            <HelpfulVotes
+              reviewId={review.id}
+              up={review.helpful_up || 0}
+              down={review.helpful_down || 0}
+            />
           </article>
         ))}
       </div>
