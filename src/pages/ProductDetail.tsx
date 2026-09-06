@@ -12,6 +12,7 @@ import ProductTrustBadges from "@/components/product/ProductTrustBadges";
 import DeliveryBanner from "@/components/product/DeliveryBanner";
 import ProductSpecs from "@/components/product/ProductSpecs";
 import ProductFAQ from "@/components/product/ProductFAQ";
+import { ProductReviews } from "@/components/product/ProductReviews";
 import KlarnaInfo from "@/components/KlarnaInfo";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useAdminMode } from "@/hooks/useAdminMode";
