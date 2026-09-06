@@ -527,6 +527,12 @@ const ProductDetail = () => {
             </div>
           </div>
 
+          {/* Reviews */}
+          <ProductReviews
+            productHandle={product.handle}
+            reviewPhotos={overrides["review_photos"]}
+          />
+
           {/* Similar Products */}
           <SimilarProducts currentHandle={product.handle} productTitle={product.title} />
 
