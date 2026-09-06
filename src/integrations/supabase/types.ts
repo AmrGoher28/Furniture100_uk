@@ -414,8 +414,11 @@ export type Database = {
           admin_notes: string | null
           author_name: string
           body: string
+          country: string | null
           created_at: string
           email: string | null
+          helpful_down: number
+          helpful_up: number
           id: string
           images: string[]
           incentivised: boolean
@@ -433,8 +436,11 @@ export type Database = {
           admin_notes?: string | null
           author_name: string
           body: string
+          country?: string | null
           created_at?: string
           email?: string | null
+          helpful_down?: number
+          helpful_up?: number
           id?: string
           images?: string[]
           incentivised?: boolean
@@ -452,8 +458,11 @@ export type Database = {
           admin_notes?: string | null
           author_name?: string
           body?: string
+          country?: string | null
           created_at?: string
           email?: string | null
+          helpful_down?: number
+          helpful_up?: number
           id?: string
           images?: string[]
           incentivised?: boolean
@@ -708,7 +717,10 @@ export type Database = {
         Row: {
           author_name: string | null
           body: string | null
+          country: string | null
           created_at: string | null
+          helpful_down: number | null
+          helpful_up: number | null
           id: string | null
           images: string[] | null
           incentivised: boolean | null
@@ -724,7 +736,10 @@ export type Database = {
         Insert: {
           author_name?: string | null
           body?: string | null
+          country?: string | null
           created_at?: string | null
+          helpful_down?: number | null
+          helpful_up?: number | null
           id?: string | null
           images?: string[] | null
           incentivised?: boolean | null
@@ -740,7 +755,10 @@ export type Database = {
         Update: {
           author_name?: string | null
           body?: string | null
+          country?: string | null
           created_at?: string | null
+          helpful_down?: number | null
+          helpful_up?: number | null
           id?: string | null
           images?: string[] | null
           incentivised?: boolean | null
@@ -814,6 +832,10 @@ export type Database = {
         }[]
       }
       record_product_view: { Args: { p_handle: string }; Returns: undefined }
+      vote_review: {
+        Args: { review_id: string; up: boolean }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
