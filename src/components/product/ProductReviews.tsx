@@ -1,6 +1,83 @@
-import { useMemo } from "react";
-import { Star } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Star, ThumbsUp, ThumbsDown } from "lucide-react";
 import { useProductReviews } from "@/hooks/useProductReviews";
+import { supabase } from "@/integrations/supabase/client";
+
+const VOTE_STORAGE_KEY = "review_votes";
+
+function readVotes(): Record<string, "up" | "down"> {
+  try {
+    return JSON.parse(localStorage.getItem(VOTE_STORAGE_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function countryFlag(code: string | null | undefined) {
+  if (!code || !/^[A-Za-z]{2}$/.test(code)) return null;
+  return String.fromCodePoint(
+    ...code.toUpperCase().split("").map((c) => 0x1f1e6 + c.charCodeAt(0) - 65)
+  );
+}
+
+function HelpfulVotes({
+  reviewId,
+  up,
+  down,
+}: {
+  reviewId: string;
+  up: number;
+  down: number;
+}) {
+  const [votes, setVotes] = useState<Record<string, "up" | "down">>(readVotes);
+  const voted = votes[reviewId];
+  const [counts, setCounts] = useState({ up, down });
+
+  const vote = async (dir: "up" | "down") => {
+    if (voted) return;
+    const next = { ...readVotes(), [reviewId]: dir };
+    localStorage.setItem(VOTE_STORAGE_KEY, JSON.stringify(next));
+    setVotes(next);
+    setCounts((c) => ({ ...c, [dir]: c[dir] + 1 }));
+    await supabase.rpc("vote_review", { review_id: reviewId, up: dir === "up" });
+  };
+
+  return (
+    <div className="flex items-center gap-3 pt-1">
+      <span className="text-[11px] text-muted-foreground">
+        {voted ? "Thanks for your feedback" : "Was this helpful?"}
+      </span>
+      <button
+        type="button"
+        onClick={() => vote("up")}
+        disabled={!!voted}
+        aria-label="Mark review as helpful"
+        className={`flex items-center gap-1 text-[11px] rounded-full border px-2 py-0.5 transition-colors ${
+          voted === "up"
+            ? "border-[#5E6A45] text-[#5E6A45]"
+            : "border-border text-muted-foreground hover:border-foreground/40 disabled:opacity-50"
+        }`}
+      >
+        <ThumbsUp className="w-3 h-3" strokeWidth={1.5} />
+        <span className="tabular-nums">{counts.up}</span>
+      </button>
+      <button
+        type="button"
+        onClick={() => vote("down")}
+        disabled={!!voted}
+        aria-label="Mark review as not helpful"
+        className={`flex items-center gap-1 text-[11px] rounded-full border px-2 py-0.5 transition-colors ${
+          voted === "down"
+            ? "border-foreground/50 text-foreground"
+            : "border-border text-muted-foreground hover:border-foreground/40 disabled:opacity-50"
+        }`}
+      >
+        <ThumbsDown className="w-3 h-3" strokeWidth={1.5} />
+        <span className="tabular-nums">{counts.down}</span>
+      </button>
+    </div>
+  );
+}
 
 interface ProductReviewsProps {
   productHandle: string;
@@ -113,10 +190,13 @@ export function ProductReviews({ productHandle, reviewPhotos }: ProductReviewsPr
               <h3 className="text-sm font-medium text-foreground">{review.title}</h3>
             )}
 
-            <p className="text-sm leading-relaxed text-foreground/80">{review.body}</p>
+            <p className="text-sm leading-relaxed text-foreground/80 whitespace-pre-line">{review.body}</p>
 
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <span className="text-xs text-muted-foreground">
+                {countryFlag(review.country) && (
+                  <span className="mr-1" aria-hidden="true">{countryFlag(review.country)}</span>
+                )}
                 {review.author_name || "Anonymous"}
                 {review.variant_label ? ` · ${review.variant_label}` : ""}
               </span>
@@ -132,6 +212,12 @@ export function ProductReviews({ productHandle, reviewPhotos }: ProductReviewsPr
                 Via {review.source_label || review.source}
               </p>
             )}
+
+            <HelpfulVotes
+              reviewId={review.id}
+              up={review.helpful_up || 0}
+              down={review.helpful_down || 0}
+            />
           </article>
         ))}
       </div>
