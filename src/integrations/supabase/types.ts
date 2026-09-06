@@ -418,6 +418,7 @@ export type Database = {
           email: string | null
           id: string
           images: string[]
+          incentivised: boolean
           product_handle: string
           rating: number
           reviewed_at: string | null
@@ -436,6 +437,7 @@ export type Database = {
           email?: string | null
           id?: string
           images?: string[]
+          incentivised?: boolean
           product_handle: string
           rating: number
           reviewed_at?: string | null
@@ -454,6 +456,7 @@ export type Database = {
           email?: string | null
           id?: string
           images?: string[]
+          incentivised?: boolean
           product_handle?: string
           rating?: number
           reviewed_at?: string | null
@@ -708,6 +711,7 @@ export type Database = {
           created_at: string | null
           id: string | null
           images: string[] | null
+          incentivised: boolean | null
           product_handle: string | null
           rating: number | null
           reviewed_at: string | null
@@ -723,6 +727,7 @@ export type Database = {
           created_at?: string | null
           id?: string | null
           images?: string[] | null
+          incentivised?: boolean | null
           product_handle?: string | null
           rating?: number | null
           reviewed_at?: string | null
@@ -738,6 +743,7 @@ export type Database = {
           created_at?: string | null
           id?: string | null
           images?: string[] | null
+          incentivised?: boolean | null
           product_handle?: string | null
           rating?: number | null
           reviewed_at?: string | null
