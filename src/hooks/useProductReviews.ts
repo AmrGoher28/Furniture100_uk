@@ -15,6 +15,9 @@ export interface PublicReview {
   incentivised: boolean | null;
   reviewed_at: string | null;
   images: string[] | null;
+  country: string | null;
+  helpful_up: number | null;
+  helpful_down: number | null;
 }
 
 export function useProductReviews(productHandle: string | undefined) {
