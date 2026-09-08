@@ -535,6 +535,54 @@ export type Database = {
         }
         Relationships: []
       }
+      staging_requests: {
+        Row: {
+          admin_notes: string | null
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          image_paths: string[]
+          images_failed: number
+          message: string | null
+          name: string
+          products: string | null
+          role: string | null
+          space: string | null
+          status: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          image_paths?: string[]
+          images_failed?: number
+          message?: string | null
+          name: string
+          products?: string | null
+          role?: string | null
+          space?: string | null
+          status?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          image_paths?: string[]
+          images_failed?: number
+          message?: string | null
+          name?: string
+          products?: string | null
+          role?: string | null
+          space?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       supplier_links: {
         Row: {
           check_enabled: boolean
