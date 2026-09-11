@@ -89,6 +89,7 @@ export type Database = {
           id: string
           message: string | null
           name: string
+          plan: string | null
           status: string
           updated_at: string
           volume: string | null
@@ -102,6 +103,7 @@ export type Database = {
           id?: string
           message?: string | null
           name: string
+          plan?: string | null
           status?: string
           updated_at?: string
           volume?: string | null
@@ -115,6 +117,7 @@ export type Database = {
           id?: string
           message?: string | null
           name?: string
+          plan?: string | null
           status?: string
           updated_at?: string
           volume?: string | null
